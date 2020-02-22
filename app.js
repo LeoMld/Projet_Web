@@ -30,6 +30,7 @@ app.use('/', homeRouter);
 app.use('/users', usersRouter);
 /*app.use('/', catalogRouter);*/
 
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
