@@ -11,6 +11,8 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
+const home = require('./model/home');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -30,7 +32,7 @@ app.use('/', homeRouter);
 app.use('/users', usersRouter);
 /*app.use('/', catalogRouter);*/
 
-app.get('/favicon.ico', (req, res) => res.status(204));
+app.use(home.ignoreFavicon);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
