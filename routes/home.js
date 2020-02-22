@@ -9,6 +9,7 @@ const home_ctrl = require('../controllers/home_ctrl');
 });*/
 
 router.get('/', home_ctrl.home_connexion_get);
+router.post('/', home_ctrl.home_connexion_post);
 
 router.get('/register', home_ctrl.home_register_get);
 router.post('/register',home_ctrl.home_register_post);

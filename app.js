@@ -11,8 +11,6 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
-const home = require('./model/home');
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -24,15 +22,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //to parse "post" requests
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //Router
 app.use('/', homeRouter);
 app.use('/users', usersRouter);
 /*app.use('/', catalogRouter);*/
-
-app.use(home.ignoreFavicon);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
