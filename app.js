@@ -50,4 +50,10 @@ app.use((err, req, res) => {
 });
 
 module.exports = app;
-app.listen(process.env.PORT || 8080);
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8080;
+}
+app.listen(port);
+
