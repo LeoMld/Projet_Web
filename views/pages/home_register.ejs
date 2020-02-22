@@ -2,14 +2,33 @@
 <div class="container mt-5">
     <h1 class="text-center">Page register</h1>
     <form action="/register" method="post">
+        <div class="form-row">
+            <div class="col form-group">
+                <label for="name_I">name</label>
+                <input type="text" class="form-control" name="name_I" id="name_I" required >
+            </div>
+            <div class="col form-group">
+                <label for="surname_I">surname</label>
+                <input type="text" class="form-control" name="surname_I" id="surname_I" required >
+            </div>
+
+        </div>
         <div class="form-group">
-            <label for="mail">Email address</label>
-            <input type="email" class="form-control" name="mail" id="mail" aria-describedby="emailHelp">
+            <label for="date_I">Date de naissance</label>
+            <input type="date" class="form-control" name="date_I" id="date_I" required >
+        </div>
+        <div class="form-group">
+            <label for="nameInf">Nom Influenceur</label>
+            <input type="text" class="form-control" name="nameInf" id="nameInf" required >
+        </div>
+        <div class="form-group">
+            <label for="mail_I">Email address</label>
+            <input type="email" class="form-control" name="mail_I" id="mail_I" required >
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
         <div class="form-group">
-            <label for="pwd">Password</label>
-            <input type="password" class="form-control" name="pwd" id="pwd">
+            <label for="pwd_I">Password</label>
+            <input type="password" class="form-control" name="pwd_I" id="pwd_I" required>
         </div>
         <div class="form-group form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">

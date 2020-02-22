@@ -3,14 +3,14 @@ const JWT_SIGN = "azertytest549";
 
 module.exports = {
     //generate a token
-  generateToken: function (id,isAdmin) {
+    generateToken: function (id,isAdmin) {
     return jwt.sign({
         userId: id,
         isAdmin: isAdmin
     }, JWT_SIGN,{
         expiresIn: '1h'
     })
-  },
+    },
 
     //set a token in cookies
     setToken: function(token, res){
@@ -18,15 +18,14 @@ module.exports = {
     },
     //get Token in cookies
     getToken: function (req,res) {
-        var username = req.cookies['secu reToken'];
-        if (username) {
-            return res.send(username);
+        var username = req.cookies['secureToken'];
+        if (!username) {
+            res.sendStatus(403);
         }
 
         return res.send('No cookie found');
     },
-
-    verifyToken: function (req,res, next) {
+    verifyToken: function (req,res) {
         //get the token in cookies
         const token = req.cookie['authorization'];
         //check

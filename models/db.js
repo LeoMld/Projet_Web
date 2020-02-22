@@ -1,7 +1,6 @@
 const mysql = require('mysql');
 
 
-/*
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -10,4 +9,4 @@ const connection = mysql.createConnection({
 });
 connection.connect();
 
-module.exports = connection;*/
+module.exports = connection;
