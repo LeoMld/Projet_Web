@@ -9,4 +9,4 @@ const mysql = require('mysql');
 });
 connection.connect();*/
 
-module.exports = connection;
+//module.exports = connection;
