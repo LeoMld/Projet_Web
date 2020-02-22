@@ -1,4 +1,4 @@
-const createError = require('http-errors');
+//const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res) => {
-  // set locals, only providing error in development
+  // set locals, only providing error in developmen t
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
@@ -52,7 +52,7 @@ app.use((err, req, res) => {
 module.exports = app;
 
 let port = process.env.PORT;
-if (port == null || port == "") {
+if (port == null) {
   port = 8080;
 }
 app.listen(port);
