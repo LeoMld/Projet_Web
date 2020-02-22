@@ -1,8 +1,32 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
 
 a {
   color: #00B7FF;
 }
+
+/*PARTIE SUR LA BARRE DE NAVIGATION*/
+#nav {
+
+
+  background-color: rgba(243, 240, 239, 0.85);
+  transition: all ease .5s;
+
+}
+
+
+#nav.shrink {
+
+  height: 70px ;
+  background-color: rgba(255, 255, 255, 0.85);
+  transition: all ease 1s;
+}
+
+#nav.shrink #titre {
+  font-size: 30px;
+  transition: all ease .5s;
+}
+
+#nav.shrink #logo {
+  padding: 7px;
+  transition: all ease .5s;
+}
+
