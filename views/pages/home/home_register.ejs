@@ -1,0 +1,90 @@
+<%- include('../../components/header') %>
+
+
+<div class="container mt-5">
+    <%
+    switch (status_reg) {
+        case 1:
+            %>
+            <h2 class="text-success">Bravo, vous venez de vous inscrire !</h2>
+    <%
+        break;
+        case 2:
+            %>
+            <h2 class="text-danger">Vous êtes déja inscrit</h2>
+    <%
+        break;
+
+        default:
+
+    }
+    %>
+    <h1 class="text-center">Créer un compte</h1>
+    <div id="Inf">
+        <small>Veuillez d'abord choisir votre statut</small>
+        <form action="/register" method="post">
+            <div>
+                <label for="type">Statut</label>
+                <select id="type" name="type" class="form-control" autofocus>
+                    <option value='0'>-</option>
+                    <option value='Influenceur'>Influenceur</option>
+                    <option value='Entreprise'>Entreprise</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="col form-group">
+                    <label for="name_I">Prénom</label>
+                    <input type="text" class="form-control" name="name_I" id="name_I" required >
+                </div>
+                <div class="col form-group">
+                    <label for="surname_I">Nom</label>
+                    <input type="text" class="form-control" name="surname_I" id="surname_I" required >
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label for="date_I">Date de naissance</label>
+                <input type="date" class="form-control" name="date_I" id="date_I" required >
+            </div>
+            <div class="form-group">
+                <label for="nameInf">Nom Influenceur</label>
+                <input type="text" class="form-control" name="nameInf" id="nameInf" required >
+            </div>
+            <div class="form-group">
+                <label for="mail_I">Email</label>
+                <input type="email" class="form-control" name="mail_I" id="mail_I" required >
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="pwd_I">Mot de passe</label>
+                <input type="password" class="form-control" name="pwd_I" id="pwd_I" required>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <button type="submit" class="btn btn-primary">S'inscrire</button>
+        </form>
+    </div>
+    <div id="Ent">
+        <form action="/register" method="post">
+            <div class="form-row">
+                <div class="col form-group">
+                    <label for="name_E">Nom Entreprise</label>
+                    <input type="text" class="form-control" name="name_E" id="name_E" required >
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mail_E">Email</label>
+                <input type="email" class="form-control" name="mail_E" id="mail_E" required >
+
+            </div>
+            <div class="form-group">
+                <label for="pwd_E">Password</label>
+                <input type="password" class="form-control" name="pwd_E" id="pwd_E" required>
+            </div>
+
+            <button type="submit" name="envoi" id="envoi" class="btn btn-primary">S'inscrire</button>
+        </form>
+    </div>
+</div>

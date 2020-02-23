@@ -6,7 +6,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 
 const homeRouter = require('./routes/home');
-const usersRouter = require('./routes/users');
+const userRouter = require('./routes/user');
+
 /*var catalogRouter = require('./routes/catalog');*/
 
 const app = express();
@@ -27,7 +28,7 @@ app.use(bodyParser.json());
 
 //Router
 app.use('/', homeRouter);
-app.use('/users', usersRouter);
+app.use('/:id',userRouter);
 /*app.use('/', catalogRouter);*/
 
 // catch 404 and forward to error handler

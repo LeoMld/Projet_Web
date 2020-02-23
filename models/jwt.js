@@ -13,27 +13,30 @@ module.exports = {
     },
 
     //set a token in cookies
-    setToken: function(token, res){
-        return res.cookie('secureToken', token, { maxAge: 6 * 60 * 60 * 1000, httpOnly: true })
+    setToken: (token, res)=>{
+        return res.cookie('secureToken', token, { maxAge: 6 * 60 * 60 * 1000, httpOnly: true });
     },
     //get Token in cookies
-    getToken: function (req,res) {
-        var username = req.cookies['secureToken'];
-        if (!username) {
+    getToken: (req,res) => {
+        var token = req.cookies['secureToken'];
+        if (!token) {
             res.sendStatus(403);
         }
+        return token;
 
-        return res.send('No cookie found');
+
     },
+    destroyToken: (req,res) =>{
+        res.clearCookie('secureToken');
+    },
+
+
+    //return true is the token is in cookies
     verifyToken: function (req,res) {
         //get the token in cookies
-        const token = req.cookie['authorization'];
+        const token = req.cookies['secureToken'];
         //check
-        if (typeof token !== 'undefined'){
-            res.send('connecté');
-        }else{
-            res.sendStatus(403);
-        }
+        return token !== undefined;
 
     }
 };
