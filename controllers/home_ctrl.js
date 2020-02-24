@@ -1,68 +1,56 @@
 const home = require('../models/home');
-const jwt = require('../models/jwt');
+const jwt = require('jsonwebtoken');
+const cookie_mdl = require('../models/cookie');
+
+
 
 module.exports= {
     //STATUS VAR
     //status_co use: 0 means wrong mail or password, 1 means normal access to connexion page
 
-    home_connexion_get : function(req,res) {
+    home_connexion_get: function(req,res) {
         //verify if a token is already in cookies
-        if(jwt.verifyToken(req,res)){
-            //res.redirect('/3/profile');
-            //jwt.destroyToken(req,res);
+        const token = cookie_mdl.getToken(req,res);
+        if(typeof token !== 'undefined'){
+            jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token)=> {
+                if (err) {
+                    alert.setAlert(req,res,"erreur de connexion");
+                    cookie_mdl.destroyToken(req,res);
+                    res.redirect('/');
+                } else {
+                    if(infos_Token.type == 0){
+                        res.redirect('/admin');
+                    }else if (infos_Token.type == 1){
+                        res.redirect('/influenceur');
+                    }else{
 
-            res.redirect('/3/profile');
-            //res.render('pages/home/home_connexion',{status_co:1});
-        }else {
+                        res.redirect('/entreprise');
+                    }
+                }
+            })
+
+        }else{
             res.render('pages/home/home_connexion',{status_co:1});
         }
+
     },
 
-    home_connexion_post: (req,res) => {
+    home_connexion_post: async (req,res1)=>{
         //post connexion
-
         const mail = req.body.mail;
         const pwd = req.body.pwd;
-        //if there is no mail or password err status 500
-        if(mail !== undefined && pwd !== undefined){
-            //connexion will compare mail, pwd in database and return user data if he is in database
-            home.connexion(mail,pwd).then((result)=>{
-                if(result[0] === undefined){
-                    res.render('pages/home/home_connexion',{status_co:0});
-                    console.log('redirection mauvais mot de passe');
-                }else{
-                    //if user is in database, we can generate the token
-                    //put in the token id, if it's an admin
-                    const id = result[0].id_Influenceur;
-                    const is_admin = result[0].admin;
-                    const token = jwt.generateToken(id,is_admin);
-                    jwt.setToken(token ,(err, res) =>{
-                        if(res){
-                            jwt.verifyToken(req,res => {
-                                if(res){
-                                    res.render('pages/connected/profile');
-                                }else{
-                                    res.status(404).send("token not found");
-                                }
-                            })
-                        }else{
-                            res.status(404).send("token not found");
-                        }
-                    })
-                }
 
-
-            }).catch((err) => {
-
-                console.log(err);
-            })
+        const result= await home.connect(req,res1,mail,pwd);
+        if(result == 0){
+            res1.render('pages/home/home_connexion',{status_co:0});
         }else{
-            res.status(500).send("missing data");
+            res1.redirect('/');
         }
+        //if there is no mail or password err status 500
 
-        //res.render('pages/home_connexion');
+        },
 
-    },
+
 
     //REGISTER PAGE CONTROLLERS
     home_register_get: (req,res) =>{
@@ -91,9 +79,6 @@ module.exports= {
                     //status 2 means that user is already in database
                     res.render('pages/home/home_register',{status_reg: 2});
                 }
-
-
-
             })
 
         }else {
@@ -115,7 +100,6 @@ module.exports= {
                     res.render('pages/home/home_register', {status_reg: 2});
                 }
 
-
             })
         }
 
@@ -123,6 +107,12 @@ module.exports= {
 
     home_contact_get:  (req,res)=> {
         res.send('contact');
+    },
+
+    //LOGOUT
+    logout:(req,res)=>{
+        cookie_mdl.destroyToken(req,res);
+        res.redirect('/');
     }
 };
 

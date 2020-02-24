@@ -6,7 +6,9 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 
 const homeRouter = require('./routes/home');
-const userRouter = require('./routes/user');
+const influenceurRouter = require('./routes/influenceur');
+const entrepriseRouter = require('./routes/entreprise');
+const adminRouter = require('./routes/admin');
 
 /*var catalogRouter = require('./routes/catalog');*/
 
@@ -28,7 +30,9 @@ app.use(bodyParser.json());
 
 //Router
 app.use('/', homeRouter);
-app.use('/:id',userRouter);
+app.use('/influenceur',influenceurRouter);
+app.use('/entreprise',entrepriseRouter);
+app.use('/admin',adminRouter);
 /*app.use('/', catalogRouter);*/
 
 // catch 404 and forward to error handler
@@ -40,7 +44,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res) => {
-  // set locals, only providing error in developmen t
+  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
