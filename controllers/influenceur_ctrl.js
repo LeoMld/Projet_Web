@@ -13,11 +13,16 @@ module.exports= {
                     res.redirect('/');
                 }
 
-                    })
+            })
         }else{
             res.redirect('/');
         }
 
 
+    },
+
+
+    inf_get: (req,res)=> {
+        res.redirect('/influenceur/profil')
     },
 };

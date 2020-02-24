@@ -21,10 +21,10 @@
     %>
     <h1 class="text-center">Créer un compte</h1>
     <div id="Inf">
-        <small>Veuillez d'abord choisir votre statut</small>
+
         <form action="/register" method="post">
             <div>
-                <label for="type">Statut</label>
+                <label for="type"><small>Veuillez d'abord choisir votre statut</small></label>
                 <select id="type" name="type" class="form-control" autofocus>
                     <option value='0'>-</option>
                     <option value='Influenceur'>Influenceur</option>
@@ -50,6 +50,15 @@
                 <label for="nameInf">Nom Influenceur</label>
                 <input type="text" class="form-control" name="nameInf" id="nameInf" required >
             </div>
+            <label for="type">Public visé</label>
+            <select id="public" name="public" class="form-control" autofocus>
+                <option value='0'>Tous</option>
+                <option value='1'>15-18</option>
+                <option value='2'>18-24</option>
+                <option value='3'>24-35</option>
+                <option value='4'>35-50</option>
+                <option value='5'>50+</option>
+            </select>
             <div class="form-group">
                 <label for="mail_I">Email</label>
                 <input type="email" class="form-control" name="mail_I" id="mail_I" required >

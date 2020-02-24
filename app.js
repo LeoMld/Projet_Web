@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const expressSanitizer = require('express-sanitizer');
 
 const homeRouter = require('./routes/home');
 const influenceurRouter = require('./routes/influenceur');
@@ -23,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(expressSanitizer());
 //to parse "post" requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

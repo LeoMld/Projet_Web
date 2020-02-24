@@ -1,4 +1,6 @@
-class Entreprise {
-    static
+const cookie_mdl = require('../models/cookie');
 
-}
+
+module.exports = {
+
+};

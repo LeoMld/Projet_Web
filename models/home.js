@@ -14,8 +14,8 @@ module.exports = {
                   if(err){
                       cookie_mdl.destroyToken(req,res);
                       resolve(1);
-                      //if there is nothing in influenceur table go search in entreprise table
                   }else if(res[0] === undefined){
+                      //if there is nothing in influenceur table go search in entreprise table
                       connexion.query('SELECT * FROM entreprise WHERE mail_E=?',[mail], (err, res) => {
                           if (err) {
                               cookie_mdl.destroyToken(req,res);
@@ -26,7 +26,8 @@ module.exports = {
                                   //check if it's the good password and send user data or an empty table if it's the wrong password
                                   bcrypt.compare(pwd, res[0].pwd_E, function(err, result) {
                                       if(result){
-                                          const token = jwt.sign({userId: id_Entreprise, type: 2}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                                          //generate a token with type 2 (entreprise)
+                                          const token = jwt.sign({userId: res[0].id_Entreprise, type: 2}, cookie_mdl.getKey(),{expiresIn: '1h'},);
                                           cookie_mdl.setToken(token,res1);
                                           resolve(1);
                                       }else {
@@ -40,12 +41,20 @@ module.exports = {
                           }
                       });
                   } else{
+                      //if there is an influenceur in db who matches
                       //check if it's the good password and send user data or an empty table if it's the wrong password
                       bcrypt.compare(pwd, res[0].pwd_I, function(err, result) {
                           if(result){
-                              const token = jwt.sign({userId: res[0].id_Influenceur, type: 1}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                              if(res[0].admin==1){
+                                  //generate a token with type 0 (admin)
+                                  var token = jwt.sign({userId: res[0].id_Influenceur, type: 0}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                              }else{
+                                  ////generate a token with type 1 (influenceur)
+                                  var token = jwt.sign({userId: res[0].id_Influenceur, type: 1}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                              }
                               cookie_mdl.setToken(token,res1);
                               resolve(1);
+
                           }else {
                               resolve(0);
                           }
@@ -126,7 +135,19 @@ module.exports = {
     }),
 
 
+    getPublic: (res1)=> {
+        return new Promise(resolve => {
+            connexion.query('SELECT type_P FROM public ',(err,res)=>{
+                if(err){
+                    res1.status(404).send("BDD not found");
+                }else{
+                    resolve(res);
+                }
+            });
+        })
 
+
+    }
 };
 
 

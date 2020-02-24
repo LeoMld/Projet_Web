@@ -1,5 +1,6 @@
 const home = require('../models/home');
 const jwt = require('jsonwebtoken');
+//const sanitizer = require('express-sanitizer');
 const cookie_mdl = require('../models/cookie');
 
 
@@ -14,7 +15,6 @@ module.exports= {
         if(typeof token !== 'undefined'){
             jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token)=> {
                 if (err) {
-                    alert.setAlert(req,res,"erreur de connexion");
                     cookie_mdl.destroyToken(req,res);
                     res.redirect('/');
                 } else {
@@ -23,7 +23,6 @@ module.exports= {
                     }else if (infos_Token.type == 1){
                         res.redirect('/influenceur');
                     }else{
-
                         res.redirect('/entreprise');
                     }
                 }
@@ -37,8 +36,9 @@ module.exports= {
 
     home_connexion_post: async (req,res1)=>{
         //post connexion
-        const mail = req.body.mail;
-        const pwd = req.body.pwd;
+        const mail = req.sanitize(req.body.mail);
+        const pwd = req.sanitize(req.body.pwd);
+        console.log(mail);
 
         const result= await home.connect(req,res1,mail,pwd);
         if(result == 0){
@@ -53,21 +53,24 @@ module.exports= {
 
 
     //REGISTER PAGE CONTROLLERS
-    home_register_get: (req,res) =>{
+    home_register_get: async (req,res) =>{
+        const public_ = await home.getPublic(res);
+        console.log(public_);
         //status 0 means normal access to register page
-        res.render('pages/home/home_register',{status_reg: 0});
+        res.render('pages/home/home_register',{status_reg: 0, public: public_});
 
     },
 
     //get data post and create a new user in database
     home_register_post: (req,res) =>{
         //test the type of register
-        const name_I = req.body.name_I;
+        const name_I = req.sanitize(req.body.name_I);
         //register for entreprise
         if ( name_I == null){
-            const name = req.body.name_E;
-            const mail = req.body.mail_E;
-            const pwd = req.body.pwd_E;
+            const name = req.sanitize(req.body.name_E);
+            const mail = req.sanitize(req.body.mail_E);
+            const pwd = req.sanitize(req.body.pwd_E);
+
             if(mail == null || pwd == null ||  name == null ) {
                 return res.status(400).json({'error': 'missing parameters'});
             }
@@ -83,12 +86,12 @@ module.exports= {
 
         }else {
             //register for influenceur
-            const surname = req.body.surname_I;
-            const mail = req.body.mail_I;
-            const pwd = req.body.pwd_I;
-            const date = req.body.date_I;
-            const nom_Inf = req.body.nameInf;
-            if (mail == null || pwd == null || date == null || surname == null || name_I == null || nom_Inf == null) {
+            const surname = req.sanitize(req.body.surname_I);
+            const mail = req.sanitize(req.body.mail_I);
+            const pwd = req.sanitize(req.body.pwd_I);
+            const date = req.sanitize(req.body.date_I);
+            const nom_Inf = req.sanitize(req.body.nameInf);
+            if (mail == null || pwd == null || date == null || surname == null || nom_Inf == null) {
                 return res.status(400).json({'error': 'missing parameters'});
             }
             home.register_I(name_I,surname,mail,pwd,date,nom_Inf).then((result) => {
