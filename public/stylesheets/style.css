@@ -4,10 +4,17 @@ a {
 }
 
 /*PARTIE SUR LA BARRE DE NAVIGATION*/
+.nav_text{
+  /*
+  color: black;
+  */
+}
+
+
 #nav {
 
-
-  background-color: rgba(243, 240, 239, 0.85);
+  opacity: 0.8;
+  background-color: #F3F9F9;
   transition: all ease .5s;
 
 }
@@ -29,4 +36,50 @@ a {
   padding: 7px;
   transition: all ease .5s;
 }
+
+/*ALERT MESSAGES */
+/*fade out messages*/
+.fade-out {
+  animation: fadeOut ease 8s;
+  -webkit-animation: fadeOut ease 8s;
+  -moz-animation: fadeOut ease 8s;
+  -o-animation: fadeOut ease 8s;
+  opacity: 0;
+}
+@keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
+@-moz-keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
+@-o-keyframes fadeOut {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
+}
+
 

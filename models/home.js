@@ -37,7 +37,6 @@ module.exports = {
                               }else{
                                   resolve(0);
                               }
-
                           }
                       });
                   } else{
@@ -67,7 +66,7 @@ module.exports = {
       })
     },
     //insert a new user(influenceur) in database
-    register_I: (name,surname,mail,pwd,date,nom_Inf) => new Promise((resolve,reject) =>{
+    register_I: (name,surname,mail,pwd,date,nom_Inf,public_) => new Promise((resolve,reject) =>{
         //hash the password
         bcrypt.hash(pwd, 10, function(err, hash) {
             //First, search in influenceur table if there is already an user who has the same email
@@ -83,7 +82,7 @@ module.exports = {
                         }else{
                             //if there is also nothing in entreprise table we can insert, this user is not already in database
                             if(res[0] === undefined){
-                                connexion.query('INSERT INTO influenceur SET nom_I=?, prenom_I=?, date_naissance_I=?, nom_Inf=?,mail_I=?,pwd_I=?',[surname,name,date,nom_Inf,mail,hash]);
+                                connexion.query('INSERT INTO influenceur SET nom_I=?, prenom_I=?, date_naissance_I=?, nom_Inf=?,FK_id_Public=?,mail_I=?,pwd_I=?',[surname,name,date,nom_Inf,public_,mail,hash]);
                                 resolve(res);
                             }else{
                                 console.log("erreur, l'utilisateur est deja dans la bdd ");

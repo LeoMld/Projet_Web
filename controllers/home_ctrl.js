@@ -6,8 +6,7 @@ const cookie_mdl = require('../models/cookie');
 
 
 module.exports= {
-    //STATUS VAR
-    //status_co use: 0 means wrong mail or password, 1 means normal access to connexion page
+
 
     home_connexion_get: function(req,res) {
         //verify if a token is already in cookies
@@ -29,7 +28,10 @@ module.exports= {
             })
 
         }else{
-            res.render('pages/home/home_connexion',{status_co:1});
+            const flash= cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            res.render('pages/home/home_connexion',{status_co:1,flash: flash});
+
         }
 
     },
@@ -39,13 +41,24 @@ module.exports= {
         const mail = req.sanitize(req.body.mail);
         const pwd = req.sanitize(req.body.pwd);
         console.log(mail);
-
-        const result= await home.connect(req,res1,mail,pwd);
-        if(result == 0){
-            res1.render('pages/home/home_connexion',{status_co:0});
-        }else{
+        if(mail != null && pwd != null){
+            const result= await home.connect(req,res1,mail,pwd);
+            if(result == 0){
+                res1.render('pages/home/home_connexion',{status_co:0});
+            }else{
+                res1.redirect('/');
+            }
+        }else {
+            const flash = {
+                mess:"Erreur lors de la connexion",
+                //type alert-danger means red color for message
+                type:"alert-danger"
+            };
+            cookie_mdl.setFlash(flash, res1);
             res1.redirect('/');
+
         }
+
         //if there is no mail or password err status 500
 
         },
@@ -55,16 +68,22 @@ module.exports= {
     //REGISTER PAGE CONTROLLERS
     home_register_get: async (req,res) =>{
         const public_ = await home.getPublic(res);
-        console.log(public_);
-        //status 0 means normal access to register page
-        res.render('pages/home/home_register',{status_reg: 0, public: public_});
+        const flash = cookie_mdl.getFlash(req);
+        cookie_mdl.destroyFlash(res);
+        res.render('pages/home/home_register',{public: public_,flash : flash});
 
     },
 
     //get data post and create a new user in database
-    home_register_post: (req,res) =>{
-        //test the type of register
+    home_register_post: async (req,res) =>{
+        let result;
+//test the type of register
         const name_I = req.sanitize(req.body.name_I);
+        let flash = {
+            mess:null,
+            //type alert-danger means red color for message
+            type:null
+        };
         //register for entreprise
         if ( name_I == null){
             const name = req.sanitize(req.body.name_E);
@@ -72,17 +91,27 @@ module.exports= {
             const pwd = req.sanitize(req.body.pwd_E);
 
             if(mail == null || pwd == null ||  name == null ) {
-                return res.status(400).json({'error': 'missing parameters'});
-            }
-            home.register_E(name,mail,pwd).then((result)=>{
-                if(result[0] === undefined){
+                flash.mess="Erreur lors de l'inscription, il manque des paramètres";
+                flash.type="alert-danger";
+                cookie_mdl.setFlash(flash, res);
+                res.redirect('/register');
+            }else{
+                result = await home.register_E(name,mail,pwd);
+                if (result[0] === undefined) {
+                    flash.type="alert-success";
+                    flash.mess="Bravo, votre compte a été créé avec succès";
+                    cookie_mdl.setFlash(flash,res);
                     //status 1 means that register is ok
-                    res.render('pages/home/home_register',{status_reg: 1});
-                }else{
+                    res.redirect('/register');
+                } else {
+                    flash.type="alert-danger";
+                    flash.mess="Vous avez déja un compte avec ce mail";
+                    cookie_mdl.setFlash(flash,res);
                     //status 2 means that user is already in database
-                    res.render('pages/home/home_register',{status_reg: 2});
+                    res.redirect('/register');
                 }
-            })
+            }
+
 
         }else {
             //register for influenceur
@@ -91,20 +120,32 @@ module.exports= {
             const pwd = req.sanitize(req.body.pwd_I);
             const date = req.sanitize(req.body.date_I);
             const nom_Inf = req.sanitize(req.body.nameInf);
+            const public_ = req.sanitize(req.body.public_)
             if (mail == null || pwd == null || date == null || surname == null || nom_Inf == null) {
-                return res.status(400).json({'error': 'missing parameters'});
-            }
-            home.register_I(name_I,surname,mail,pwd,date,nom_Inf).then((result) => {
+                flash.mess="Erreur lors de l'inscription, il manque des paramètres";
+                flash.type="alert-danger";
+                cookie_mdl.setFlash(flash, res);
+                res.redirect('/register');
+            }else{
+                result = await home.register_I(name_I, surname, mail, pwd, date, nom_Inf, public_);
                 if (result[0] === undefined) {
+                    flash.type="alert-success";
+                    flash.mess="Bravo, votre compte a été créé avec succès";
+                    cookie_mdl.setFlash(flash,res);
                     //status 1 means that register is ok
-                    res.render('pages/home/home_register', {status_reg: 1});
+                    res.redirect('/register');
                 } else {
+                    flash.type="alert-danger";
+                    flash.mess="Vous avez déja un compte avec ce mail";
+                    cookie_mdl.setFlash(flash,res);
                     //status 2 means that user is already in database
-                    res.render('pages/home/home_register', {status_reg: 2});
+                    res.redirect('/register');
                 }
+            }
 
-            })
         }
+
+
 
     },
 
@@ -114,6 +155,12 @@ module.exports= {
 
     //LOGOUT
     logout:(req,res)=>{
+        const flash = {
+            mess:"Vous avez été déconnecté",
+            //type alert-success means green color for message
+            type:"alert-success"
+        };
+        cookie_mdl.setFlash(flash, res);
         cookie_mdl.destroyToken(req,res);
         res.redirect('/');
     }

@@ -11,8 +11,6 @@ const influenceurRouter = require('./routes/influenceur');
 const entrepriseRouter = require('./routes/entreprise');
 const adminRouter = require('./routes/admin');
 
-/*var catalogRouter = require('./routes/catalog');*/
-
 const app = express();
 
 // view engine setup
@@ -23,7 +21,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets',express.static(path.join(__dirname, 'public')));
 app.use(expressSanitizer());
 //to parse "post" requests
 app.use(bodyParser.urlencoded({ extended: true }));

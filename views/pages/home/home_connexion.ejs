@@ -1,4 +1,9 @@
 <%- include('../../components/header') %>
+<%if(typeof flash != 'undefined'){
+    %>
+    <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+} %>
 <div class="container mt-5">
     <div class="">
         <h1 class="text-center">Page Connexion</h1>
@@ -6,12 +11,12 @@
         <form action="/" method="post">
             <div class="form-group">
                 <label for="mail">Email address</label>
-                <input type="email" class="form-control" name="mail" id="mail" aria-describedby="emailHelp">
+                <input type="email" class="form-control" name="mail" id="mail" aria-describedby="emailHelp" required>
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
                 <label for="pwd">Password</label>
-                <input type="password" class="form-control" name="pwd" id="pwd">
+                <input type="password" class="form-control" name="pwd" id="pwd" required>
             </div>
             <div>
                 <%

@@ -3,22 +3,15 @@
 
 <div class="container mt-5">
     <%
-    switch (status_reg) {
-        case 1:
-            %>
-            <h2 class="text-success">Bravo, vous venez de vous inscrire !</h2>
-    <%
-        break;
-        case 2:
-            %>
-            <h2 class="text-danger">Vous êtes déja inscrit</h2>
-    <%
-        break;
-
-        default:
-
-    }
+        if(typeof flash != 'undefined'){
+        %>
+            <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+        <%
+        }else{
+        }
     %>
+
+
     <h1 class="text-center">Créer un compte</h1>
     <div id="Inf">
 
@@ -51,13 +44,13 @@
                 <input type="text" class="form-control" name="nameInf" id="nameInf" required >
             </div>
             <label for="type">Public visé</label>
-            <select id="public" name="public" class="form-control" autofocus>
-                <option value='0'>Tous</option>
-                <option value='1'>15-18</option>
-                <option value='2'>18-24</option>
-                <option value='3'>24-35</option>
-                <option value='4'>35-50</option>
-                <option value='5'>50+</option>
+            <select id="public_" name="public_" class="form-control" autofocus>
+                <option value='0'>Tout public</option>
+                <option value='1'><%= public[0].type_P %></option>
+                <option value='2'><%= public[1].type_P %></option>
+                <option value='3'><%= public[2].type_P %></option>
+                <option value='4'><%= public[3].type_P %></option>
+                <option value='5'><%= public[4].type_P %></option>
             </select>
             <div class="form-group">
                 <label for="mail_I">Email</label>
