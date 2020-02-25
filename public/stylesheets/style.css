@@ -3,40 +3,6 @@ a {
   color: #00B7FF;
 }
 
-/*PARTIE SUR LA BARRE DE NAVIGATION*/
-.nav_text{
-  /*
-  color: black;
-  */
-}
-
-
-#nav {
-
-  opacity: 0.8;
-  background-color: #F3F9F9;
-  transition: all ease .5s;
-
-}
-
-
-#nav.shrink {
-
-  height: 70px ;
-  background-color: rgba(255, 255, 255, 0.85);
-  transition: all ease 1s;
-}
-
-#nav.shrink #titre {
-  font-size: 30px;
-  transition: all ease .5s;
-}
-
-#nav.shrink #logo {
-  padding: 7px;
-  transition: all ease .5s;
-}
-
 /*ALERT MESSAGES */
 /*fade out messages*/
 .fade-out {

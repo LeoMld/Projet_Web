@@ -1,0 +1,79 @@
+/*PARTIE SUR LA BARRE DE NAVIGATION*/
+.nav_text{
+    /*
+    color: black;
+    */
+}
+
+
+#nav {
+
+    opacity: 0.8;
+    background-color: #F3F9F9;
+    transition: all ease .5s;
+
+}
+
+
+#nav.shrink {
+
+    height: 70px ;
+    background-color: rgba(255, 255, 255, 0.85);
+    transition: all ease 1s;
+}
+
+#nav.shrink #titre {
+    font-size: 30px;
+    transition: all ease .5s;
+}
+
+#nav.shrink #logo {
+    padding: 7px;
+    transition: all ease .5s;
+}
+
+/*text color, display...*/
+#menu a {
+    display:block;
+    color:#5a5a5a;
+    text-decoration:none;
+}
+
+/*position under good element*/
+#menu > li,
+#menu > li li {
+    position: relative;
+    display:inline-block;
+
+}
+
+
+#menu li li:hover { background-color: rgba(236, 240, 243) }
+
+
+
+/*fix the max height*/
+@media only screen and (min-width: 991px) {
+    #menu ul {
+
+        position: absolute;
+    }
+}
+
+/*caracteritics of the element and display hidden*/
+#menu ul {
+    top: 2em; left: 0;
+    max-height:0em;
+    padding: 0;
+    background-color: rgba(244, 244, 244, 0.95);
+    overflow: hidden;
+    transition: 0.5s max-height 0.01s;
+    border-radius: 1px 0 3px 3px;
+    margin: 10px 0 0;
+}
+/* display the element :hover */
+#menu > li:hover ul {
+    max-height: 20em;
+    margin-top: 10px;
+    padding-bottom: 5px;
+}
