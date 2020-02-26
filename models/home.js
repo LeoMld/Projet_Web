@@ -12,14 +12,12 @@ module.exports = {
               //connexion will compare mail, pwd in database and return user data if he is in database
               connexion.query('SELECT * FROM Influenceur WHERE mail_I=?',[mail], (err, res) =>{
                   if(err){
-                      cookie_mdl.destroyToken(req,res);
-                      resolve(1);
+                      reject("Le service est indisponible");
                   }else if(res[0] === undefined){
                       //if there is nothing in influenceur table go search in entreprise table
                       connexion.query('SELECT * FROM entreprise WHERE mail_E=?',[mail], (err, res) => {
                           if (err) {
-                              cookie_mdl.destroyToken(req,res);
-                              resolve(1);
+                              reject("Le service est indisponible");
                           } else{
 
                               if(res[0] !== undefined){
@@ -44,12 +42,13 @@ module.exports = {
                       //check if it's the good password and send user data or an empty table if it's the wrong password
                       bcrypt.compare(pwd, res[0].pwd_I, function(err, result) {
                           if(result){
-                              if(res[0].admin==1){
+                              let token;
+                              if(res[0].admin===1){
                                   //generate a token with type 0 (admin)
-                                  var token = jwt.sign({userId: res[0].id_Influenceur, type: 0}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                                  token = jwt.sign({userId: res[0].id_Influenceur, type: 0}, cookie_mdl.getKey(),{expiresIn: '1h'},);
                               }else{
                                   ////generate a token with type 1 (influenceur)
-                                  var token = jwt.sign({userId: res[0].id_Influenceur, type: 1}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                                  token = jwt.sign({userId: res[0].id_Influenceur, type: 1}, cookie_mdl.getKey(),{expiresIn: '1h'},);
                               }
                               cookie_mdl.setToken(token,res1);
                               resolve(1);

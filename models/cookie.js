@@ -25,7 +25,6 @@ module.exports = {
 
     getToken : (req,res)=>{
         return req.cookies['secureToken'];
-
     },
 
     destroyToken: (req,res) =>{
@@ -33,7 +32,7 @@ module.exports = {
     },
 
     //generate a token, put him in cookies
-    connect: (req,res,id,type,next)=>{
+    connect: (req,res,id,type)=>{
         var token = token.sign({
             userId: id,
             type: type
@@ -42,9 +41,7 @@ module.exports = {
         });
         res.cookie('secureToken', token, { maxAge: 6 * 60 * 60 * 1000, httpOnly: true });
         //look if token is in cookies
-        next({
-            check: req.cookies['secureToken'] !== undefined,
-        })
+
     },
 
 };

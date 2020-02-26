@@ -17,9 +17,9 @@ module.exports= {
                     cookie_mdl.destroyToken(req,res);
                     res.redirect('/');
                 } else {
-                    if(infos_Token.type == 0){
+                    if(infos_Token.type === 0){
                         res.redirect('/admin');
-                    }else if (infos_Token.type == 1){
+                    }else if (infos_Token.type === 1){
                         res.redirect('/influenceur');
                     }else{
                         res.redirect('/entreprise');
@@ -40,14 +40,27 @@ module.exports= {
         //post connexion
         const mail = req.sanitize(req.body.mail);
         const pwd = req.sanitize(req.body.pwd);
-        console.log(mail);
+
         if(mail != null && pwd != null){
-            const result= await home.connect(req,res1,mail,pwd);
-            if(result == 0){
-                res1.render('pages/home/home_connexion',{status_co:0});
-            }else{
+            try{
+                const result= await home.connect(req,res1,mail,pwd);
+                if(result === 0){
+                    res1.render('pages/home/home_connexion',{status_co:0});
+                }else{
+                    res1.redirect('/');
+                }
+            }catch (e) {
+                const flash = {
+                    mess:e,
+                    //type alert-danger means red color for message
+                    type:"alert-danger"
+                };
+
+                cookie_mdl.destroyToken(req,res1);
+                cookie_mdl.setFlash(flash,res1);
                 res1.redirect('/');
             }
+
         }else {
             const flash = {
                 mess:"Erreur lors de la connexion",
@@ -76,6 +89,7 @@ module.exports= {
 
     //get data post and create a new user in database
     home_register_post: async (req,res) =>{
+        const REGEX_MAIL = /(?:[a-z0-9!#$%&'+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
         let result;
 //test the type of register
         const name_I = req.sanitize(req.body.name_I);
@@ -87,11 +101,14 @@ module.exports= {
         //register for entreprise
         if ( name_I == null){
             const name = req.sanitize(req.body.name_E);
-            const mail = req.sanitize(req.body.mail_E);
+            let mail = req.sanitize(req.body.mail_E);
+            if(!REGEX_MAIL.test(mail)){
+                mail=null;
+            }
             const pwd = req.sanitize(req.body.pwd_E);
 
             if(mail == null || pwd == null ||  name == null ) {
-                flash.mess="Erreur lors de l'inscription, il manque des paramètres";
+                flash.mess="Erreur lors de l'inscription";
                 flash.type="alert-danger";
                 cookie_mdl.setFlash(flash, res);
                 res.redirect('/register');
@@ -116,13 +133,16 @@ module.exports= {
         }else {
             //register for influenceur
             const surname = req.sanitize(req.body.surname_I);
-            const mail = req.sanitize(req.body.mail_I);
+            let mail = req.sanitize(req.body.mail_I);
+            if(!REGEX_MAIL.test(mail)){
+                mail=null;
+            }
             const pwd = req.sanitize(req.body.pwd_I);
             const date = req.sanitize(req.body.date_I);
             const nom_Inf = req.sanitize(req.body.nameInf);
-            const public_ = req.sanitize(req.body.public_)
+            const public_ = req.sanitize(req.body.public_);
             if (mail == null || pwd == null || date == null || surname == null || nom_Inf == null) {
-                flash.mess="Erreur lors de l'inscription, il manque des paramètres";
+                flash.mess="Erreur lors de l'inscription";
                 flash.type="alert-danger";
                 cookie_mdl.setFlash(flash, res);
                 res.redirect('/register');

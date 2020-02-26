@@ -1,26 +1,97 @@
-const influenceur = require('../models/influenceur');
+const entreprise = require('../models/entreprise');
+const annonces = require('../models/annonces');
 const cookie_mdl = require('../models/cookie');
-const jwt = require('jsonwebtoken');
 
 
 
 module.exports= {
-    profil_get: (req,res)=>{
-        const token = cookie_mdl.getToken(req,res);
-        if(typeof token !== 'undefined'){
-            jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token)=> {
-                if(infos_Token.type == 2){
-                    res.render('pages/entreprise/profil');
-                }else{
-                    res.redirect('/');
-                }
-
-            })
-        }else{
+    profil_get: async (req,res)=>{
+        try{
+            await entreprise.is_entreprise(req,res);
+            res.render('pages/entreprise/profil');
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            cookie_mdl.destroyToken(req,res);
             res.redirect('/');
         }
+
     },
+
     ent_get: (req,res)=> {
         res.redirect('/entreprise/profil')
+    },
+
+    annonces_get: async (req,res)=> {
+        try {
+            await entreprise.is_entreprise(req,res);
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            try{
+                const annonces_en_ligne = await annonces.get_Annonces(req, res);
+                res.render('pages/entreprise/annonces', {annonces: annonces_en_ligne, flash:flash});
+            }catch(e){
+                const flash={
+                    type: "alert-danger",
+                    mess:"Désolé, le service est momentanément indisponibles",
+                };
+                cookie_mdl.setFlash(flash,res);
+                res.render('pages/entreprise/annonces', { flash: flash});
+            }
+
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                mess: e,
+            };
+            console.log(e);
+            cookie_mdl.setFlash(flash,res);
+            cookie_mdl.destroyToken(req,res);
+            res.redirect('/');
+        }
+
+
+    },
+    my_ads_get: async (req,res)=>{
+        try{
+            await entreprise.is_entreprise(req,res);
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            const annonces_en_ligne = await entreprise.get_my_ads(req, res);
+            res.render('pages/entreprise/my_ads', {annonces: annonces_en_ligne,flash:flash});
+        }catch (e) {
+            if(e === 1){
+                const flash = {
+                    type: "alert-danger",
+                    mess: "Erreur vous avez été déconnecté",
+                };
+                cookie_mdl.setFlash(flash,res);
+                cookie_mdl.destroyToken(req,res);
+                res.redirect('/');
+            }else{
+                const flash = {
+                    type: "alert-danger",
+                    mess: "Désolé, le service est momentanément indisponibles",
+                };
+                cookie_mdl.setFlash(flash,res);
+                res.render('pages/entreprise/my_ads',{flash:flash});
+            }
+        }
+    },
+    create_ads_get: async (req,res)=> {
+        try {
+            await entreprise.is_entreprise(req, res);
+            res.render('pages/entreprise/create_ads');
+        }catch(e){
+            const flash = {
+                type: "alert-danger",
+                mess: "Désolé, le service est momentanément indisponibles",
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/annonces/my_ads');
+        }
     },
 };

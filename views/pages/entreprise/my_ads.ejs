@@ -1,0 +1,16 @@
+<%- include('../../components/header_entreprise') %>
+<div class="container">
+    <h1 class="mt-5 text-center">Mes annonces </h1>
+    <%if(typeof annonces[0] !== 'undefined'){
+        console.log(annonces.length);
+    for (let i = 0; i < annonces.length; i++){
+    %>
+        <p><%= annonces[i].titre_A %></p>
+    <%
+    }
+    %>
+
+    <%
+    }%>
+    <a href="/entreprise/annonces/create_ads" class="btn btn-primary">Ajouter une annonce</a>
+</div>
