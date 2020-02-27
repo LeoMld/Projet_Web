@@ -80,10 +80,16 @@ module.exports= {
 
     //REGISTER PAGE CONTROLLERS
     home_register_get: async (req,res) =>{
-        const public_ = await home.getPublic(res);
-        const flash = cookie_mdl.getFlash(req);
-        cookie_mdl.destroyFlash(res);
-        res.render('pages/home/home_register',{public: public_,flash : flash});
+        const token = cookie_mdl.getToken(req,res);
+        if(typeof token !== 'undefined' ){
+            res.redirect('/');
+        }else{
+            const public_ = await home.getPublic(res);
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            res.render('pages/home/home_register',{public: public_,flash : flash});
+        }
+
 
     },
 

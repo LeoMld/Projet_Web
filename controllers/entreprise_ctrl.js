@@ -1,5 +1,6 @@
 const entreprise = require('../models/entreprise');
 const annonces = require('../models/annonces');
+const home = require('../models/home');
 const cookie_mdl = require('../models/cookie');
 
 
@@ -83,15 +84,44 @@ module.exports= {
     },
     create_ads_get: async (req,res)=> {
         try {
+            const public_ = await home.getPublic(res);
             await entreprise.is_entreprise(req, res);
-            res.render('pages/entreprise/create_ads');
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            res.render('pages/entreprise/create_ads',{public: public_,flash:flash});
         }catch(e){
             const flash = {
                 type: "alert-danger",
-                mess: "Désolé, le service est momentanément indisponibles",
+                mess: e,
+            };
+            console.log(e);
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/entreprise/annonces/my_ads');
+        }
+    },
+    create_ads_post: async (req,res)=> {
+        try {
+            const titre = req.body.titre;
+            const desc =req.body.desc;
+            const public=req.body.public_;
+            await entreprise.is_entreprise(req, res);
+            const public_ = await home.getPublic(res);
+            await annonces.create_Annonce(titre,desc,public,req,res);
+            const flash = {
+                type: "alert-success",
+                mess: "Annonce créée avec succès",
             };
             cookie_mdl.setFlash(flash,res);
-            res.redirect('/annonces/my_ads');
+            res.redirect('/entreprise/annonces/my_ads');
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                mess: e,
+            };
+            console.log(e);
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/entreprise/annonces/create_ads');
         }
+
     },
 };

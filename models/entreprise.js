@@ -27,7 +27,7 @@ module.exports = {
                     if (err) {
                         reject(1);
                     } else {
-                        connexion.query('SELECT * FROM annonce WHERE FK_id_Entreprise=?', [infos_Token.userID], (err, result) => {
+                        connexion.query('SELECT * FROM annonce WHERE FK_id_Entreprise=?', [infos_Token.userId], (err, result) => {
                             if (err || typeof result == 'undefined') {
                                 reject(2);
                             } else {

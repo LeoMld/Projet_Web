@@ -32,7 +32,7 @@ app.use('/', homeRouter);
 app.use('/influenceur',influenceurRouter);
 app.use('/entreprise',entrepriseRouter);
 app.use('/admin',adminRouter);
-/*app.use('/', catalogRouter);*/
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

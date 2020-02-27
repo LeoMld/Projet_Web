@@ -133,11 +133,11 @@ module.exports = {
     }),
 
 
-    getPublic: (res1)=> {
-        return new Promise(resolve => {
+    getPublic: async ()=> {
+        return new Promise((resolve, reject )=> {
             connexion.query('SELECT type_P FROM public ',(err,res)=>{
                 if(err){
-                    res1.status(404).send("BDD not found");
+                    reject("Désolé, le service est momentanément indisponible");
                 }else{
                     resolve(res);
                 }
