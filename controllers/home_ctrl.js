@@ -30,6 +30,9 @@ module.exports= {
         }else{
             const flash= cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
             res.render('pages/home/home_connexion',{status_co:1,flash: flash});
 
         }
@@ -45,6 +48,9 @@ module.exports= {
             try{
                 const result= await home.connect(req,res1,mail,pwd);
                 if(result === 0){
+                    if(typeof flash != 'undefined'){
+                        res.status(flash.code);
+                    }
                     res1.render('pages/home/home_connexion',{status_co:0});
                 }else{
                     res1.redirect('/');
@@ -52,6 +58,7 @@ module.exports= {
             }catch (e) {
                 const flash = {
                     mess:e,
+                    code: 401,
                     //type alert-danger means red color for message
                     type:"alert-danger"
                 };
@@ -64,17 +71,16 @@ module.exports= {
         }else {
             const flash = {
                 mess:"Erreur lors de la connexion",
+                code: 400,
                 //type alert-danger means red color for message
                 type:"alert-danger"
             };
             cookie_mdl.setFlash(flash, res1);
             res1.redirect('/');
-
         }
-
         //if there is no mail or password err status 500
 
-        },
+    },
 
 
 
@@ -87,6 +93,9 @@ module.exports= {
             const public_ = await home.getPublic(res);
             const flash = cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
             res.render('pages/home/home_register',{public: public_,flash : flash});
         }
 
@@ -101,6 +110,7 @@ module.exports= {
         const name_I = req.sanitize(req.body.name_I);
         let flash = {
             mess:null,
+            code:null,
             //type alert-danger means red color for message
             type:null
         };
@@ -115,6 +125,7 @@ module.exports= {
 
             if(mail == null || pwd == null ||  name == null ) {
                 flash.mess="Erreur lors de l'inscription";
+                flash.code=400;
                 flash.type="alert-danger";
                 cookie_mdl.setFlash(flash, res);
                 res.redirect('/register');
@@ -122,12 +133,14 @@ module.exports= {
                 result = await home.register_E(name,mail,pwd);
                 if (result[0] === undefined) {
                     flash.type="alert-success";
+                    flash.code=201;
                     flash.mess="Bravo, votre compte a été créé avec succès";
                     cookie_mdl.setFlash(flash,res);
                     //status 1 means that register is ok
                     res.redirect('/register');
                 } else {
                     flash.type="alert-danger";
+                    flash.code=400;
                     flash.mess="Vous avez déja un compte avec ce mail";
                     cookie_mdl.setFlash(flash,res);
                     //status 2 means that user is already in database
@@ -149,6 +162,7 @@ module.exports= {
             const public_ = req.sanitize(req.body.public_);
             if (mail == null || pwd == null || date == null || surname == null || nom_Inf == null) {
                 flash.mess="Erreur lors de l'inscription";
+                flash.code=400;
                 flash.type="alert-danger";
                 cookie_mdl.setFlash(flash, res);
                 res.redirect('/register');
@@ -156,12 +170,14 @@ module.exports= {
                 result = await home.register_I(name_I, surname, mail, pwd, date, nom_Inf, public_);
                 if (result[0] === undefined) {
                     flash.type="alert-success";
+                    flash.code=201;
                     flash.mess="Bravo, votre compte a été créé avec succès";
                     cookie_mdl.setFlash(flash,res);
                     //status 1 means that register is ok
                     res.redirect('/register');
                 } else {
                     flash.type="alert-danger";
+                    flash.code=400;
                     flash.mess="Vous avez déja un compte avec ce mail";
                     cookie_mdl.setFlash(flash,res);
                     //status 2 means that user is already in database
@@ -183,6 +199,7 @@ module.exports= {
     logout:(req,res)=>{
         const flash = {
             mess:"Vous avez été déconnecté",
+            code:200,
             //type alert-success means green color for message
             type:"alert-success"
         };

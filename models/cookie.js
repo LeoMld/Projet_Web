@@ -33,10 +33,10 @@ module.exports = {
 
     //generate a token, put him in cookies
     connect: (req,res,id,type)=>{
-        var token = token.sign({
+        const token = token.sign({
             userId: id,
             type: type
-        }, JWT_SIGN,{
+        }, JWT_SIGN, {
             expiresIn: '5h'
         });
         res.cookie('secureToken', token, { maxAge: 6 * 60 * 60 * 1000, httpOnly: true });
