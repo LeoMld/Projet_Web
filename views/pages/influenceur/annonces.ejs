@@ -1,39 +1,38 @@
-<%- include('../../components/header_entreprise') %>
+<%- include('../../components/header_influenceur') %>
 <div class="container">
     <%if(typeof flash !== 'undefined'){
     %>
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
     <%
     } %>
-    <h1 class="mt-5 text-center mb-5">Mes annonces </h1>
+    <h1 class="mt-5 text-center">Annonces en ligne </h1>
+
         <%if(typeof annonces !== 'undefined'){
             console.log(annonces.length);
         for (let i = 0; i < annonces.length; i++){
         %>
-            <div class="card mb-3 shadow-sm overflow-hidden " style="max-width: 100%; max-height: 250px;">
+
+            <a href="#" class="card mb-3 shadow-sm overflow-hidden " style="max-width: 100%; max-height: 250px; text-decoration: none">
                 <div class="row no-gutters">
 
-                    <div class="col-md-8">
+                    <div class="col ">
                         <div class="card-body ">
                             <h5 class="card-title"><%= annonces[i].titre_A %></h5>
                             <p class="card-text ">Public :</p>
                             <p class="card-text ">Description :</p>
                             <p class="card-text "><%= annonces[i].description_A %></p>
-                        </div>
 
-                    </div>
-                    <div class="col-md-4 mt-5" style="color: white">
-                        <a class="btn btn-primary mr-3">Afficher</a>
-                        <a class="btn btn-primary mr-3">Modifier</a>
-                        <a class="btn btn-danger">Supprimer</a>
+
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         <%
         }
         %>
 
         <%
         }%>
-    <a href="/entreprise/annonces/create_ads" class="btn btn-primary">Ajouter une annonce</a>
 </div>
+
+

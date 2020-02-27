@@ -7,8 +7,8 @@
             <input type="text" class="form-control" name="titre" id="titre" required >
         </div>
         <div class="form-group">
-            <label for="desc">Description</label>
-            <input type="text-area" class="form-control" name="desc" id="desc" required >
+            <label for="desc">Description</label><br>
+            <textarea class="form-control" name="desc" id="desc" cols="100" rows="5"></textarea>
         </div>
         <label for="public_">Public visé</label>
         <select id="public_" name="public_" class="form-control" autofocus>
@@ -19,6 +19,12 @@
             <option value='4'><%= public[3].type_P %></option>
             <option value='5'><%= public[4].type_P %></option>
         </select>
+        <!--<div class="mt-4 mb-5">
+            <label for="avatar">Choisissez une photo en lien avec votre annonce: </label><br>
+            <input type="file" id="pict" name="pict" accept="image/png, image/jpeg">
+        </div>-->
+
+
         <button type="submit" class="btn btn-primary">Créer l'annonce</button>
     </form>
 </div>
