@@ -6,8 +6,8 @@
     <%
     } %>
     <h1 class="mt-5 text-center mb-5">Mes annonces </h1>
+        <a href="/entreprise/annonces/create_ads" class="btn btn-primary">Ajouter une annonce</a>
         <%if(typeof annonces !== 'undefined'){
-            console.log(annonces.length);
         for (let i = 0; i < annonces.length; i++){
         %>
             <div class="card mb-3 shadow-sm overflow-hidden " style="max-width: 100%; max-height: 250px;">
@@ -35,5 +35,5 @@
 
         <%
         }%>
-    <a href="/entreprise/annonces/create_ads" class="btn btn-primary">Ajouter une annonce</a>
+
 </div>

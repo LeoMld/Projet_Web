@@ -133,7 +133,7 @@ module.exports = {
     }),
 
 
-    getPublic: async ()=> {
+    getPublic: ()=> {
         return new Promise((resolve, reject )=> {
             connexion.query('SELECT type_P FROM public ',(err,res)=>{
                 if(err){
@@ -145,6 +145,17 @@ module.exports = {
         })
 
 
+    },
+    getCat: ()=> {
+        return new Promise((resolve, reject )=> {
+            connexion.query('SELECT description_C FROM categorie ',(err,res)=>{
+                if(err){
+                    reject("Désolé, le service est momentanément indisponible");
+                }else{
+                    resolve(res);
+                }
+            });
+        })
     }
 };
 

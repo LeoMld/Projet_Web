@@ -1,0 +1,45 @@
+<%- include('../../components/header_admin') %>
+<div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
+    <h1 class="mt-5 text-center">Valider des annonces</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titre</th>
+            <th scope="col">Description</th>
+            <th scope="col">Catégorie</th>
+            <th scope="col">Public</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+    <%
+    if(typeof annonces_check[0] != 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
+        for (let i = 0; i < annonces_check.length; i++){
+
+            %>
+        <form action="/admin/annonces/check" method="post">
+            <tr>
+                <th scope="row"><%= i %></th>
+                <td><%= annonces_check[i].titre_A%></td>
+                <td><%= annonces_check[i].description_A%></td>
+                <td><%= cat[annonces_check[i].FK_id_Categorie-1].description_C%></td>
+                <td><%=  public[annonces_check[i].FK_id_Public-1].type_P %></td>
+                    <input class="invisible" name="valid" id="valid" value="<%= annonces_check[i].id_annonce%>" >
+                <td><button type="submit" href="" class="btn btn-success btn-sm mr-3">Valider</button><a href="" class="btn btn-danger btn-sm">Supprimer</a></td>
+
+            </tr>
+        </form>
+
+            <%
+        }
+    }
+    %>
+        </tbody>
+    </table>
+</div>

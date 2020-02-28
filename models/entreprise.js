@@ -41,4 +41,26 @@ module.exports = {
             }
         })
     },
+    get_infos: async (req,res)=>{
+        return new Promise((resolve,reject)=> {
+            const token = cookie_mdl.getToken(req,res);
+            if (typeof token !== 'undefined') {
+                jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
+                    if (err) {
+                        reject("erreur, vous avez été déconnecté");
+                    } else {
+                        connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [infos_Token.userId], (err, result) => {
+                            if (err || typeof result == 'undefined') {
+                                reject("Le service est momentanément indisponible");
+                            } else {
+                                resolve(result);
+                            }
+                        })
+                    }
+                })
+            }else{
+                reject("erreur vous avez été déconnecté");
+            }
+        })
+    },
 };
