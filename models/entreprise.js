@@ -41,7 +41,7 @@ module.exports = {
             }
         })
     },
-    get_infos: async (req,res)=>{
+    get_infos: (req,res)=>{
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req,res);
             if (typeof token !== 'undefined') {
@@ -63,4 +63,16 @@ module.exports = {
             }
         })
     },
+    get_entreprises:()=>{
+        return new Promise((resolve, reject )=> {
+            connexion.query('SELECT * FROM entreprise ',(err,res)=>{
+                if(err){
+                    reject("Désolé, le service est momentanément indisponible");
+                }else{
+                    resolve(res);
+                }
+            });
+        })
+    },
+
 };

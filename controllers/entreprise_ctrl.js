@@ -6,10 +6,28 @@ const cookie_mdl = require('../models/cookie');
 
 
 module.exports= {
-    profil_get:  (req,res)=>{
-        const flash = cookie_mdl.getFlash(req);
-        cookie_mdl.destroyFlash(res);
-        res.render('pages/entreprise/profil',{flash :flash});
+    profil_get: async  (req,res)=>{
+        try{
+            const infos = await entreprise.get_infos(req,res);
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/entreprise/profil',{flash :flash, infos:infos});
+        }catch (e) {
+            const flash={
+                type: "alert-danger",
+                code: 503,
+                mess:"Votre profil n'est pas accessible pour le moment",
+            };
+            cookie_mdl.setFlash(flash,res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/entreprise/annonces', { flash: flash});
+        }
+
 
     },
 
@@ -109,7 +127,7 @@ module.exports= {
         }
 
     },
-    view_ads: async (req,res)=> {
+    view_ad: async (req,res)=> {
         try {
             const flash = cookie_mdl.getFlash(req);
             const annonce = await annonces.get_Annonce(req,res,req.params.id);
@@ -118,7 +136,7 @@ module.exports= {
                 res.status(flash.code);
             }
             if(typeof annonce[0] != 'undefined'){
-                    res.render('pages/entreprise/view_ads',{annonce : annonce});
+                    res.render('pages/entreprise/view_ad',{annonce : annonce});
             }else {
                 const flash = {
                     type: "alert-danger",

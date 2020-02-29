@@ -1,6 +1,7 @@
 const home = require('../models/home');
 const jwt = require('jsonwebtoken');
 const cookie_mdl = require('../models/cookie');
+/*var tools = require('../public/javascripts/home');*/
 
 
 
@@ -86,6 +87,7 @@ module.exports= {
     //REGISTER PAGE CONTROLLERS
     home_register_get: async (req,res) =>{
         const token = cookie_mdl.getToken(req,res);
+
         if(typeof token !== 'undefined' ){
             res.redirect('/');
         }else{

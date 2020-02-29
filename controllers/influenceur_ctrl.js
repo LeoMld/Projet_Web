@@ -37,7 +37,7 @@ module.exports= {
             res.render('pages/influenceur/annonces', { flash: flash});
         }
     },
-    view_ads: async (req,res)=> {
+    view_ad: async (req,res)=> {
         try {
             const flash = cookie_mdl.getFlash(req);
             const annonce = await annonces.get_Annonce(req,res,req.params.id);
@@ -46,7 +46,8 @@ module.exports= {
                 res.status(flash.code);
             }
             if(typeof annonce[0] != 'undefined'){
-                res.render('pages/influenceur/view_ads',{annonce : annonce, flash: flash});
+                const avis = await annonces.get_Avis(req,res,req.params.id,annonce.FK_id_Entreprise);
+                res.render('pages/influenceur/view_ad',{annonce : annonce, flash: flash});
             }else {
                 const flash = {
                     type: "alert-danger",
@@ -76,26 +77,38 @@ module.exports= {
             if(typeof flash != 'undefined') {
                 res.status(flash.code);
             }
-            res.render('pages/influenceur/profil_entreprise',{entreprise:entreprise_, flash:flash});
+            if(typeof entreprise_[0] != 'undefined'){
+                res.render('pages/influenceur/profil_entreprise',{entreprise:entreprise_, flash:flash});
+
+            }else{
+                const flash = {
+                    type: "alert-danger",
+                    code: 404,
+                    mess: "Ce profil est indisponible",
+                };
+                cookie_mdl.setFlash(flash,res);
+                res.redirect('/influenceur/annonces');
+            }
+
         }catch (e) {
             const flash = {
                 type: "alert-danger",
-                code: 401,
+                code: 503,
                 mess: e,
             };
             cookie_mdl.setFlash(flash,res);
-            res.redirect('/entreprise/annonces');
+            res.redirect('/influenceur/annonces');
         }
         },
     partenaires_get: async(req,res)=> {
         const flash = cookie_mdl.getFlash(req);
         cookie_mdl.destroyFlash(res);
         try{
-            const annonces_en_ligne = await annonces.get_Annonces(req, res);
+            const entreprise_ = await entreprise.get_entreprises();
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
-            res.render('pages/influenceur/partenaires', {annonces: annonces_en_ligne, flash:flash});
+            res.render('pages/influenceur/partenaires', {entreprises:entreprise_, flash:flash});
         }catch(e){
             const flash={
                 type: "alert-danger",
@@ -106,7 +119,7 @@ module.exports= {
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
-            res.render('pages/influenceur/annonces', { flash: flash});
+            res.render('pages/influenceur/partenaire', { flash: flash});
         }
     },
 };

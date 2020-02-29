@@ -28,7 +28,7 @@ router.get('/profil', influenceur_ctrl.profil_get);
 
 router.get('/annonces', influenceur_ctrl.annonces_get);
 
-router.get('/annonces/:id', influenceur_ctrl.view_ads);
+router.get('/annonces/:id', influenceur_ctrl.view_ad);
 
 router.get('/profil-entreprise/:id', influenceur_ctrl.profil_entreprise);
 

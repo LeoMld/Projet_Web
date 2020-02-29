@@ -4,33 +4,47 @@
     <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
     <%
 } %>
-<div class="container mt-5">
-    <div class="">
-        <h1 class="text-center">Page Connexion</h1>
 
-        <form action="/" method="post">
-            <div class="form-group">
-                <label for="mail">Email address</label>
-                <input type="email" class="form-control" name="mail" id="mail" aria-describedby="emailHelp" required>
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group">
-                <label for="pwd">Password</label>
-                <input type="password" class="form-control" name="pwd" id="pwd" required>
-            </div>
-            <div>
-                <%
-                switch (status_co) {
-                case 0:%>
-                <small class="text-danger">Mot de passe / mail incorrect</small>
-                <%break;
-                    default:
-                }
-                %>
-            </div>
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col text-center">
+            <img src="assets/images/startup.png" alt="fusée décollant symbolisant une startup">
+        </div>
+        <div class="col">
+            <h1 class="text-center">Se connecter</h1>
+            <form action="/" method="post">
+                <div class="form-group">
+                    <label for="mail">Email address</label>
+                    <input type="email" class="form-control" name="mail" id="mail" aria-describedby="emailHelp" required>
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password</label>
+                    <input type="password" class="form-control" name="pwd" id="pwd" required>
+                </div>
+                <div>
+                    <%
+                    switch (status_co) {
+                    case 0:%>
+                    <small class="text-danger">Mot de passe / mail incorrect</small>
+                    <%break;
+                        default:
+                    }
+                    %>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary ">Connexion</button>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                </div>
+                <div class="text-center">
+                    <small>Pas encore de compte ? <br> <a href="">inscrivez vous !</a></small>
+                </div>
+            </form>
+        </div>
     </div>
+    <hr style="witdh:50%;">
+
+
+
 
 </div>
+<%- include('../../components/footer') %>

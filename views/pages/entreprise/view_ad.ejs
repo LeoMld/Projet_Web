@@ -1,4 +1,4 @@
-<%- include('../../components/header_influenceur') %>
+<%- include('../../components/header_entreprise') %>
 <div class="container">
     <%
     if( typeof annonce[0] != 'undefined'){
@@ -9,6 +9,5 @@
         <p><%= annonce[0].description_A %></p>
     <%
     }%>
-
-    <a href="/influenceur/profil-entreprise/<%= annonce[0].FK_id_Entreprise %>" class="btn btn-primary ">Profil de l'entreprise</a>
 </div>
+<%- include('../../components/footer') %>

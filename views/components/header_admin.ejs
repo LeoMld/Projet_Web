@@ -1,5 +1,5 @@
 <%- include('layout')%>
-<nav id="nav" class="shadow-sm navbar navbar-expand-lg sticky-top navbar-light px-5">
+<nav id="nav" class="shadow navbar navbar-expand-lg sticky-top navbar-light px-5">
 
     <h2 id="titre" class="row align-items-center mt-2 ">
         <!-- logo de l'entreprise -->
@@ -8,8 +8,10 @@
     </h2>
     <!-- bouton hamburger pour un menu responsif -->
     <a class="navbar-brand d-flex justify-content-end">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapse_target" aria-controls="collapse_target" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button class="hamburger hamburger--3dx navbar-toggler" id="hamburger" type="button" data-toggle="collapse" data-target="#collapse_target" aria-controls="collapse_target" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+            </span>
         </button>
     </a>
     <!-- navigation links -->
@@ -38,6 +40,8 @@
             </li>
         </ul>
     </div>
+    <!-- to be sure that's the DOM is created insert js here-->
+    <script src="/assets/javascripts/home.js"></script>
 
 
 </nav>

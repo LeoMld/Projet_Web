@@ -1,0 +1,24 @@
+footer {
+    display : table-row;
+    height: 50px; /* à titre d'exemple */
+}
+
+@media only screen and (max-width: 320px) {
+    .back {
+        background-image: url(smallback.jpg);
+    }
+}
+
+.font-footer{
+    color: white;
+}
+.footer_liens{
+    color : #F0E7D8;
+
+}
+.footer_liens:hover{
+    text-decoration: none;
+    transition: all ease .2s;
+    color: black;
+
+}

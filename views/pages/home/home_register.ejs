@@ -1,7 +1,7 @@
 <%- include('../../components/header') %>
 
-
-<div class="container mt-5">
+<script src="/assets/javascripts/register.js"></script>
+<div class="container mt-5 pb-5">
     <%
         if(typeof flash != 'undefined'){
         %>
@@ -13,17 +13,19 @@
 
 
     <h1 class="text-center">Créer un compte</h1>
-    <div id="Inf">
 
-        <form action="/register" method="post">
-            <div>
-                <label for="type"><small>Veuillez d'abord choisir votre statut</small></label>
-                <select id="type" name="type" class="form-control" autofocus>
-                    <option value='0'>-</option>
-                    <option value='Influenceur'>Influenceur</option>
-                    <option value='Entreprise'>Entreprise</option>
-                </select>
-            </div>
+
+        <div class="mb-5">
+            <label for="type"><small>Veuillez d'abord choisir votre statut</small></label>
+            <select id="type" name="type" class="form-control" autofocus>
+                <option value='0'>-</option>
+                <option value='1'>Influenceur</option>
+                <option value='2'>Entreprise</option>
+            </select>
+        </div>
+        <div id="inf" style="display: none">
+            <form action="/register" method="post">
+            <div id="inf">
             <div class="form-row">
                 <div class="col form-group">
                     <label for="name_I">Prénom</label>
@@ -65,10 +67,12 @@
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">Check me out</label>
             </div>
-            <button type="submit" class="btn btn-primary">S'inscrire</button>
+                <button type="submit" name="envoiI" id="envoiI" class="btn btn-primary">S'inscrire</button>
+            </div>
         </form>
+
     </div>
-    <div id="Ent">
+    <div id="ent" style="display: none">
         <form action="/register" method="post">
             <div class="form-row">
                 <div class="col form-group">
@@ -86,7 +90,9 @@
                 <input type="password" class="form-control" name="pwd_E" id="pwd_E" required>
             </div>
 
-            <button type="submit" name="envoi" id="envoi" class="btn btn-primary">S'inscrire</button>
+            <button type="submit" name="envoiE" id="envoiE" class="btn btn-primary">S'inscrire</button>
         </form>
     </div>
 </div>
+
+<%- include('../../components/footer') %>

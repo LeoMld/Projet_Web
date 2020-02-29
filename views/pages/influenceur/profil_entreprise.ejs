@@ -5,6 +5,24 @@
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
     <%
     } %>
-    <h1 class="mt-5 text-center">Profil de l'entreprise <%= entreprise.nom_E %></h1>
+    <h1 class="mt-5 text-center">Profil de l'entreprise <%= entreprise[0].nom_E %></h1>
+        <div class="row">
+            <div class="col-md-10">
+                <p><%= entreprise[0].desc_E%></p>
+            </div>
+            <hr>
+            <div class="col-md-2">
+                <div class="row">
+                    <h3>Contactez l'entreprise</h3>
+                </div>
+                <div class="row">
+                    <p>Numéro de téléphone:</p>
+                </div>
+                <div class="row">
+                    <p>mail:</p>
+                </div>
+            </div>
+        </div>
 
 </div>
+<%- include('../../components/footer') %>

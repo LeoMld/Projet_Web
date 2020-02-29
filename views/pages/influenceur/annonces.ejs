@@ -8,7 +8,6 @@
     <h1 class="mt-5 text-center">Projets en ligne </h1>
 
         <%if(typeof annonces !== 'undefined'){
-            console.log(annonces.length);
         for (let i = 0; i < annonces.length; i++){
         %>
 
@@ -34,5 +33,5 @@
         <%
         }%>
 </div>
-
+<%- include('../../components/footer') %>
 

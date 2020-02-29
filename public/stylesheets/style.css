@@ -1,6 +1,19 @@
+html, body {
+  height: 100%;
+  margin: 0; padding: 0;
+}
+body {
+  display : table;
+  width: 100%;
+}
 
 a {
   color: #00B7FF;
+}
+a:hover{
+  text-decoration: none;
+  color: black;
+  transition: 0.5s;
 }
 
 /*ALERT MESSAGES */

@@ -48,5 +48,15 @@ module.exports= {
     },
 
 
-
+    get_Avis:(req, res, idA,idE)=> {
+        return new Promise((resolve,reject)=> {
+            connexion.query('SELECT * FROM avis WHERE FK_id_Annonce=? AND FK_id_Entreprise=?',[idA,idE],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
+    }
 };
