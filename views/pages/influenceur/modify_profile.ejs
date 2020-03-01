@@ -1,0 +1,75 @@
+<%- include('../../components/header_influenceur') %>
+<div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
+
+        <h1 class="text-center mt-5">Modifier le profil</h1>
+    <hr style="width: 50%; ">
+        <% if(typeof infos[0] != 'undefined'){
+        %>
+            <div class="col mb-5 pb-5">
+                <div class="form-group">
+                    <label for="nom">Nom</label>
+                    <input type="text" class="form-control" name="nom" id="nom" value="<%= infos[0].nom_I %>" required >
+                </div>
+                <div class="form-group">
+                <label for="prenom">Prenom</label>
+                <input type="text" class="form-control" name="prenom" id="prenom" value="<%= infos[0].prenom_I %>" required >
+            </div>
+                <div class="form-group">
+                    <label for="mail">Mail</label>
+                    <input type="mail" class="form-control" name="mail" id="mail" value="<%= infos[0].mail_I %>" required >
+                </div>
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" class="form-control" name="date" id="date" value="<%= infos[0].date_naissance_I %>" required >
+                </div>
+                <div class="form-group">
+                    <label for="nom_Inf">Nom Influenceur</label><br>
+                    <input type="text" class="form-control" name="nom_Inf" id="nom_Inf" value="<%= infos[0].nom_Inf %>" required >
+                </div>
+                <label for="public_">Public visé</label>
+                <select id="public_" name="public_" class="form-control" autofocus>
+                    <option value='6'><%= public[5].type_P%></option>
+                    <option value='1'><%= public[0].type_P %></option>
+                    <option value='2'><%= public[1].type_P %></option>
+                    <option value='3'><%= public[2].type_P %></option>
+                    <option value='4'><%= public[3].type_P %></option>
+                    <option value='5'><%= public[4].type_P %></option>
+                </select>
+
+                <button id="button_put" class="btn btn-primary mt-4">Enregistrer les modifications</button>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#button_put').click(function () {
+                            $.ajax({
+                                url: '/influenceur/profil/modify',
+                                type: 'PUT',
+                                dataType: 'html',
+                                data:{public_: document.getElementById("public_").value ,nom: document.getElementById("nom").value ,nom_Inf: document.getElementById("nom_Inf").value, prenom: document.getElementById("prenom").value,mail:document.getElementById("mail").value,date:document.getElementById("date").value},
+                                success: function () {
+                                    alert("Profil modifié");
+                                },
+                                error: function () {
+                                    alert("Erreur lors de la modification, remplissez bien tous les champs requis");
+                                    console.log("erreur");
+                                }
+                            })
+                        });
+                    });
+                </script>
+            </div>
+
+        <%
+        }%>
+
+
+
+
+
+</div>
+
+<%- include('../../components/footer') %>

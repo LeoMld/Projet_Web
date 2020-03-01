@@ -112,7 +112,7 @@ module.exports = {
     },
     my_ad_put: (id_annonce, titre_annonce,desc_annonce,public_annonce,cat_annonce)=>{
         return new Promise((resolve,reject)=> {
-            connexion.query('UPDATE annonce SET titre_A=?, description_A=?, FK_id_Public=?, FK_id_Categorie=? WHERE id_annonce=?',[ titre_annonce,desc_annonce,public_annonce,cat_annonce,id_annonce],(err, result) =>{
+            connexion.query('UPDATE annonce SET titre_A=?, description_A=?, FK_id_Public=?, FK_id_Categorie=?, valid=? WHERE id_annonce=?',[ titre_annonce,desc_annonce,public_annonce,cat_annonce,0,id_annonce],(err, result) =>{
                 if(err || typeof result == 'undefined') {
                     reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
                 }else{
@@ -122,4 +122,15 @@ module.exports = {
         })
     },
 
+    profil_put:(nom, mail, tel, desc,url,id)=> {
+        return new Promise((resolve,reject)=> {
+            connexion.query('UPDATE entreprise SET nom_E=?, mail_E=?,tel_E=?, desc_E=?,site_web=? WHERE id_Entreprise=?',[ nom, mail, tel, desc,url,id],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
+    }
 };

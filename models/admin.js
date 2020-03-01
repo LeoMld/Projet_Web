@@ -51,5 +51,27 @@ module.exports= {
                 }
             })
         })
+    },
+    delete_avis:(id_delete)=> {
+        return new Promise((resolve,reject)=> {
+            connexion.query('DELETE FROM avis WHERE id_avis=?',[id_delete],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
+    },
+    delete_ad:(id_delete)=> {
+        return new Promise((resolve,reject)=> {
+            connexion.query('DELETE FROM annonce WHERE id_annonce=?',[id_delete],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
     }
 };

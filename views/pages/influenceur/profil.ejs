@@ -5,7 +5,27 @@
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
     <%
     } %>
-    <h1 class="mt-5 text-center">Mon profil</h1>
+    <h1 class="mt-5 text-center">Vos informations</h1>
+        <hr style="width: 70%;">
+        <div class="text-center">
+            <a class="btn btn-primary btn-sm" href="/influenceur/profil/modify">Modifier mes informations</a>
+        </div>
+    <%if(typeof infos != 'undefined'){
+        %>
+        <div class="container">
+              <h4>Nom:</h4>
+            <p><%= infos[0].nom_I%></p>
+            <h4>Prenom:</h4>
+            <p><%= infos[0].prenom_I%></p>
+            <h4>Date de naissance:</h4>
+            <p><%= infos[0].date_naissance_I%></p>
+            <h4>Nom influenceur:</h4>
+            <p><%= infos[0].nom_Inf%></p>
+            <h4>Mail:</h4>
+            <p><%= infos[0].mail_I%></p>
+        </div>
+        <%
+    }%>
 
 </div>
 <%- include('../../components/footer') %>

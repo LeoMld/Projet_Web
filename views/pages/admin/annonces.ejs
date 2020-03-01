@@ -1,0 +1,59 @@
+<%- include('../../components/header_admin') %>
+<div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
+    <h1 class="mt-5 text-center">Projets en ligne </h1>
+
+    <%if(typeof annonces !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
+        for (let i = 0; i < annonces.length; i++){
+            %>
+            <div id="an<%= i%>"  class="card mb-3 shadow-sm overflow-hidden " style="max-width: 100%; max-height: 30   0px; text-decoration: none">
+                <div class="row no-gutters">
+                    <div class="col">
+                        <div  class="card-body">
+                            <h5 class="card-title"><%= annonces[i].titre_A %></h5>
+                            <p class="card-text ">Public : <%= public[annonces[i].FK_id_Public-1].type_P%></p>
+                            <p class="card-text ">Catégorie : <%= cat[annonces[i].FK_id_Categorie-1].description_C%></p>
+                            <div class="overflow-hidden" style="max-height: 100px">
+                                <p class="card-text ">Description :</p>
+                                <p class="card-text "><%= annonces[i].description_A %></p>
+                            </div>
+                            <div class="mt-3">
+                                <a class="btn btn-light btn-sm" href="/admin/annonces/<%= annonces[i].id_annonce %>">Visualiser</a>
+                                <button id="button_del<%= i %>" class="btn btn-danger btn-sm">Supprimer</button>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        $('#button_del<%= i %>').click(function () {
+                                            $.ajax({
+                                                url: '/admin/annonces',
+                                                type: 'DELETE',
+                                                dataType: 'html',
+                                                data:{id :<%= annonces[i].id_annonce %>},
+                                                success: function () {
+                                                    $(document.getElementById('an<%= i%>')).toggle('slow');
+                                                },
+                                                error: function () {
+                                                    console.log("erreur");
+                                                    alert("Erreur lors de la suppression de l'avis");
+                                                }
+                                            })
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%
+        }
+        %>
+
+        <%
+    }%>
+</div>
+<%- include('../../components/footer') %>
+

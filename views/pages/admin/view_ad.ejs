@@ -1,0 +1,75 @@
+<%- include('../../components/header_admin') %>
+<div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
+    <%
+    if(typeof annonce[0] !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
+        %>
+        <div class="text-center">
+            <h1 class="mt-5"><%= annonce[0].titre_A %></h1>
+        </div>
+            <div class="jumbotron">
+                <p >Public : <%= public[annonce[0].FK_id_Public-1].type_P%></p>
+                <p >Catégorie : <%= cat[annonce[0].FK_id_Categorie-1].description_C%></p>
+                <p><%= annonce[0].description_A %></p>
+            </div>
+
+    <%
+    }%>
+    <div class="text-center">
+        <a href="/influenceur/profil-entreprise/<%= annonce[0].FK_id_Entreprise %>" class="btn btn-primary ">Profil de l'entreprise </a>
+    </div>
+
+        <hr style="width: 70%">
+    <div class="mb-5 pb-5">
+        <h3>Avis sur le projet</h3>
+        <% if(moyenne != null){
+            %>
+            <h4>Note moyenne : <%= Math.round((moyenne/avis.length)*100)/100%></h4>
+        <%
+        }%>
+        <%
+        if(typeof avis[0] != 'undefined'){
+            for (let i = 0; i < avis.length; i++){
+                %>
+            <hr>
+            <div id="av<%= i%>">
+                <p class="mb-0"><%= avis[i].note_A%>/5 : <%= avis[i].desc_A%></p>
+                <small ><%= moment(avis[i].date_A).fromNow();%></small>
+                <div class="row d-flex flex-row-reverse">
+                    <button id="button_del<%= i%>" class=" btn btn-danger btn-sm">Supprimer</button>
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#button_del<%= i %>').click(function () {
+                            $.ajax({
+                                url: '/admin/annonces/check',
+                                type: 'DELETE',
+                                dataType: 'html',
+                                data:{id :<%= avis[i].id_avis %>},
+                                success: function () {
+                                    $(document.getElementById('av<%= i%>')).toggle('slow');
+                                },
+                                error: function () {
+                                    console.log("erreur");
+                                    alert("Erreur lors de la suppression de l'avis");
+                                }
+                            })
+                        });
+                    });
+                </script>
+            </div>
+                <%
+            }
+        }else{
+            %>
+            <small>il n'y a encore aucun avis sur ce projet</small>
+            <%
+            }
+        %>
+    </div>
+</div>
+<%- include('../../components/footer') %>

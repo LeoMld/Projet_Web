@@ -14,11 +14,16 @@
         <hr style="width: 70%">
         <div class="mt-5 mb-5 pb-5">
             <h3>Avis sur le projet</h3>
+            <% if(moyenne != null){
+            %>
+                <h4>Note moyenne : <%= Math.round((moyenne/avis.length)*100)/100%></h4>
+            <%
+            }%>
             <%
             if(typeof avis[0] != 'undefined'){
             for (let i = 0; i < avis.length; i++){
             %>
-                <p><strong>Avis de <%= %></strong></p>
+                <hr>
                 <p class="mb-0"><%= avis[i].note_A%>/5 : <%= avis[i].desc_A%></p>
                 <small ><%= moment(avis[i].date_A).fromNow();%></small>
             <%

@@ -1,5 +1,10 @@
 <%- include('../../components/header_influenceur') %>
 <div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
     <%
     if(typeof annonce[0] !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
         %>
@@ -11,17 +16,33 @@
         <p><%= annonce[0].description_A %></p>
     <%
     }%>
-
-    <a href="/influenceur/profil-entreprise/<%= annonce[0].FK_id_Entreprise %>" class="btn btn-primary ">Profil de l'entreprise </a>
+    <div class="text-center">
+        <a href="/influenceur/profil-entreprise/<%= annonce[0].FK_id_Entreprise %>" class="btn btn-primary ">Profil de l'entreprise </a>
+    </div>
 
         <hr style="width: 70%">
     <div class="mb-5 pb-5">
         <h3>Avis sur le projet</h3>
+        <% if( moyenne != null){
+            %>
+            <h4>Note moyenne : <%= Math.round((moyenne/avis.length)*100)/100%></h4>
+        <%
+        }%>
+        <form method="post" action="/influenceur/annonces/<%= annonce[0].id_annonce%>">
+            <div class="form-group">
+                <label for="new_avis">Ajouter un avis</label><br>
+                <%- include('../../components/rating') %>
+                <textarea class="form-control" name="new_avis" id="new_avis" cols="100" rows="4"></textarea>
+                <small>les avis sont anonymes</small><br>
+                <button type="submit" class="btn btn-light btn-small mt-2">Envoyer</button>
+            </div>
+        </form>
+
         <%
         if(typeof avis[0] != 'undefined'){
             for (let i = 0; i < avis.length; i++){
                 %>
-                <p><strong>Avis de <%= %></strong></p>
+            <hr>
                 <p class="mb-0"><%= avis[i].note_A%>/5 : <%= avis[i].desc_A%></p>
                 <small ><%= moment(avis[i].date_A).fromNow();%></small>
                 <%

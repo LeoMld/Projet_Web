@@ -1,41 +1,43 @@
 <%- include('../../components/header_entreprise') %>
 
 
-<div class="container">
+<div class="container mb-5">
     <%if(typeof flash !== 'undefined'){
     %>
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
     <%
     } %>
         <h1 class="mt-5 text-center">Créer une annonce</h1>
-    <form action="/entreprise/annonces/create_ads" method="post">
-        <div class="col form-group">
-            <label for="titre">Titre</label>
-            <input type="text" class="form-control" name="titre" id="titre" required >
+        <div class="col">
+            <form action="/entreprise/annonces/create_ads" method="post">
+                <div class="     form-group">
+                    <label for="titre">Titre</label>
+                    <input type="text" class="form-control" name="titre" id="titre" required >
+                </div>
+                <div class="form-group">
+                    <label for="desc">Description</label><br>
+                    <textarea class="form-control" name="desc" id="desc" cols="100" rows="5"></textarea>
+                </div>
+                <label for="public_">Public visé</label>
+                <select id="public_" name="public_" class="form-control" autofocus>
+                    <option value='6'><%= public[5].type_P%></option>
+                    <option value='1'><%= public[0].type_P %></option>
+                    <option value='2'><%= public[1].type_P %></option>
+                    <option value='3'><%= public[2].type_P %></option>
+                    <option value='4'><%= public[3].type_P %></option>
+                    <option value='5'><%= public[4].type_P %></option>
+                </select>
+                <label class="mt-4" for="cat">Catégorie</label>
+                <select id="cat" name="cat" class="form-control" autofocus>
+                    <option value='1'><%= cat[0].description_C%></option>
+                    <option value='2'><%= cat[1].description_C %></option>
+                    <option value='3'><%= cat[2].description_C %></option>
+                </select>
+
+
+
+                <button type="submit" class="btn btn-primary mt-5">Créer l'annonce</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="desc">Description</label><br>
-            <textarea class="form-control" name="desc" id="desc" cols="100" rows="5"></textarea>
-        </div>
-        <label for="public_">Public visé</label>
-        <select id="public_" name="public_" class="form-control" autofocus>
-            <option value='6'><%= public[5].type_P%></option>
-            <option value='1'><%= public[0].type_P %></option>
-            <option value='2'><%= public[1].type_P %></option>
-            <option value='3'><%= public[2].type_P %></option>
-            <option value='4'><%= public[3].type_P %></option>
-            <option value='5'><%= public[4].type_P %></option>
-        </select>
-        <label for="cat">Catégorie</label>
-        <select id="cat" name="cat" class="form-control" autofocus>
-            <option value='1'><%= cat[0].description_C%></option>
-            <option value='2'><%= cat[1].description_C %></option>
-            <option value='3'><%= cat[2].description_C %></option>
-        </select>
-
-
-
-        <button type="submit" class="btn btn-primary">Créer l'annonce</button>
-    </form>
 </div>
 <%- include('../../components/footer') %>

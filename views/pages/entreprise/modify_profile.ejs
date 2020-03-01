@@ -1,0 +1,69 @@
+<%- include('../../components/header_entreprise') %>
+<div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
+
+        <h1 class="text-center mt-5">Modifier le profil</h1>
+    <hr style="width: 50%; ">
+        <% if(typeof infos[0] != 'undefined'){
+        %>
+            <div class="col mb-5 pb-5">
+                <div class="form-group">
+                    <label for="nom">Nom de l'entreprise</label>
+                    <input type="text" class="form-control" name="nom" id="nom" value="<%= infos[0].nom_E %>" required >
+                </div>
+                <div class="form-group">
+                    <label for="mail">mail</label>
+                    <input type="mail" class="form-control" name="mail" id="mail" value="<%= infos[0].mail_E %>" required >
+                </div>
+                <div class="form-group">
+                    <label for="tel">Tel</label>
+                    <input type="text" class="form-control" name="tel" id="tel" value="<%= infos[0].tel_E %>" required >
+                </div>
+                <div class="form-group">
+                    <label for="website">Site web</label>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">https://</span>
+                        <input type="text" class="form-control" name="website" id="website" value="<%= infos[0].site_web %>" required >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="desc">Description</label><br>
+                    <textarea class="form-control" name="desc" id="desc" cols="100" rows="8" required><%= infos[0].desc_E%></textarea>
+                </div>
+
+                <button id="button_put" class="btn btn-primary mt-4">Enregistrer les modifications</button>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#button_put').click(function () {
+                            $.ajax({
+                                url: '/entreprise/profil/modify',
+                                type: 'PUT',
+                                dataType: 'html',
+                                data:{nom: document.getElementById("nom").value ,desc: document.getElementById("desc").value, tel: document.getElementById("tel").value,mail:document.getElementById("mail").value,website:document.getElementById("website").value},
+                                success: function () {
+                                    alert("Profil modifié");
+                                },
+                                error: function () {
+                                    alert("Erreur lors de la modification, remplissez bien tous les champs requis");
+                                    console.log("erreur");
+                                }
+                            })
+                        });
+                    });
+                </script>
+            </div>
+
+        <%
+        }%>
+
+
+
+
+
+</div>
+
+<%- include('../../components/footer') %>

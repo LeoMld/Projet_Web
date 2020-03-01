@@ -26,6 +26,18 @@ module.exports= {
             })
         })
     },
+    //récupérer une annonce grâce à son id sans discerner si elle a été validée ou non ( utile pour qu'un admin visualise l'annonce avant de la valider)
+    get_Annonce_all:(req,res,id)=>{
+        return new Promise((resolve,reject)=> {
+            connexion.query('SELECT * FROM annonce WHERE id_annonce=? ',[id],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
+    },
     create_Annonce: async (titre,desc,public_,cat,req,res)=>{
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req, res);
@@ -50,7 +62,7 @@ module.exports= {
 
     get_Avis:(req, res, idA)=> {
         return new Promise((resolve,reject)=> {
-            connexion.query('SELECT * FROM avis WHERE FK_id_Annonce=? ',[idA],(err, result) =>{
+            connexion.query('SELECT * FROM avis WHERE FK_id_Annonce=? ORDER BY date_A DESC ',[idA],(err, result) =>{
                 if(err || typeof result == 'undefined') {
                     reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
                 }else{
@@ -58,5 +70,38 @@ module.exports= {
                 }
             })
         })
+    },
+    create_Avis:(req,res,note,desc,idA)=> {
+        return new Promise((resolve,reject)=> {
+            const token = cookie_mdl.getToken(req, res);
+            if (typeof token !== 'undefined'){
+                jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
+                    const id = infos_Token.userId;
+                    console.log(note,desc,idA,id);
+                    connexion.query('INSERT INTO avis SET note_A=?, desc_A=?,FK_id_Annonce=?,FK_id_Influenceur=?',[note,desc,idA,id],(err,result) => {
+                        if (err || typeof result == 'undefined') {
+                            reject("Désolé, le service est momentanément indisponible");
+                        } else {
+                            resolve(true);
+                        }
+                    })
+                })
+            } else {
+                reject("Erreur lors de l'ajout de l'avis");
+            }
+
+        })
+    },
+    get_moyenne: (avis)=> {
+        if(typeof avis[0] != 'undefined'){
+            let somme=0;
+            for (let i = 0; i < avis.length; i++){
+                somme += avis[i].note_A;
+            }
+            return somme;
+
+        }else{
+            return null;
+        }
     }
 };

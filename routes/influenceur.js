@@ -26,9 +26,13 @@ router.use( async (req,res,next)=>{
 router.get('/', influenceur_ctrl.inf_get);
 router.get('/profil', influenceur_ctrl.profil_get);
 
+router.put('/profil/modify',influenceur_ctrl.modify_profil_put);
+router.get('/profil/modify',influenceur_ctrl.modify_profil_get);
+
 router.get('/annonces', influenceur_ctrl.annonces_get);
 
-router.get('/annonces/:id', influenceur_ctrl.view_ad);
+router.get('/annonces/:id', influenceur_ctrl.view_ad_get);
+router.post('/annonces/:id',influenceur_ctrl.view_ad_post);
 
 router.get('/profil-entreprise/:id', influenceur_ctrl.profil_entreprise);
 

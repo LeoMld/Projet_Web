@@ -6,6 +6,7 @@ const admin = require('../models/admin');
 const router = express.Router();
 const admin_ctrl = require('../controllers/admin_ctrl');
 
+
 router.use( async (req,res,next)=>{
     try {
         await admin.is_admin(req, res);
@@ -21,11 +22,18 @@ router.use( async (req,res,next)=>{
     }
     next();
 });
+
+router.get('/annonces', admin_ctrl.annonces_get);
+router.delete('/annonces', admin_ctrl.annonces_delete);
+
+router.get('/annonces/:id', admin_ctrl.view_ad_get);
+router.delete('/annonces/:id', admin_ctrl.view_avis_delete);
+
 router.get('/',admin_ctrl.admin_get);
 router.get('/profil', admin_ctrl.profil_get);
 
-router.get('/annonces/check', admin_ctrl.check_get);
-router.put('/annonces/check', admin_ctrl.check_put);
-router.delete('/annonces/check',admin_ctrl.check_delete);
+router.get('/annonces_check', admin_ctrl.check_get);
+router.put('/annonces_check', admin_ctrl.check_put);
+router.delete('/annonces_check',admin_ctrl.check_delete);
 
 module.exports = router;

@@ -25,6 +25,10 @@ router.use( async (req,res,next)=>{
 router.get('/',entreprise_ctrl.ent_get);
 router.get('/profil', entreprise_ctrl.profil_get);
 
+router.put('/profil/modify',entreprise_ctrl.modify_profil_put);
+router.get('/profil/modify',entreprise_ctrl.modify_profil_get);
+
+
 router.get('/annonces', entreprise_ctrl.annonces_get);
 
 router.use('/annonces/my_ads/:id', async (req,res,next)=> {
@@ -52,6 +56,6 @@ router.get('/annonces/my_ads', entreprise_ctrl.my_ads_get);
 router.get('/annonces/create_ads', entreprise_ctrl.create_ads_get);
 router.post('/annonces/create_ads', entreprise_ctrl.create_ads_post);
 
-router.get('/annonces/:id',entreprise_ctrl.view_ad);
+router.get('/annonces/:id',entreprise_ctrl.view_ad_get);
 
 module.exports = router;

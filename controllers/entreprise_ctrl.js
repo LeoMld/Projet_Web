@@ -26,7 +26,7 @@ module.exports= {
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
-            res.render('pages/entreprise/annonces', { flash: flash});
+            res.render('pages/entreprise/profil', { flash: flash});
         }
 
 
@@ -99,7 +99,7 @@ module.exports= {
     },
     my_ads_delete: async (req,res)=> {
         try{
-            const id_delete=req.body.id;
+            const id_delete = req.body.id;
             await entreprise.delete_id(id_delete);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.write(JSON.stringify({ status: 200 }));
@@ -126,10 +126,10 @@ module.exports= {
     },
     create_ads_post: async (req,res)=> {
         try {
-            const titre = req.body.titre;
-            const desc =req.body.desc;
-            const public_ =req.body.public_;
-            const cat = req.body.cat;
+            const titre = req.sanitize(req.body.titre);
+            const desc = req.sanitize(req.body.desc);
+            const public_ = req.sanitize(req.body.public_);
+            const cat = req.sanitize(req.body.cat);
             await annonces.create_Annonce(titre,desc,public_,cat,req,res);
             const flash = {
                 type: "alert-success",
@@ -149,21 +149,20 @@ module.exports= {
         }
 
     },
-    view_ad: async (req,res)=> {
+    view_ad_get: async (req,res)=> {
         try {
             const flash = cookie_mdl.getFlash(req);
             const public_ = await home.getPublic();
             const cat = await home.getCat();
             const annonce = await annonces.get_Annonce(req,res,req.params.id);
-            const avis = await annonces.get_Avis(req,res,annonce.id_annonce,req.params.id);
-            console.log(avis)
             cookie_mdl.destroyFlash(res);
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
             if(typeof annonce[0] != 'undefined'){
                 const avis = await annonces.get_Avis(req,res,annonce[0].id_annonce);
-                res.render('pages/entreprise/view_ad',{annonce : annonce,public: public_,flash:flash, cat:cat, avis:avis,moment:moment});
+                const moyenne = await annonces.get_moyenne(avis);
+                res.render('pages/entreprise/view_ad',{annonce : annonce,public: public_,flash:flash, cat:cat, avis:avis,moment:moment,moyenne:moyenne});
             }else {
                 const flash = {
                     type: "alert-danger",
@@ -210,13 +209,13 @@ module.exports= {
     },
     modify_ad_put: async(req,res)=> {
         try{
-            const id_annonce=req.body.id;
-            const titre_annonce = req.body.titre1;
-            const desc_annonce = req.body.desc;
-            const public_annonce = req.body.public1;
-            const cat_annonce = req.body.cat;
-            console.log(id_annonce,titre_annonce,desc_annonce,public_annonce,cat_annonce);
-            await entreprise.my_ad_put(id_annonce, titre_annonce,desc_annonce,public_annonce,cat_annonce);
+            const id_annonce = req.sanitize(req.body.id);
+            const titre_annonce = req.sanitize(req.body.titre1);
+            const desc_annonce = req.sanitize(req.body.desc);
+            const public_annonce = req.sanitize(req.body.public1);
+            const url = req.sanitize(req.body.website);
+            const cat_annonce = req.sanitize(req.body.cat);
+            await entreprise.my_ad_put(id_annonce, titre_annonce,desc_annonce,public_annonce,cat_annonce,url);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.write(JSON.stringify({ status: 200 }));
             res.end();
@@ -231,5 +230,51 @@ module.exports= {
         }
 
     },
+    //modifier son profil
+    modify_profil_get: async (req,res)=> {
+        try{
+            const infos_entreprise= await entreprise.get_infos(req,res);
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/entreprise/modify_profile',{flash:flash, infos:infos_entreprise});
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/entreprise/profil');
+        }
+    },
+    modify_profil_put:async (req,res)=> {
+        try{
+            const REGEX_MAIL = /(?:[a-z0-9!#$%&'+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+            const nom = req.sanitize(req.body.nom);
+            let mail = req.sanitize(req.body.mail);
+            const tel = req.sanitize(req.body.tel);
+            const desc = req.sanitize(req.body.desc);
+            const website = req.sanitize(req.body.website);
+            if(!REGEX_MAIL.test(mail)){
+                mail=null;
+            }
+            const infos = await entreprise.get_infos(req,res);
+            await entreprise.profil_put(nom,mail,tel,desc,website, infos[0].id_Entreprise);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({ status: 200 }));
+            res.end();
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/entreprise/profil    ');
+        }
 
+    },
 };

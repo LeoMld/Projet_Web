@@ -10,9 +10,10 @@
             <a href="/entreprise/annonces/create_ads" class="btn btn-primary mb-5">Ajouter une nouvelle annonce</a>
         </div>
         <%if(typeof annonces !== 'undefined'){
+
         for (let i = 0; i < annonces.length; i++){
         %>
-            <div id="ad<%= i %>" class="card mb-3 shadow-sm " style="max-width: 100%; max-height: 250px;">
+            <div id="projet<%= i %>" class="card mb-3 shadow-sm " style="max-width: 100%; max-height: 250px;">
                 <div class="row no-gutters">
                     <div class="col-md-8">
                         <div class="card-body ">
@@ -36,7 +37,12 @@
 
                     </div>
                     <div class="col-md-4 mt-5" style="color: white">
-                        <a href="/entreprise/annonces/my_ads/<%= annonces[i].id_annonce %>" class="btn btn-primary mr-3">Modifier</a>
+                        <% if(annonces[i].valid == 1){
+                            %>
+                            <a href="/entreprise/annonces/my_ads/<%= annonces[i].id_annonce %>" class="btn btn-primary mr-3">Modifier</a>
+                        <%
+                        }%>
+
                         <button id="button_del<%= i %>" class="btn btn-danger">Supprimer</button>
                         <script type="text/javascript">
                             $(document).ready(function () {
@@ -47,7 +53,7 @@
                                         dataType: 'html',
                                         data:{id :<%= annonces[i].id_annonce %>},
                                         success: function () {
-                                            $(document.getElementById('ad<%= i%>')).toggle('slow');
+                                            $(document.getElementById('projet<%= i%>')).toggle('slow');
                                         },
                                         error: function () {
                                             console.log("erreur");

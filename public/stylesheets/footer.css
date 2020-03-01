@@ -22,3 +22,7 @@ footer {
     color: black;
 
 }
+.footer_logos:hover{
+    transition: all ease .2s;
+    transform: scale(1.1);
+}

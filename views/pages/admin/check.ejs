@@ -5,7 +5,7 @@
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
     <%
     } %>
-    <h1 class="mt-5 text-center">Valider des annonces</h1>
+    <h1 class="mt-5 text-center">Valider des projets</h1>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -23,23 +23,26 @@
         for (let i = 0; i < annonces_check.length; i++){
 
             %>
-        <!--<form action="/admin/annonces/check" method="post">-->
-            <tr id="ad<%= i%>">
+
+            <tr  id="ad<%= i%>">
                 <th scope="row"><%= i %></th>
                 <td><%= annonces_check[i].titre_A%></td>
-                <td><%= annonces_check[i].description_A%></td>
+                <td class="overflow-hidden" style="max-width: 20px"><%= annonces_check[i].description_A%></td>
                 <td><%= cat[annonces_check[i].FK_id_Categorie-1].description_C%></td>
                 <td><%=  public[annonces_check[i].FK_id_Public-1].type_P %></td>
                 <% var $id = annonces_check[i].id_annonce;%>
                 <td>
-                    <button id="button_val<%= i %>" class="btn btn-success btn-sm mr-3">Valider</button>
+                    <a class="btn btn-light btn-sm mr-2" href="/admin/annonces/<%= annonces_check[i].id_annonce%>">Visualiser</a>
+                    <button id="button_val<%= i %>" class="btn btn-success btn-sm mr-2">Valider</button>
                     <button id="button_del<%= i %>" class="btn btn-danger btn-sm">Supprimer</button>
                 </td>
+
+
                 <script type="text/javascript">
                     $(document).ready(function () {
                         $('#button_del<%= i %>').click(function () {
                             $.ajax({
-                                url: '/admin/annonces/check',
+                                url: '/admin/annonces_check',
                                 type: 'DELETE',
                                 dataType: 'html',
                                 data:{id :<%= annonces_check[i].id_annonce %>},
@@ -48,12 +51,13 @@
                                 },
                                 error: function () {
                                     console.log("erreur");
+                                    alert("Erreur lors de la suppression");
                                 }
                             })
                         });
                         $('#button_val<%= i %>').click(function () {
                             $.ajax({
-                                url: '/admin/annonces/check',
+                                url: '/admin/annonces_check',
                                 type: 'PUT',
                                 dataType: 'html',
                                 data:{id :<%= annonces_check[i].id_annonce %>},
@@ -62,13 +66,14 @@
                                 },
                                 error: function () {
                                     console.log("erreur");
+                                    alert("Erreur lors de la modification");
                                 }
                             })
                         });
                     });
                 </script>
             </tr>
-       <!-- </form>-->
+
 
             <%
         }
