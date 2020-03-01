@@ -40,5 +40,16 @@ module.exports= {
                 }
             })
         })
+    },
+    delete_id: (id_delete) =>{
+        return new Promise((resolve,reject)=> {
+            connexion.query('DELETE FROM annonce WHERE id_annonce=?',[id_delete],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
     }
 };

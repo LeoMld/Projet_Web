@@ -13,7 +13,8 @@ const { JSDOM } = jsdom;
 const { window } = new JSDOM();
 const { document } = (new JSDOM('')).window;
 global.document = document;
-/*const $ = jQuery = require('jquery')(window);*/
+const $ = jQuery = require('jquery')(window);
+global.$ = $;
 
 const homeRouter = require('./routes/home');
 const influenceurRouter = require('./routes/influenceur');
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/assets',express.static(path.join(__dirname, 'public')));
 app.use(expressSanitizer());
+
 //to parse "post" requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

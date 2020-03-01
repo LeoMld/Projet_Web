@@ -17,6 +17,8 @@
     "jquery": "^3.4.1",
     "jsdom": "^16.2.0",
     "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
+    "moment": "^2.24.0",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "sanitize": "^2.1.0"

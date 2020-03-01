@@ -25,8 +25,7 @@ router.get('/',admin_ctrl.admin_get);
 router.get('/profil', admin_ctrl.profil_get);
 
 router.get('/annonces/check', admin_ctrl.check_get);
-router.post('/annonces/check', admin_ctrl.check_post);
-
-
+router.put('/annonces/check', admin_ctrl.check_put);
+router.delete('/annonces/check',admin_ctrl.check_delete);
 
 module.exports = router;

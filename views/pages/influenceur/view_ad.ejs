@@ -1,15 +1,37 @@
 <%- include('../../components/header_influenceur') %>
 <div class="container">
     <%
-    if( typeof annonce[0] != 'undefined'){
+    if(typeof annonce[0] !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
         %>
         <div class="text-center">
             <h1 class="mt-5"><%= annonce[0].titre_A %></h1>
         </div>
+        <p >Public : <%= public[annonce[0].FK_id_Public-1].type_P%></p>
+        <p >Catégorie : <%= cat[annonce[0].FK_id_Categorie-1].description_C%></p>
         <p><%= annonce[0].description_A %></p>
     <%
     }%>
 
     <a href="/influenceur/profil-entreprise/<%= annonce[0].FK_id_Entreprise %>" class="btn btn-primary ">Profil de l'entreprise </a>
+
+        <hr style="width: 70%">
+    <div class="mb-5 pb-5">
+        <h3>Avis sur le projet</h3>
+        <%
+        if(typeof avis[0] != 'undefined'){
+            for (let i = 0; i < avis.length; i++){
+                %>
+                <p><strong>Avis de <%= %></strong></p>
+                <p class="mb-0"><%= avis[i].note_A%>/5 : <%= avis[i].desc_A%></p>
+                <small ><%= moment(avis[i].date_A).fromNow();%></small>
+                <%
+            }
+        }else{
+            %>
+            <small>il n'y a encore aucun avis sur ce projet</small>
+            <%
+            }
+        %>
+    </div>
 </div>
 <%- include('../../components/footer') %>

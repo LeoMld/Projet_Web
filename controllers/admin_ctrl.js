@@ -32,24 +32,44 @@ module.exports= {
                 mess: e,
             };
             cookie_mdl.setFlash(flash,res);
+            res.render('pages/admin/check',{flash:flash});        }
+
+    },
+    check_put: async(req,res)=> {
+        try{
+            const id_valid=req.body.id;
+            await admin.valid_id(id_valid);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({ status: 200 }));
+            res.end();
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
             res.redirect('/admin/check');
         }
 
     },
-    check_post: async(req,res)=> {
+    check_delete: async (req,res)=> {
         try{
-            const id_valid=req.body.valid;
-            await admin.valid_id(id_valid);
+            const id_delete=req.body.id;
+            await admin.delete_id(id_delete);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({ status: 200 }));
+            res.end();
+        }catch (e) {
             const flash = {
-                type: "alert-success",
-                code: 202,
-                mess: "Annonce validée !",
+                type: "alert-danger",
+                code: 401,
+                mess: e,
             };
             cookie_mdl.setFlash(flash,res);
-            res.redirect('/admin/annonces/check');
-        }catch (e) {
-
+            res.redirect('/admin/check');
         }
+
 
     }
 };

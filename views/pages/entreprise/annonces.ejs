@@ -7,7 +7,7 @@
     } %>
     <h1 class="mt-5 text-center">Projets en ligne </h1>
 
-    <%if(typeof annonces !== 'undefined'){
+    <%if(typeof annonces !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
         for (let i = 0; i < annonces.length; i++){
             %>
             <a href="/entreprise/annonces/<%= annonces[i].id_annonce %>" class="card mb-3 shadow-sm overflow-hidden " style="max-width: 100%; max-height: 250px; text-decoration: none">
@@ -16,7 +16,8 @@
                     <div class="col ">
                         <div class="card-body ">
                             <h5 class="card-title"><%= annonces[i].titre_A %></h5>
-                            <p class="card-text ">Public :</p>
+                            <p class="card-text ">Public : <%= public[annonces[i].FK_id_Public-1].type_P%></p>
+                            <p class="card-text ">Catégorie : <%= cat[annonces[i].FK_id_Categorie-1].description_C%></p>
                             <p class="card-text ">Description :</p>
                             <p class="card-text "><%= annonces[i].description_A %></p>
 

@@ -1,0 +1,66 @@
+<%- include('../../components/header_entreprise') %>
+<div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+<%
+} %>    <h1 class="text-center mt-5">Modifier l'annonce</h1>
+        <hr style="width: 50%; ">
+
+        <div class="col mb-5 pb-5">
+            <div class="form-group">
+                <label for="titre1">Titre</label>
+                <input type="text" class="form-control" name="titre1" id="titre1" value="<%= annonce[0].titre_A %>" required >
+            </div>
+            <div class="form-group">
+                <label for="desc">Description</label><br>
+                <textarea class="form-control" name="desc" id="desc" cols="100" rows="5"><%= annonce[0].description_A%></textarea>
+            </div>
+
+            <label for="public1">Public visé</label>
+            <select id="public1" name="public1" class="form-control" autofocus>
+                <option value='6'><%= public[5].type_P%></option>
+                <option value='1'><%= public[0].type_P %></option>
+                <option value='2'><%= public[1].type_P %></option>
+                <option value='3'><%= public[2].type_P %></option>
+                <option value='4'><%= public[3].type_P %></option>
+                <option value='5'><%= public[4].type_P %></option>
+            </select>
+
+            <label for="cat">Catégorie</label>
+            <select id="cat" name="cat" class="form-control" autofocus>
+                <option value='1'><%= cat[0].description_C%></option>
+                <option value='2'><%= cat[1].description_C %></option>
+                <option value='3'><%= cat[2].description_C %></option>
+            </select>
+
+            <button id="button_put" class="btn btn-primary mt-4">Enregistrer les modifications</button>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#button_put').click(function () {
+                        $.ajax({
+                            url: '/entreprise/annonces/my_ads/<%= id %>',
+                            type: 'PUT',
+                            dataType: 'html',
+                            data:{id :<%= id %>,titre1: document.getElementById("titre1").value ,desc: document.getElementById("desc").value, public1: document.getElementById("public1").value,cat:document.getElementById("cat").value},
+                            success: function () {
+                                alert("annonce modifiée");
+                            },
+                            error: function () {
+                                console.log("erreur");
+                            }
+                        })
+                    });
+                });
+            </script>
+        </div>
+
+
+
+
+</div>
+
+
+
+
+<%- include('../../components/footer') %>

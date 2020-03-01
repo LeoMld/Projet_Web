@@ -1,7 +1,12 @@
 const influenceur = require('../models/influenceur');
 const entreprise = require('../models/entreprise');
+const home = require('../models/home');
 const cookie_mdl = require('../models/cookie');
 const annonces = require('../models/annonces');
+const moment = require('moment');
+moment.locale('fr');
+
+
 
 module.exports= {
     profil_get: async (req,res)=>{
@@ -20,10 +25,12 @@ module.exports= {
         cookie_mdl.destroyFlash(res);
         try{
             const annonces_en_ligne = await annonces.get_Annonces(req, res);
+            const public_ = await home.getPublic();
+            const cat = await home.getCat();
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
-            res.render('pages/influenceur/annonces', {annonces: annonces_en_ligne, flash:flash});
+            res.render('pages/influenceur/annonces', {annonces: annonces_en_ligne, flash:flash, public:public_, cat:cat});
         }catch(e){
             const flash={
                 type: "alert-danger",
@@ -41,13 +48,16 @@ module.exports= {
         try {
             const flash = cookie_mdl.getFlash(req);
             const annonce = await annonces.get_Annonce(req,res,req.params.id);
+            const public_ = await home.getPublic();
+            const cat = await home.getCat();
             cookie_mdl.destroyFlash(res);
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
             if(typeof annonce[0] != 'undefined'){
-                const avis = await annonces.get_Avis(req,res,req.params.id,annonce.FK_id_Entreprise);
-                res.render('pages/influenceur/view_ad',{annonce : annonce, flash: flash});
+                const avis = await annonces.get_Avis(req,res,annonce[0].id_annonce);
+                console.log(avis);
+                res.render('pages/influenceur/view_ad',{annonce : annonce,avis:avis,public: public_,flash:flash, cat:cat,moment:moment});
             }else {
                 const flash = {
                     type: "alert-danger",
@@ -55,7 +65,7 @@ module.exports= {
                     mess: "Cette annonce n'existe pas",
                 };
                 cookie_mdl.setFlash(flash,res);
-                res.redirect('/entreprise/annonces');
+                res.redirect('/influenceur/annonces');
             }
 
         }catch(e){
@@ -65,7 +75,7 @@ module.exports= {
                 mess: e,
             };
             cookie_mdl.setFlash(flash,res);
-            res.redirect('/entreprise/annonces');
+            res.redirect('/influenceur/annonces');
         }
     },
 

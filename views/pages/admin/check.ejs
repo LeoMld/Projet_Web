@@ -23,18 +23,52 @@
         for (let i = 0; i < annonces_check.length; i++){
 
             %>
-        <form action="/admin/annonces/check" method="post">
-            <tr>
+        <!--<form action="/admin/annonces/check" method="post">-->
+            <tr id="ad<%= i%>">
                 <th scope="row"><%= i %></th>
                 <td><%= annonces_check[i].titre_A%></td>
                 <td><%= annonces_check[i].description_A%></td>
                 <td><%= cat[annonces_check[i].FK_id_Categorie-1].description_C%></td>
                 <td><%=  public[annonces_check[i].FK_id_Public-1].type_P %></td>
-                    <input class="invisible" name="valid" id="valid" value="<%= annonces_check[i].id_annonce%>" >
-                <td><button type="submit" href="" class="btn btn-success btn-sm mr-3">Valider</button><a href="" class="btn btn-danger btn-sm">Supprimer</a></td>
-
+                <% var $id = annonces_check[i].id_annonce;%>
+                <td>
+                    <button id="button_val<%= i %>" class="btn btn-success btn-sm mr-3">Valider</button>
+                    <button id="button_del<%= i %>" class="btn btn-danger btn-sm">Supprimer</button>
+                </td>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#button_del<%= i %>').click(function () {
+                            $.ajax({
+                                url: '/admin/annonces/check',
+                                type: 'DELETE',
+                                dataType: 'html',
+                                data:{id :<%= annonces_check[i].id_annonce %>},
+                                success: function () {
+                                    $(document.getElementById('ad<%= i%>')).toggle('slow');
+                                },
+                                error: function () {
+                                    console.log("erreur");
+                                }
+                            })
+                        });
+                        $('#button_val<%= i %>').click(function () {
+                            $.ajax({
+                                url: '/admin/annonces/check',
+                                type: 'PUT',
+                                dataType: 'html',
+                                data:{id :<%= annonces_check[i].id_annonce %>},
+                                success: function () {
+                                    $(document.getElementById('ad<%= i%>')).toggle('slow');
+                                },
+                                error: function () {
+                                    console.log("erreur");
+                                }
+                            })
+                        });
+                    });
+                </script>
             </tr>
-        </form>
+       <!-- </form>-->
 
             <%
         }

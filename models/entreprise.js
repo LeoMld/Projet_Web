@@ -3,6 +3,7 @@ let connexion = require('../config/db');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
+
     is_entreprise: (req,res)=>{
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req, res);
@@ -72,6 +73,52 @@ module.exports = {
                     resolve(res);
                 }
             });
+        })
+    },
+
+    is_my_ad: (req, res) => {
+        return new Promise((resolve,reject)=> {
+            const token = cookie_mdl.getToken(req,res);
+            if (typeof token !== 'undefined') {
+                jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
+                    if (err) {
+                        reject("erreur, vous avez été déconnecté");
+                    } else {
+                        connexion.query('SELECT * FROM annonce WHERE id_annonce=? AND FK_id_Entreprise=?', [req.params.id, infos_Token.userId], (err, result) => {
+                            if (err || typeof result[0] == 'undefined') {
+                                reject("Ce n'est pas votre annonce");
+                            } else {
+                                console.log('sqkdklqhdlqkj')
+                                resolve(result);
+                            }
+                        })
+                    }
+                })
+            }else{
+                reject("erreur vous avez été déconnecté");
+            }
+        })
+    },
+    delete_id: (id_delete) =>{
+        return new Promise((resolve,reject)=> {
+            connexion.query('DELETE FROM annonce WHERE id_annonce=?',[id_delete],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
+    },
+    my_ad_put: (id_annonce, titre_annonce,desc_annonce,public_annonce,cat_annonce)=>{
+        return new Promise((resolve,reject)=> {
+            connexion.query('UPDATE annonce SET titre_A=?, description_A=?, FK_id_Public=?, FK_id_Categorie=? WHERE id_annonce=?',[ titre_annonce,desc_annonce,public_annonce,cat_annonce,id_annonce],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible ou l'annonce n'existe pas");
+                }else{
+                    resolve(result);
+                }
+            })
         })
     },
 
