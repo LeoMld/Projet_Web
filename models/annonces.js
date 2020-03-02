@@ -113,7 +113,8 @@ module.exports= {
                         if (err || typeof result == 'undefined') {
                             reject("Désolé, le service est momentanément indisponible");
                         } else {
-                            if(typeof result == 'undefined'){
+                            console.log(result)
+                            if(typeof result[0] == 'undefined'){
                                 resolve(0);
                             }else{
                                 resolve(1);

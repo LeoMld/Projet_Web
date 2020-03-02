@@ -67,6 +67,7 @@ module.exports= {
             const flash = cookie_mdl.getFlash(req);
             const annonce = await annonces.get_Annonce(req,res,req.params.id);
             const nb_avis = await annonces.nb_Avis(req,res);
+            console.log(nb_avis)
             const public_ = await home.getPublic();
             const cat = await home.getCat();
             cookie_mdl.destroyFlash(res);
