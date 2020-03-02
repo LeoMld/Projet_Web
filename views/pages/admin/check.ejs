@@ -11,9 +11,9 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Titre</th>
-            <th scope="col">Description</th>
+            <th class="d-none d-sm-block" scope="col">Description</th>
             <th scope="col">Catégorie</th>
-            <th scope="col">Public</th>
+            <th class="d-none d-sm-block" scope="col">Public</th>
             <th scope="col">Action</th>
         </tr>
         </thead>
@@ -27,9 +27,9 @@
             <tr  id="ad<%= i%>">
                 <th scope="row"><%= i %></th>
                 <td><%= annonces_check[i].titre_A%></td>
-                <td class="overflow-hidden" style="max-width: 20px"><%= annonces_check[i].description_A%></td>
+                <td class="desc_hidden d-none d-sm-block" style="max-width: 20px"><%= annonces_check[i].description_A%></td>
                 <td><%= cat[annonces_check[i].FK_id_Categorie-1].description_C%></td>
-                <td><%=  public[annonces_check[i].FK_id_Public-1].type_P %></td>
+                <td class="d-none d-sm-block"><%=  public[annonces_check[i].FK_id_Public-1].type_P %></td>
                 <% var $id = annonces_check[i].id_annonce;%>
                 <td>
                     <a class="btn btn-light btn-sm mr-2" href="/admin/annonces/<%= annonces_check[i].id_annonce%>">Visualiser</a>

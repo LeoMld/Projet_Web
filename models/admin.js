@@ -73,5 +73,27 @@ module.exports= {
                 }
             })
         })
+    },
+    delete_ent(id_delete) {
+        return new Promise((resolve,reject)=> {
+            connexion.query('DELETE FROM entreprise WHERE id_Entreprise=?',[id_delete],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
+    },
+    delete_inf(id_delete) {
+        return new Promise((resolve,reject)=> {
+            connexion.query('DELETE FROM influenceur WHERE id_Influenceur=?',[id_delete],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible");
+                }else{
+                    resolve(result);
+                }
+            })
+        })
     }
 };

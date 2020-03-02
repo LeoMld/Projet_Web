@@ -36,4 +36,9 @@ router.get('/annonces_check', admin_ctrl.check_get);
 router.put('/annonces_check', admin_ctrl.check_put);
 router.delete('/annonces_check',admin_ctrl.check_delete);
 
+router.get('/manage_inf',admin_ctrl.manage_inf_get);
+router.delete('/manage_inf',admin_ctrl.manage_inf_del);
+router.get('/manage_ent',admin_ctrl.manage_ent_get);
+router.delete('/manage_ent',admin_ctrl.manage_ent_del);
+
 module.exports = router;

@@ -77,7 +77,6 @@ module.exports= {
             if (typeof token !== 'undefined'){
                 jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
                     const id = infos_Token.userId;
-                    console.log(note,desc,idA,id);
                     connexion.query('INSERT INTO avis SET note_A=?, desc_A=?,FK_id_Annonce=?,FK_id_Influenceur=?',[note,desc,idA,id],(err,result) => {
                         if (err || typeof result == 'undefined') {
                             reject("Désolé, le service est momentanément indisponible");
@@ -103,5 +102,30 @@ module.exports= {
         }else{
             return null;
         }
+    },
+    nb_Avis:(req,res)=> {
+        return new Promise((resolve,reject)=> {
+            const token = cookie_mdl.getToken(req, res);
+            if (typeof token !== 'undefined'){
+                jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
+                    const id = infos_Token.userId;
+                    connexion.query('SELECT * FROM avis WHERE FK_id_Influenceur=?',[id],(err,result) => {
+                        if (err || typeof result == 'undefined') {
+                            reject("Désolé, le service est momentanément indisponible");
+                        } else {
+                            if(typeof result == 'undefined'){
+                                resolve(0);
+                            }else{
+                                resolve(1);
+                            }
+
+                        }
+                    })
+                })
+            } else {
+                reject("Erreur vous n'êtes pas connecté");
+            }
+
+        })
     }
 };

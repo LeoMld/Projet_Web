@@ -11,9 +11,12 @@
         <div class="text-center">
             <h1 class="mt-5"><%= annonce[0].titre_A %></h1>
         </div>
-        <p >Public : <%= public[annonce[0].FK_id_Public-1].type_P%></p>
-        <p >Catégorie : <%= cat[annonce[0].FK_id_Categorie-1].description_C%></p>
-        <p><%= annonce[0].description_A %></p>
+            <div class="jumbotron" style="word-wrap: break-word;">
+                <p >Public : <%= public[annonce[0].FK_id_Public-1].type_P%></p>
+                <p >Catégorie : <%= cat[annonce[0].FK_id_Categorie-1].description_C%></p>
+                <p><%= annonce[0].description_A %></p>
+            </div>
+
     <%
     }%>
     <div class="text-center">
@@ -27,7 +30,8 @@
             %>
             <h4>Note moyenne : <%= Math.round((moyenne/avis.length)*100)/100%></h4>
         <%
-        }%>
+        }
+        if(nb_avis==0){%>
         <form method="post" action="/influenceur/annonces/<%= annonce[0].id_annonce%>">
             <div class="form-group">
                 <label for="new_avis">Ajouter un avis</label><br>
@@ -38,7 +42,15 @@
             </div>
         </form>
 
+
         <%
+        }else{
+                %>
+        <div class="text-center">
+            <small >Vous avez déja donné votre avis</small>
+        </div>
+                <%
+        }
         if(typeof avis[0] != 'undefined'){
             for (let i = 0; i < avis.length; i++){
                 %>

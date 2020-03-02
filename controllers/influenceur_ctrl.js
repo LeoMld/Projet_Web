@@ -66,6 +66,7 @@ module.exports= {
         try {
             const flash = cookie_mdl.getFlash(req);
             const annonce = await annonces.get_Annonce(req,res,req.params.id);
+            const nb_avis = await annonces.nb_Avis(req,res);
             const public_ = await home.getPublic();
             const cat = await home.getCat();
             cookie_mdl.destroyFlash(res);
@@ -75,7 +76,7 @@ module.exports= {
             if(typeof annonce[0] != 'undefined'){
                 const avis = await annonces.get_Avis(req,res,annonce[0].id_annonce);
                 const moyenne = await annonces.get_moyenne(avis);
-                res.render('pages/influenceur/view_ad',{annonce : annonce,avis:avis,public: public_,flash:flash, cat:cat,moment:moment,moyenne:moyenne});
+                res.render('pages/influenceur/view_ad',{annonce : annonce,avis:avis,nb_avis:nb_avis,public: public_,flash:flash, cat:cat,moment:moment,moyenne:moyenne});
             }else {
                 const flash = {
                     type: "alert-danger",

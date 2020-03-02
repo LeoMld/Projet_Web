@@ -1,18 +1,51 @@
 <%- include('../../components/header_influenceur') %>
-<div class="container">
+<div class="container pt-5 mt-5">
     <%if(typeof flash !== 'undefined'){
     %>
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
 <%
 } %>
-    <h1 class="text-center">Entreprises partenaires</h1>
+        <h1 class="text-center">Entreprises partenaires</h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom d'entreprise</th>
+                <th scope="col">Description</th>
+            </tr>
+            </thead>
+            <tbody>
         <%if(typeof entreprises[0] !== 'undefined'){
             for (let i = 0; i < entreprises.length; i++){
+                if(entreprises[i].desc_E == null){
+                    entreprises[i].desc_E = "Aucune description";
+                }
                 %>
-                    <h1><%= entreprises[i].nom_E%></h1>
+
+        <!--<div class="overflow-hidden" style="max-height: 150px;">
+            <h2><%= entreprises[i].nom_E%></h2>
+            <div class="mb-5">
+                <p><%= entreprises[i].desc_E%></p>
+            </div>
+            <hr>-->
+
+        <!--</div>-->
+
+        <tr  class="overflow-hidden">
+            <th scope="row"><%= i%></th>
+            <td ><a href="profil-entreprise/<%= entreprises[i].id_Entreprise%>" style="display: block;" ><h5><%= entreprises[i].nom_E%></h5></a></td>
+            <td class="desc_hidden"  style="max-width: 50px;"> <%= entreprises[i].desc_E%></td>
+        </tr>
+
+
+
+
+
                 <%
             }
         }
         %>
+            </tbody>
+        </table>
 </div>
 <%- include('../../components/footer') %>

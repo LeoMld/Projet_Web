@@ -1,5 +1,5 @@
 <%- include('../../components/header_influenceur') %>
-<div class="container">
+<div class="container mb-5">
     <%if(typeof flash !== 'undefined'){
     %>
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
@@ -26,6 +26,7 @@
         </div>
         <%
     }%>
+        <hr style="width: 30%;">
 
 </div>
 <%- include('../../components/footer') %>

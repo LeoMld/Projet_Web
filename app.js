@@ -8,13 +8,13 @@ const expressSanitizer = require('express-sanitizer');
 
 
 //to use javascript and jquery
-const jsdom = require("jsdom");
+/*const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const { window } = new JSDOM();
 const { document } = (new JSDOM('')).window;
 global.document = document;
 const $ = jQuery = require('jquery')(window);
-global.$ = $;
+global.$ = $;*/
 
 const homeRouter = require('./routes/home');
 const influenceurRouter = require('./routes/influenceur');

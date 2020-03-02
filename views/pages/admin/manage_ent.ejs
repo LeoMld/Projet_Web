@@ -1,0 +1,63 @@
+<%- include('../../components/header_admin') %>
+<div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
+    <h1 class="mt-5 text-center">Gestion des entreprises</h1>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Mail</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <%if(typeof entreprises !== 'undefined'){
+            for (let i = 0; i < entreprises.length; i++){
+            %>
+                <tr  id="inf<%= i%>">
+                    <th scope="row"><%= i %></th>
+                    <td><%= entreprises[i].nom_E%></td>
+                    <td><%= entreprises[i].mail_E%></td>
+
+                    <td>
+                        <button id="button_del<%= i %>" class="btn btn-danger btn-sm">Supprimer</button>
+                    </td>
+
+
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('#button_del<%= i %>').click(function () {
+                                $.ajax({
+                                    url: '/admin/manage_ent',
+                                    type: 'DELETE',
+                                    dataType: 'html',
+                                    data:{id :<%= entreprises[i].id_Entreprise %>},
+                                    success: function () {
+                                        $(document.getElementById('inf<%= i%>')).toggle('slow');
+                                    },
+                                    error: function () {
+                                        console.log("erreur");
+                                        alert("Erreur lors de la suppression");
+                                    }
+                                })
+                            })
+                        })
+
+                    </script>
+                </tr>
+
+
+            <%
+            }
+            }
+            %>
+            </tbody>
+        </table>
+</div>
+<%- include('../../components/footer') %>

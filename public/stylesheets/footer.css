@@ -3,12 +3,6 @@ footer {
     height: 50px; /* à titre d'exemple */
 }
 
-@media only screen and (max-width: 320px) {
-    .back {
-        background-image: url(smallback.jpg);
-    }
-}
-
 .font-footer{
     color: white;
 }

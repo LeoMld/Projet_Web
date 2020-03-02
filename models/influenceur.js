@@ -19,6 +19,17 @@ module.exports = {
             }
         })
     },
+    get_influenceurs:()=>{
+        return new Promise((resolve,reject)=> {
+            connexion.query('SELECT * FROM influenceur', (err, result) => {
+                if (err || typeof result == 'undefined') {
+                    reject("Le service est momentanément indisponible");
+                } else {
+                    resolve(result);
+                }
+            })
+        })
+    },
     get_infos: (req,res)=>{
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req,res);

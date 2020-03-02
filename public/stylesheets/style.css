@@ -16,6 +16,13 @@ a:hover{
   transition: 0.5s;
 }
 
+.desc_hidden{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40px;
+}
+
 /*ALERT MESSAGES */
 /*fade out messages*/
 .fade-out {

@@ -1,4 +1,6 @@
 const admin = require('../models/admin');
+const entreprise = require('../models/entreprise');
+const influenceur = require('../models/influenceur');
 const home = require('../models/home');
 const cookie_mdl = require('../models/cookie');
 const annonces = require('../models/annonces');
@@ -172,4 +174,79 @@ module.exports= {
             res.redirect('/admin/check');
         }
     },
+    manage_ent_get: async (req,res)=> {
+        try{
+            const entreprises = await entreprise.get_entreprises();
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/admin/manage_ent',{flash:flash, entreprises : entreprises});
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.render('pages/admin/manage_ent',{flash:flash});        }
+
+    },
+    manage_inf_get: async (req,res)=> {
+        try{
+            const influenceurs = await influenceur.get_influenceurs();
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/admin/manage_inf',{flash:flash, influenceurs : influenceurs});
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.render('pages/admin/manage_inf',{flash:flash});        }
+
+    },
+    manage_inf_del: async (req,res)=> {
+        try{
+            const id_delete=req.body.id;
+            console.log(id_delete)
+            await admin.delete_inf(id_delete);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({ status: 200 }));
+            res.end();
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/admin/check');
+        }
+
+    },
+    manage_ent_del: async (req,res)=> {
+        try{
+            const id_delete=req.body.id;
+            await admin.delete_ent(id_delete);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({ status: 200 }));
+            res.end();
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/admin/check');
+        }
+    },
+
 };

@@ -1,0 +1,66 @@
+<%- include('../../components/header_admin') %>
+<div class="container">
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    }
+    %>
+    <h1 class="mt-5 text-center">Gestion des influenceurs</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prenom</th>
+            <th scope="col">Mail</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+        if(typeof influenceurs[0] !== 'undefined'){
+        for (let i = 0; i < influenceurs.length; i++){
+
+        %>
+            <tr  id="inf<%= i%>">
+                <th scope="row"><%= i %></th>
+                <td><%= influenceurs[i].nom_I%></td>
+                <td><%= influenceurs[i].prenom_I%></td>
+                <td><%= influenceurs[i].mail_I%></td>
+                <td>
+                    <button id="button_del<%= i %>" class="btn btn-danger btn-sm">Supprimer</button>
+                </td>
+
+
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#button_del<%= i %>').click(function () {
+                            $.ajax({
+                                url: '/admin/manage_inf',
+                                type: 'DELETE',
+                                dataType: 'html',
+                                data: {id:<%= influenceurs[i].id_Influenceur %>},
+                                success: function () {
+                                    $(document.getElementById('inf<%= i %>')).toggle('slow');
+                                },
+                                error: function () {
+                                    console.log("erreur");
+                                    alert("Erreur lors de la suppression");
+                                }
+                            })
+                        })
+                    })
+
+                </script>
+            </tr>
+
+
+        <%
+        }
+        }
+        %>
+        </tbody>
+    </table>
+</div>
+<%- include('../../components/footer') %>
