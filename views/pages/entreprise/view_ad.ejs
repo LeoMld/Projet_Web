@@ -6,9 +6,12 @@
         <div class="text-center">
             <h1 class="mt-5"><%= annonce[0].titre_A %></h1>
         </div>
-        <p><%= annonce[0].description_A %></p>
-        <p >Public : <%= public[annonce[0].FK_id_Public-1].type_P%></p>
-        <p >Catégorie : <%= cat[annonce[0].FK_id_Categorie-1].description_C%></p>
+        <div>
+            <p><%= annonce[0].description_A %></p>
+            <p >Public : <%= public[annonce[0].FK_id_Public-1].type_P%></p>
+            <p >Catégorie : <%= cat[annonce[0].FK_id_Categorie-1].description_C%></p>
+        </div>
+
     <%
     }%>
         <hr style="width: 70%">

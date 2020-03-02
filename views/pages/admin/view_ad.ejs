@@ -11,10 +11,12 @@
         <div class="text-center">
             <h1 class="mt-5"><%= annonce[0].titre_A %></h1>
         </div>
-            <div class="jumbotron">
+            <div class="jumbotron" style="word-wrap: break-word;">
                 <p >Public : <%= public[annonce[0].FK_id_Public-1].type_P%></p>
                 <p >Catégorie : <%= cat[annonce[0].FK_id_Categorie-1].description_C%></p>
-                <p><%= annonce[0].description_A %></p>
+                <div>
+                    <p><%= annonce[0].description_A %></p>
+                </div>
             </div>
 
     <%
