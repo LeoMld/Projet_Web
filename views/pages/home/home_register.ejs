@@ -29,11 +29,11 @@
             <div class="form-row">
                 <div class="col form-group">
                     <label for="name_I">Prénom</label>
-                    <input type="text" class="form-control" name="name_I" id="name_I" required >
+                    <input type="text" class="form-control" name="name_I" id="name_I" maxlength="60" required >
                 </div>
                 <div class="col form-group">
                     <label for="surname_I">Nom</label>
-                    <input type="text" class="form-control" name="surname_I" id="surname_I" required >
+                    <input type="text" class="form-control" name="surname_I" id="surname_I" maxlength="60" required >
                 </div>
 
             </div>
@@ -43,7 +43,7 @@
             </div>
             <div class="form-group">
                 <label for="nameInf">Nom Influenceur</label>
-                <input type="text" class="form-control" name="nameInf" id="nameInf" required >
+                <input type="text" class="form-control" name="nameInf" id="nameInf" maxlength="60" required >
             </div>
             <label for="type">Public visé</label>
             <select id="public_" name="public_" class="form-control" autofocus>
@@ -56,16 +56,12 @@
             </select>
             <div class="form-group">
                 <label for="mail_I">Email</label>
-                <input type="email" class="form-control" name="mail_I" id="mail_I" required >
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <input type="email" class="form-control" name="mail_I" id="mail_I" maxlength="100" required >
+                <small id="emailHelp" class="form-text text-muted">Nous ne partagerons jamais votre mail.</small>
             </div>
             <div class="form-group">
                 <label for="pwd_I">Mot de passe</label>
-                <input type="password" class="form-control" name="pwd_I" id="pwd_I" required>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                <input type="password" class="form-control" name="pwd_I" id="pwd_I" maxlength="100" required>
             </div>
                 <button type="submit" name="envoiI" id="envoiI" class="btn btn-primary">S'inscrire</button>
             </div>
@@ -77,17 +73,17 @@
             <div class="form-row">
                 <div class="col form-group">
                     <label for="name_E">Nom Entreprise</label>
-                    <input type="text" class="form-control" name="name_E" id="name_E" required >
+                    <input type="text" class="form-control" name="name_E" id="name_E" maxlength="60" required >
                 </div>
             </div>
             <div class="form-group">
                 <label for="mail_E">Email</label>
-                <input type="email" class="form-control" name="mail_E" id="mail_E" required >
+                <input type="email" class="form-control" name="mail_E" id="mail_E" maxlength="100" required >
 
             </div>
             <div class="form-group">
                 <label for="pwd_E">Password</label>
-                <input type="password" class="form-control" name="pwd_E" id="pwd_E" required>
+                <input type="password" class="form-control" name="pwd_E" id="pwd_E" maxlength="100" required>
             </div>
 
             <button type="submit" name="envoiE" id="envoiE" class="btn btn-primary">S'inscrire</button>

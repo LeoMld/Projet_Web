@@ -12,11 +12,11 @@
             <form action="/entreprise/annonces/create_ads" method="post">
                 <div class="     form-group">
                     <label for="titre">Titre</label>
-                    <input type="text" class="form-control" name="titre" id="titre" required >
+                    <input type="text" class="form-control" name="titre" id="titre" required maxlength="60">
                 </div>
                 <div class="form-group">
                     <label for="desc">Description</label><br>
-                    <textarea class="form-control" name="desc" id="desc" cols="100" rows="5"></textarea>
+                    <textarea class="form-control" name="desc" id="desc" cols="100" rows="5" maxlength="4999"></textarea>
                 </div>
                 <label for="public_">Public visé</label>
                 <select id="public_" name="public_" class="form-control" autofocus>

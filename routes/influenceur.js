@@ -34,6 +34,8 @@ router.get('/annonces', influenceur_ctrl.annonces_get);
 router.get('/annonces/:id', influenceur_ctrl.view_ad_get);
 router.post('/annonces/:id',influenceur_ctrl.view_ad_post);
 
+router.post('/annonces/:id/postuler',influenceur_ctrl.ad_postuler_post);
+
 router.get('/profil-entreprise/:id', influenceur_ctrl.profil_entreprise);
 
 router.get('/partenaires', influenceur_ctrl.partenaires_get);

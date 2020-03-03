@@ -13,7 +13,7 @@
 
         for (let i = 0; i < annonces.length; i++){
         %>
-            <div id="projet<%= i %>" class="card mb-3 shadow-sm " style="max-width: 100%; max-height: 250px;">
+            <div id="projet<%= i %>" class="card mb-3 shadow-sm " style="max-width: 100%; ">
                 <div class="row no-gutters">
                     <div class="col-md-8">
                         <div class="card-body ">
@@ -36,10 +36,11 @@
                         </div>
 
                     </div>
-                    <div class="col-md-4 mt-5" style="color: white">
+                    <div class="col-md-4 ml-2 mb-5" style="color: white">
                         <% if(annonces[i].valid == 1){
                             %>
                             <a href="/entreprise/annonces/my_ads/<%= annonces[i].id_annonce %>" class="btn btn-primary mr-3">Modifier</a>
+                            <a href="/entreprise/annonces/my_ads/<%= annonces[i].id_annonce %>/interest" class="btn btn-light mr-3">Intêrets</a>
                         <%
                         }%>
 

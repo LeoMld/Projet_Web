@@ -13,21 +13,21 @@
             <div class="col mb-5 pb-5">
                 <div class="form-group">
                     <label for="nom">Nom de l'entreprise</label>
-                    <input type="text" class="form-control" name="nom" id="nom" value="<%= infos[0].nom_E %>" required >
+                    <input type="text" class="form-control" name="nom" id="nom" value="<%= infos[0].nom_E %>" maxlength="60" required >
                 </div>
                 <div class="form-group">
                     <label for="mail">mail</label>
-                    <input type="mail" class="form-control" name="mail" id="mail" value="<%= infos[0].mail_E %>" required >
+                    <input type="mail" class="form-control" name="mail" id="mail" value="<%= infos[0].mail_E %>"maxlength="60" required >
                 </div>
                 <div class="form-group">
                     <label for="tel">Tel</label>
-                    <input type="text" class="form-control" name="tel" id="tel" value="<%= infos[0].tel_E %>" required >
+                    <input type="text" class="form-control" name="tel" id="tel" value="<%= infos[0].tel_E %>" maxlength="10" required >
                 </div>
                 <div class="form-group">
                     <label for="website">Site web</label>
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon3">https://</span>
-                        <input type="text" class="form-control" name="website" id="website" value="<%= infos[0].site_web %>" required >
+                        <input type="text" class="form-control" name="website" id="website" value="<%= infos[0].site_web %>" maxlength="150" required >
                     </div>
                 </div>
                 <div class="form-group">

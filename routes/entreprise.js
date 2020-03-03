@@ -52,10 +52,13 @@ router.put('/annonces/my_ads/:id',entreprise_ctrl.modify_ad_put);
 router.delete('/annonces/my_ads',entreprise_ctrl.my_ads_delete);
 router.get('/annonces/my_ads', entreprise_ctrl.my_ads_get);
 
+router.get('/annonces/my_ads/:id/interest',entreprise_ctrl.interest_ad_get);
 
 router.get('/annonces/create_ads', entreprise_ctrl.create_ads_get);
 router.post('/annonces/create_ads', entreprise_ctrl.create_ads_post);
 
 router.get('/annonces/:id',entreprise_ctrl.view_ad_get);
+
+router.get('/inf/:id',entreprise_ctrl.profil_inf_get);
 
 module.exports = router;

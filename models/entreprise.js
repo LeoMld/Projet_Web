@@ -51,7 +51,7 @@ module.exports = {
                         reject("erreur, vous avez été déconnecté");
                     } else {
                         connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [infos_Token.userId], (err, result) => {
-                            if (err || typeof result == 'undefined') {
+                            if (err || typeof result[0] == 'undefined') {
                                 reject("Le service est momentanément indisponible");
                             } else {
                                 resolve(result);
@@ -62,6 +62,18 @@ module.exports = {
             }else{
                 reject("erreur vous avez été déconnecté");
             }
+        })
+    },
+    get_infos_inf: (req,res)=> {
+        return new Promise((resolve, reject) => {
+            connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [req.params.id], (err, result) => {
+                if (err || typeof result[0] == 'undefined') {
+                    reject("Le service est momentanément indisponible");
+                } else {
+                    resolve(result);
+                }
+            })
+
         })
     },
     get_entreprises:()=>{

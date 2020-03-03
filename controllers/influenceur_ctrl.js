@@ -66,8 +66,8 @@ module.exports= {
         try {
             const flash = cookie_mdl.getFlash(req);
             const annonce = await annonces.get_Annonce(req,res,req.params.id);
+            const a_postule = await influenceur.a_postule(req,res,req.params.id); //return true si l'influenceur à déja postulé pour l'annonce, false sinon.
             const nb_avis = await annonces.nb_Avis(req,res);
-            console.log(nb_avis)
             const public_ = await home.getPublic();
             const cat = await home.getCat();
             cookie_mdl.destroyFlash(res);
@@ -77,7 +77,7 @@ module.exports= {
             if(typeof annonce[0] != 'undefined'){
                 const avis = await annonces.get_Avis(req,res,annonce[0].id_annonce);
                 const moyenne = await annonces.get_moyenne(avis);
-                res.render('pages/influenceur/view_ad',{annonce : annonce,avis:avis,nb_avis:nb_avis,public: public_,flash:flash, cat:cat,moment:moment,moyenne:moyenne});
+                res.render('pages/influenceur/view_ad',{a_postule:a_postule,annonce : annonce,avis:avis,nb_avis:nb_avis,public: public_,flash:flash, cat:cat,moment:moment,moyenne:moyenne});
             }else {
                 const flash = {
                     type: "alert-danger",
@@ -123,7 +123,8 @@ module.exports= {
 
     profil_entreprise: async (req,res)=> {
         try{
-            const infos_entreprise = await entreprise.get_infos(req,res);
+            const infos_entreprise = await entreprise.get_infos_inf(req,res);
+            console.log(infos_entreprise)
             const flash = cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
             if(typeof flash != 'undefined') {
@@ -222,5 +223,17 @@ module.exports= {
             res.redirect('/influenceur/profil');
         }
 
-    }
+    },
+    ad_postuler_post: async (req,res)=> {
+        try{
+            const id_post=req.body.id;
+            await influenceur.ad_postuler(req,res,id_post);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({ status: 200 }));
+            res.end();
+        }catch (e) {
+            console.log('erreur lors de la postulation')
+        }
+    },
+
 };

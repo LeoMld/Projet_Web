@@ -11,11 +11,11 @@
             <div class="col mb-5 pb-5">
                 <div class="form-group">
                     <label for="titre1">Titre</label>
-                    <input type="text" class="form-control" name="titre1" id="titre1" value="<%= annonce[0].titre_A %>" required >
+                    <input type="text" class="form-control" name="titre1" id="titre1" value="<%= annonce[0].titre_A %>" maxlength="60" required >
                 </div>
                 <div class="form-group">
                     <label for="desc">Description</label><br>
-                    <textarea class="form-control" name="desc" id="desc" cols="100" rows="5"><%= annonce[0].description_A%></textarea>
+                    <textarea class="form-control" name="desc" id="desc" cols="100" rows="5" maxlength="4999"><%= annonce[0].description_A%></textarea>
                 </div>
 
                 <label for="public1">Public visé</label>

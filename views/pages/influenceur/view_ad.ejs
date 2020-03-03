@@ -6,7 +6,7 @@
     <%
     } %>
     <%
-    if(typeof annonce[0] !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
+    if(typeof annonce[0] !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined' && typeof a_postule!='undefined'){
         %>
         <div class="text-center">
             <h1 class="mt-5"><%= annonce[0].titre_A %></h1>
@@ -21,7 +21,46 @@
     }%>
     <div class="text-center">
         <a href="/influenceur/profil-entreprise/<%= annonce[0].FK_id_Entreprise %>" class="btn btn-primary ">Profil de l'entreprise </a>
+        <%
+            var color_btn;
+            var value_btn;
+        if(a_postule){
+            color_btn="btn-danger";
+            value_btn="Ne plus postuler"
+        }else{
+            color_btn="btn-success";
+            value_btn="Postuler"
+        } %>
+        <input type="button" id="button_put1" class=" btn <%= color_btn%>" value="<%= value_btn%>">
     </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#button_put1').click(function () {
+                    $.ajax({
+                        url: '/influenceur/annonces/<%= annonce[0].id_annonce %>/postuler',
+                        type: 'POST',
+                        dataType: 'html',
+                        data: {id:<%= annonce[0].id_annonce %>},
+                        success: function () {
+                            const but1 = document.getElementById('button_put1');
+                            if(but1.value == "Postuler"){
+                                but1.value = "Ne plus postuler";
+                                $(but1).removeClass('btn-sucess');
+                                $(but1).addClass('btn-danger');
+                            }else {
+                                but1.value = "Postuler";
+                                $(but1).removeClass('btn-danger');
+                                $(but1).addClass('btn-success');
+                            }
+                        },
+                        error: function () {
+                            console.log("erreur");
+                            alert("Erreur lors de la postulation");
+                        }
+                    })
+                });
+            });
+        </script>
 
         <hr style="width: 70%">
     <div class="mb-5 pb-5">
@@ -51,6 +90,7 @@
         </div>
                 <%
         }
+
         if(typeof avis[0] != 'undefined'){
             for (let i = 0; i < avis.length; i++){
                 %>

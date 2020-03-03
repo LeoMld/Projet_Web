@@ -1,4 +1,5 @@
 const entreprise = require('../models/entreprise');
+const influenceur = require('../models/influenceur');
 const annonces = require('../models/annonces');
 const home = require('../models/home');
 const cookie_mdl = require('../models/cookie');
@@ -275,6 +276,50 @@ module.exports= {
             cookie_mdl.setFlash(flash,res);
             res.redirect('/entreprise/profil    ');
         }
+
+    },
+    interest_ad_get: async (req,res)=> {
+        try{
+            const infos_inf = await annonces.get_influenceurs_interet(req,res);
+            console.log(infos_inf)
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/entreprise/influenceurs_interest',{flash:flash, infos:infos_inf});
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/entreprise/annonces/my_ads');
+        }
+    },
+    profil_inf_get: async (req,res)=> {
+        try{
+            const infos = await influenceur.get_infos_inf(req,res,req.params.id);
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/entreprise/profil_inf',{flash :flash, infos:infos});
+        }catch (e) {
+            const flash={
+                type: "alert-danger",
+                code: 503,
+                mess:"Ce profil n'est pas accessible pour le moment",
+            };
+            cookie_mdl.setFlash(flash,res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/entreprise/profil_inf', { flash: flash});
+        }
+
 
     },
 };
