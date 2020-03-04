@@ -215,7 +215,6 @@ module.exports= {
     manage_inf_del: async (req,res)=> {
         try{
             const id_delete=req.body.id;
-            console.log(id_delete)
             await admin.delete_inf(id_delete);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.write(JSON.stringify({ status: 200 }));
@@ -248,5 +247,59 @@ module.exports= {
             res.redirect('/admin/check');
         }
     },
+
+    profil_influenceur_get: async (req,res)=> {
+        try{
+            const infos = await influenceur.get_infos_inf(req,res,req.params.id);
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/admin/profil_inf',{flash :flash, infos:infos});
+        }catch (e) {
+            const flash={
+                type: "alert-danger",
+                code: 503,
+                mess:"Ce profil n'est pas accessible pour le moment",
+            };
+            cookie_mdl.setFlash(flash,res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/admin/profil_inf', { flash: flash});
+        }
+    },
+    profil_entreprise_get: async(req,res)=> {
+            try{
+                const infos_entreprise = await entreprise.get_infos_ent(req,res);
+                const flash = cookie_mdl.getFlash(req);
+                cookie_mdl.destroyFlash(res);
+                if(typeof flash != 'undefined') {
+                    res.status(flash.code);
+                }
+                if(typeof infos_entreprise[0] != 'undefined'){
+                        res.render('pages/admin/profil_entreprise',{infos:infos_entreprise, flash:flash});
+
+                }else{
+                    const flash = {
+                        type: "alert-danger",
+                        code: 404,
+                        mess: "Ce profil est indisponible",
+                    };
+                    cookie_mdl.setFlash(flash,res);
+                    res.redirect('/influenceur/annonces');
+                }
+
+            }catch (e) {
+                const flash = {
+                    type: "alert-danger",
+                    code: 503,
+                    mess: e,
+                };
+                cookie_mdl.setFlash(flash,res);
+                res.redirect('/influenceur/annonces');
+            }
+        },
 
 };

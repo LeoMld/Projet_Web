@@ -64,7 +64,7 @@ module.exports = {
             }
         })
     },
-    get_infos_inf: (req,res)=> {
+    get_infos_ent: (req,res)=> {
         return new Promise((resolve, reject) => {
             connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [req.params.id], (err, result) => {
                 if (err || typeof result[0] == 'undefined') {
@@ -100,7 +100,6 @@ module.exports = {
                             if (err || typeof result[0] == 'undefined') {
                                 reject("Ce n'est pas votre annonce");
                             } else {
-                                console.log('sqkdklqhdlqkj')
                                 resolve(result);
                             }
                         })

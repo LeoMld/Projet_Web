@@ -5,6 +5,8 @@ const cookie_mdl = require('../models/cookie');
 const admin = require('../models/admin');
 const router = express.Router();
 const admin_ctrl = require('../controllers/admin_ctrl');
+const entreprise_ctrl = require('../controllers/entreprise_ctrl');
+const influenceur_ctrl = require('../controllers/influenceur_ctrl');
 
 
 router.use( async (req,res,next)=>{
@@ -40,5 +42,9 @@ router.get('/manage_inf',admin_ctrl.manage_inf_get);
 router.delete('/manage_inf',admin_ctrl.manage_inf_del);
 router.get('/manage_ent',admin_ctrl.manage_ent_get);
 router.delete('/manage_ent',admin_ctrl.manage_ent_del);
+
+router.get('/profil_inf/:id',admin_ctrl.profil_influenceur_get);
+router.get('/profil_ent/:id',admin_ctrl.profil_entreprise_get);
+
 
 module.exports = router;

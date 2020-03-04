@@ -1,11 +1,17 @@
 <%- include('../../components/header_influenceur') %>
+<script src="/assets/javascripts/filter_part.js"></script>
 <div class="container pt-5 mt-5">
     <%if(typeof flash !== 'undefined'){
     %>
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
 <%
 } %>
+
         <h1 class="text-center">Entreprises partenaires</h1>
+        <hr style="width: 50%;">
+        <div class="md-form mb-3  d-flex flex-row-reverse">
+            <input id="search" class="form-control col-md-2" type="text" placeholder="Rechercher" aria-label="Search">
+        </div>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -14,7 +20,7 @@
                 <th scope="col">Description</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="liste">
         <%if(typeof entreprises[0] !== 'undefined'){
             for (let i = 0; i < entreprises.length; i++){
                 if(entreprises[i].desc_E == null){
@@ -36,11 +42,6 @@
             <td ><a href="profil-entreprise/<%= entreprises[i].id_Entreprise%>" style="display: block;" ><h5><%= entreprises[i].nom_E%></h5></a></td>
             <td class="desc_hidden"  style="max-width: 50px;"> <%= entreprises[i].desc_E%></td>
         </tr>
-
-
-
-
-
                 <%
             }
         }
@@ -48,4 +49,5 @@
             </tbody>
         </table>
 </div>
+
 <%- include('../../components/footer') %>

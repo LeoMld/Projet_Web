@@ -1,0 +1,41 @@
+<%- include('../../components/header_admin') %>
+<div class="container mt-5 mb-5">
+
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
+        <%if(typeof infos[0] != 'undefined'){
+          %>
+    <div>
+        <h1 class="mt-5 text-center">Profil de <%= infos[0].prenom_I%></h1>
+        <hr style="width: 50%;">
+        <div class="jumbotron shadow jumbotron-fluid">
+            <div class="container pl-5 pr-5">
+                <div>
+
+                    <div class="col-md-8 text-center ">
+                        <div class="row">
+                            <h4 class="mr-3">Nom de l'Influenceur: </h4>
+                            <h5 class="mt-1"><%= infos[0].nom_I%> <%= infos[0].prenom_I%></h5>
+                        </div>
+                        <div class="row mt-5 ">
+                            <h4 class="mt-3 mr-3">Nom d'influenceur:</h4>
+                            <h5 class="mt-4"><%= infos[0].nom_Inf%></h5>
+                        </div>
+                    </div>
+
+                    <hr style="width: 30%;">
+                    <h4>Réseaux sociaux : </h4>
+                    <p>en cours...</p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+        <%
+        }%>
+</div>
+<%- include('../../components/footer') %>

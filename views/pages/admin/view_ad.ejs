@@ -10,6 +10,8 @@
         %>
         <div class="text-center">
             <h1 class="mt-5"><%= annonce[0].titre_A %></h1>
+            <hr style="width: 50%;">
+
         </div>
             <div class="jumbotron" style="word-wrap: break-word;">
                 <p >Public : <%= public[annonce[0].FK_id_Public-1].type_P%></p>
@@ -22,7 +24,7 @@
     <%
     }%>
     <div class="text-center">
-        <a href="/influenceur/profil-entreprise/<%= annonce[0].FK_id_Entreprise %>" class="btn btn-primary ">Profil de l'entreprise </a>
+        <a href="/admin/profil_ent/<%= annonce[0].FK_id_Entreprise %>" class="btn btn-primary ">Profil de l'entreprise </a>
     </div>
 
 

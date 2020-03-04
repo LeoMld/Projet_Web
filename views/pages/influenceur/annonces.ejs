@@ -1,13 +1,21 @@
 <%- include('../../components/header_influenceur') %>
-<div class="container">
+<script src="/assets/javascripts/filter_projets.js"></script>
+<div class="container" id="liste">
     <%if(typeof flash !== 'undefined'){
     %>
         <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
     <%
     } %>
     <h1 class="mt-5 text-center">Projets en ligne </h1>
+        <hr style="width: 50%;">
+        <div class="md-form mb-3  d-flex flex-row-reverse">
+            <input id="search" class="form-control col-md-2" type="text" placeholder="Rechercher" aria-label="Search">
+        </div>
 
-        <%if(typeof annonces !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
+    <div id="liste">
+
+
+    <%if(typeof annonces !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
         for (let i = 0; i < annonces.length; i++){
         %>
 
@@ -33,6 +41,7 @@
 
         <%
         }%>
+    </div>
 </div>
 <%- include('../../components/footer') %>
 

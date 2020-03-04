@@ -1,4 +1,6 @@
 <%- include('../../components/header_admin') %>
+<script src="/assets/javascripts/filter_part.js"></script>
+
 <div class="container">
     <%if(typeof flash !== 'undefined'){
     %>
@@ -6,6 +8,10 @@
     <%
     } %>
     <h1 class="mt-5 text-center">Gestion des entreprises</h1>
+        <hr style="width: 50%;">
+        <div class="md-form mb-3  d-flex flex-row-reverse">
+            <input id="search" class="form-control col-md-2" type="text" placeholder="Rechercher" aria-label="Search">
+        </div>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -15,7 +21,7 @@
                 <th scope="col">Action</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="liste">
 
             <%if(typeof entreprises !== 'undefined'){
             for (let i = 0; i < entreprises.length; i++){
@@ -26,6 +32,7 @@
                     <td><%= entreprises[i].mail_E%></td>
 
                     <td>
+                        <a href="/admin/profil_ent/<%= entreprises[i].id_Entreprise %>" class="btn btn-light btn-sm ">Profil</a>
                         <button id="button_del<%= i %>" class="btn btn-danger btn-sm">Supprimer</button>
                     </td>
 

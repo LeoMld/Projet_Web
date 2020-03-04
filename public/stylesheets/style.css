@@ -10,10 +10,29 @@ body {
 h1 {
   color: #00B7FF;
 }
+
+.scale:hover {
+  transform: scale(1.08);
+  transition: 0.3s;
+}
+
+
+.block{
+  color: white;
+
+}
+.block:hover{
+  text-decoration: none;
+  color: black;
+  transition: 0.3s;
+}
 a:hover{
   text-decoration: none;
   color: black;
   transition: 0.5s;
+}
+.card-text{
+  color: black;
 }
 
 .desc_hidden{

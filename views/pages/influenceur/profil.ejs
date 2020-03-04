@@ -7,9 +7,7 @@
     } %>
     <h1 class="mt-5 text-center">Vos informations</h1>
         <hr style="width: 70%;">
-        <div class="text-center">
-            <a class="btn btn-primary btn-sm" href="/influenceur/profil/modify">Modifier mes informations</a>
-        </div>
+
     <%if(typeof infos != 'undefined'){
         %>
         <div class="container">
@@ -26,7 +24,35 @@
         </div>
         <%
     }%>
-        <hr style="width: 30%;">
+
+        <div class="text-center">
+            <a class="btn btn-primary btn-sm" href="/influenceur/profil/modify">Modifier mes informations</a>
+        </div>
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="shadow m-4 scale  col" style="height: 300px; background-color: rgba(31,101,122,0.78);">
+                    <a class="text-center block" href="/influenceur/annonces">
+                        <h5>Tous les projets</h5>
+                        <div class="text-center">
+                            <img class="mt-4" style="height: 210px" src="/assets/images/logo_profils/inf_project.png" alt="">
+                        </div>
+                    </a>
+
+
+                </div>
+                <div class="shadow m-4 scale col" style="background-color: rgba(67,136,67,0.74)">
+                    <a class="text-center block" href="/influenceur/partenaires">
+                        <h5>Nos partenaires</h5>
+                        <div class="text-center">
+                            <img class=" mt-4" style="height: 210px;" src="/assets/images/logo_profils/inf_partenaire.png" alt="">
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <hr style="width: 40%">
+        </div>
+
 
 </div>
 <%- include('../../components/footer') %>

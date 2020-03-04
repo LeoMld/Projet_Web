@@ -123,8 +123,7 @@ module.exports= {
 
     profil_entreprise: async (req,res)=> {
         try{
-            const infos_entreprise = await entreprise.get_infos_inf(req,res);
-            console.log(infos_entreprise)
+            const infos_entreprise = await entreprise.get_infos_ent(req,res);
             const flash = cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
             if(typeof flash != 'undefined') {
