@@ -60,9 +60,20 @@
                 <small id="emailHelp" class="form-text text-muted">Nous ne partagerons jamais votre mail.</small>
             </div>
             <div class="form-group">
+                <small>Un mot de passe valide aura <br>
+                    - de 8 à 15 caractères <br>
+                    - au moins une lettre minuscule <br>
+                    - au moins une lettre majuscule <br>
+                    - au moins un chiffre <br>
+                    - au moins un de ces caractères spéciaux: $ @ % * + - _ ! # <br>
+                    - aucun autre caractère possible <br> <br> </small>
                 <label for="pwd_I">Mot de passe</label>
                 <input type="password" class="form-control" name="pwd_I" id="pwd_I" maxlength="100" required>
             </div>
+                <div class="form-group">
+                    <label for="pwd_I_conf">Confirmation du mot de passe</label>
+                    <input type="password" class="form-control" name="pwd_I_conf" id="pwd_I_conf" maxlength="100" required>
+                </div>
                 <button type="submit" name="envoiI" id="envoiI" class="btn btn-primary">S'inscrire</button>
             </div>
         </form>
@@ -82,8 +93,20 @@
 
             </div>
             <div class="form-group">
+                <small>Un mot de passe valide aura <br>
+                    - de 8 à 15 caractères <br>
+                    - au moins une lettre minuscule <br>
+                    - au moins une lettre majuscule <br>
+                    - au moins un chiffre <br>
+                    - au moins un de ces caractères spéciaux: $ @ % * + - _ ! # <br>
+                    - aucun autre caractère possible <br> <br> </small>
                 <label for="pwd_E">Password</label>
                 <input type="password" class="form-control" name="pwd_E" id="pwd_E" maxlength="100" required>
+            </div>
+            <div class="form-group">
+
+                <label for="pwd_E_conf">Confirmation du mot de passe</label>
+                <input type="password" class="form-control" name="pwd_E_conf" id="pwd_E_conf" maxlength="100" required>
             </div>
 
             <button type="submit" name="envoiE" id="envoiE" class="btn btn-primary">S'inscrire</button>

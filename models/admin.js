@@ -1,5 +1,5 @@
 let connexion = require('../config/db');
-const cookie_mdl = require('../models/cookie');
+const cookie_mdl = require('../services/cookie');
 const jwt = require('jsonwebtoken');
 
 module.exports= {

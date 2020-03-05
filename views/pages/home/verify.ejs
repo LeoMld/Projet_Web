@@ -1,0 +1,65 @@
+<%- include('../../components/header') %>
+<%if(typeof flash != 'undefined'){
+%>
+    <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+<%
+} %>
+
+<div class="container mt-5 pt-5">
+    <div class="text-center">
+        <h2>Vérifier mon compte</h2>
+        <hr style="width: 50%;">
+        <div class="col text-center">
+            <div>
+                <input type="text" name="code" id="code">
+                <button id="envoi_code" class="btn btn-success mb-1 btn-sm">Valider</button>
+            </div>
+            <div class="mt-5">
+                <button type="button" id="resend" class="btn btn-link">Renvoyer le code de validation</button>
+            </div>
+            <div style="display: none" id="rs">
+                <input type="email" placeholder="Votre mail" id="mail_rs">
+                <button id="resend_code" class="btn btn-success btn-sm mb-1">Renvoyer</button>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#envoi_code').click(function () {
+                    $.ajax({
+                        url: '/register/verify',
+                        type: 'PUT',
+                        dataType: 'html',
+                        data: {code: document.getElementById("code").value},
+                        success: function () {
+                            alert("votre compte a bien été validé")
+                        },
+                        error: function () {
+                            alert("Ce n'est pas le bon code");
+                        }
+                    })
+                })
+                $('#resend').click(function () {
+                    $(document.getElementById('rs')).toggle('slow');
+
+                })
+                $('#resend_code').click(function () {
+                    $.ajax({
+                        url: '/register/verify',
+                        type: 'PUT',
+                        dataType: 'html',
+                        data: {mail: document.getElementById("mail_rs").value},
+                        success: function () {
+                            alert("Mail renvoyé")
+                        },
+                        error: function () {
+                            alert("Erreur lors du renvoi du mail, réessayez plus tard");
+                        }
+                    })
+                })
+            })
+        </script>
+    </div>
+
+</div>
+<%- include('../../components/footer') %>

@@ -1,8 +1,8 @@
-const cookie_mdl = require('../models/cookie');
+const cookie_mdl = require('../services/cookie');
 let connexion = require('../config/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-
+const nodemailer = require('nodemailer');
 
 
 module.exports = {
@@ -24,10 +24,16 @@ module.exports = {
                                   //check if it's the good password and send user data or an empty table if it's the wrong password
                                   bcrypt.compare(pwd, res[0].pwd_E, function(err, result) {
                                       if(result){
-                                          //generate a token with type 2 (entreprise)
-                                          const token = jwt.sign({userId: res[0].id_Entreprise, type: 2}, cookie_mdl.getKey(),{expiresIn: '1h'},);
-                                          cookie_mdl.setToken(token,res1);
-                                          resolve(1);
+                                          if(res[0].verify){
+                                              //generate a token with type 2 (entreprise)
+                                              const token = jwt.sign({userId: res[0].id_Entreprise, type: 2}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                                              cookie_mdl.setToken(token,res1);
+                                              resolve(1);
+                                          }else{
+                                              //profil non vérifié
+                                              resolve(2);
+                                          }
+
                                       }else {
                                           resolve(0);
                                       }
@@ -46,12 +52,20 @@ module.exports = {
                               if(res[0].admin===1){
                                   //generate a token with type 0 (admin)
                                   token = jwt.sign({userId: res[0].id_Influenceur, type: 0}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                                  cookie_mdl.setToken(token,res1);
+                                  resolve(1);
                               }else{
-                                  ////generate a token with type 1 (influenceur)
-                                  token = jwt.sign({userId: res[0].id_Influenceur, type: 1}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                                  if(res[0].verify){
+                                      ////generate a token with type 1 (influenceur)
+                                      token = jwt.sign({userId: res[0].id_Influenceur, type: 1}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                                      cookie_mdl.setToken(token,res1);
+                                      resolve(1);
+                                  }else{
+                                      resolve(2);
+                                  }
+
                               }
-                              cookie_mdl.setToken(token,res1);
-                              resolve(1);
+
 
                           }else {
                               resolve(0);
@@ -65,7 +79,7 @@ module.exports = {
       })
     },
     //insert a new user(influenceur) in database
-    register_I: (name,surname,mail,pwd,date,nom_Inf,public_) => new Promise((resolve,reject) =>{
+    register_I: (name,surname,mail,pwd,date,nom_Inf,public_,code) => new Promise((resolve,reject) =>{
         //hash the password
         bcrypt.hash(pwd, 10, function(err, hash) {
             //First, search in influenceur table if there is already an user who has the same email
@@ -81,7 +95,7 @@ module.exports = {
                         }else{
                             //if there is also nothing in entreprise table we can insert, this user is not already in database
                             if(res[0] === undefined){
-                                connexion.query('INSERT INTO influenceur SET nom_I=?, prenom_I=?, date_naissance_I=?, nom_Inf=?,FK_id_Public=?,mail_I=?,pwd_I=?',[surname,name,date,nom_Inf,public_,mail,hash]);
+                                connexion.query('INSERT INTO influenceur SET nom_I=?, prenom_I=?, date_naissance_I=?, nom_Inf=?,FK_id_Public=?,mail_I=?,pwd_I=?,code=?',[surname,name,date,nom_Inf,public_,mail,hash,code]);
                                 resolve(res);
                             }else{
                                 console.log("erreur, l'utilisateur est deja dans la bdd ");
@@ -102,7 +116,7 @@ module.exports = {
     }),
 
     //register an Entreprise in database, same thing than register_I for an Entreprise
-    register_E: (name, mail, pwd)=> new Promise((resolve,reject) => {
+    register_E: (name, mail, pwd, code)=> new Promise((resolve,reject) => {
         bcrypt.hash(pwd, 10, function(err, hash) {
             //First, search in influenceur table
             connexion.query('SELECT mail_I FROM influenceur WHERE mail_I=? ',[mail], (err, res) =>{
@@ -116,7 +130,7 @@ module.exports = {
                         }else{
                             //if there is also nothing in entreprise table we can insert, this user is not already in database
                             if(res[0] === undefined){
-                                connexion.query('INSERT INTO entreprise SET nom_E=?, mail_E=?,pwd_E=?',[name,mail,hash]);
+                                connexion.query('INSERT INTO entreprise SET nom_E=?, mail_E=?,pwd_E=?,code=?',[name,mail,hash,code]);
                                 resolve(res);
                             }else{
                                 console.log("erreur, l'utilisateur est deja dans la bdd ");
@@ -156,6 +170,57 @@ module.exports = {
                 }
             });
         })
+    },
+
+    verify_user:(code)=> {
+        return new Promise((resolve,reject)=> {
+            connexion.query('UPDATE influenceur SET verify=? WHERE code=?',[1,code],(err, result) =>{
+                if(err || typeof result == 'undefined') {
+                    reject("Désolé, le service est momentanément indisponible");
+                }else{
+                    if(result.affectedRows > 0){
+                        resolve(true);
+                    }else{
+                        connexion.query('UPDATE entreprise SET verify=? WHERE code=?',[1,code],(err, result) =>{
+                            if(err || typeof result == 'undefined') {
+                                reject("Désolé, le service est momentanément indisponible");
+                            }else{
+                                if(result.affectedRows > 0){
+                                    resolve(true);
+                                }else{
+                                    resolve(false);
+                                }
+                            }
+                        });
+                    }
+
+                }
+            });
+
+
+        })
+    },
+    getcode:(mail)=> {
+        return new Promise((resolve, reject )=> {
+            connexion.query('SELECT code FROM influenceur WHERE mail_I=? ',[mail],(err,res)=> {
+                if (err) {
+                    reject("Désolé, le service est momentanément indisponible");
+                } else {
+                    if (typeof res[0] != 'undefined') {
+                        resolve(res);
+                    } else {
+                        connexion.query('SELECT code FROM entreprise WHERE mail_E=? ', [mail], (err, res) => {
+                            if (err) {
+                                reject("Désolé, le service est momentanément indisponible");
+                            } else {
+                                resolve(res);
+                            }
+                        })
+                    }
+                }
+
+            })
+        });
     }
 };
 

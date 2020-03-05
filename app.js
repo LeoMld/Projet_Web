@@ -45,6 +45,10 @@ app.use('/entreprise',entrepriseRouter);
 app.use('/admin',adminRouter);
 
 
+
+
+
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Page non trouvée');

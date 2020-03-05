@@ -28,11 +28,10 @@
                     <hr class="bg-white d-sm-none d-block" style="width: 60%;">
                     <h5 class="mb-3 ">Une remarque ?</h5>
                     <hr style="width: 60%;">
-                    <form id="contact" method="post" action="../controller/ctrl_contact_treatment.php">
                         <fieldset>
                             <div class="form-group">
-                                <label for="email"></label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Votre mail" required>
+                                <label for="mail_contact"></label>
+                                <input type="email" class="form-control"  id="mail_contact" placeholder="Votre mail">
                             </div>
                         </fieldset>
 
@@ -40,7 +39,30 @@
                             <div class="form-group">
                                 <label for="message"></label>
                                 <textarea class="form-control" id="message" name="message" rows="2" placeholder="Votre message" required></textarea>
-                                <div class="mt-2"><input class=" btn btn-light" type="submit" name="envoi" value="Envoyer"></div>
+                                <button id="envoi" class="btn btn-success btn-sm mt-3">Envoyer</button>
+                                <div style="display: none; color: #00B7FF" id="valid"><h5>Merci ! Votre message nous a bien été envoyé !</h5></div>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        $('#envoi').click(function () {
+                                            $.ajax({
+                                                url: '/contact',
+                                                type: 'POST',
+                                                dataType: 'html',
+                                                data: {mail: document.getElementById("mail_contact").value, message: document.getElementById("message").value},
+                                                success: function () {
+                                                    $(document.getElementById('mail_contact')).toggle('slow');
+                                                    $(document.getElementById('message')).toggle('slow');
+                                                    $(document.getElementById('envoi')).toggle('slow');
+                                                    $(document.getElementById('valid')).toggle('slow');
+                                                },
+                                                error: function () {
+                                                    console.log("erreur");
+                                                    alert("Erreur lors de l'envoi du message, votre mail n'existe pas ou votre message est vide");
+                                                }
+                                            })
+                                        })
+                                    })
+                                </script>
                             </div>
                         </fieldset>
 

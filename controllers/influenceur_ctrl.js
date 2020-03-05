@@ -1,7 +1,7 @@
 const influenceur = require('../models/influenceur');
 const entreprise = require('../models/entreprise');
 const home = require('../models/home');
-const cookie_mdl = require('../models/cookie');
+const cookie_mdl = require('../services/cookie');
 const annonces = require('../models/annonces');
 const moment = require('moment');
 moment.locale('fr');

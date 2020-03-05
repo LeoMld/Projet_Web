@@ -1,4 +1,4 @@
-const cookie_mdl = require('../models/cookie');
+const cookie_mdl = require('../services/cookie');
 let connexion = require('../config/db');
 const jwt = require('jsonwebtoken');
 

@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const cookie_mdl = require('../models/cookie');
+const cookie_mdl = require('../services/cookie');
 const influenceur = require('../models/influenceur');
 const influenceur_ctrl = require('../controllers/influenceur_ctrl');
 

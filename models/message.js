@@ -1,6 +1,6 @@
 const home = require('../models/home');
 const jwt = require('jsonwebtoken');
-const cookie_mdl = require('../models/cookie');
+const cookie_mdl = require('../services/cookie');
 
 
 

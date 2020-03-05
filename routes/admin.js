@@ -1,7 +1,7 @@
 /*BEFORE LOGIN OR REGISTER*/
 
 const express = require('express');
-const cookie_mdl = require('../models/cookie');
+const cookie_mdl = require('../services/cookie');
 const admin = require('../models/admin');
 const router = express.Router();
 const admin_ctrl = require('../controllers/admin_ctrl');
