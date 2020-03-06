@@ -12,17 +12,17 @@ moment.locale('fr');
 module.exports= {
     //afficher le profil de l'influenceur connecté
     profil_get: async (req,res)=>{
+        let flash = cookie_mdl.getFlash(req);
         try{
             const infos = await influenceur.get_infos(req,res);
             infos[0].date_naissance_I = moment(infos[0].date_naissance_I).format("DD MMMM YYYY");
-            const flash = cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
             res.render('pages/influenceur/profil',{flash :flash, infos:infos});
         }catch (e) {
-            const flash={
+            flash={
                 type: "alert-danger",
                 code: 503,
                 mess:"Votre profil n'est pas accessible pour le moment",
@@ -42,7 +42,7 @@ module.exports= {
     },
     //afficher les annonces en ligne
     annonces_get: async(req,res)=>{
-        const flash = cookie_mdl.getFlash(req);
+        let flash = cookie_mdl.getFlash(req);
         cookie_mdl.destroyFlash(res);
         try{
             const annonces_en_ligne = await annonces.get_Annonces(req, res);
@@ -53,7 +53,7 @@ module.exports= {
             }
             res.render('pages/influenceur/annonces', {annonces: annonces_en_ligne, flash:flash, public:public_, cat:cat});
         }catch(e){
-            const flash={
+            flash={
                 type: "alert-danger",
                 code: 503,
                 mess:"Désolé, le service est momentanément indisponibles",
@@ -67,8 +67,8 @@ module.exports= {
     },
     //visionner une annonce
     view_ad_get: async (req,res)=> {
+        let flash = cookie_mdl.getFlash(req);
         try {
-            const flash = cookie_mdl.getFlash(req);
             const annonce = await annonces.get_Annonce(req,res,req.params.id);
             const a_postule = await influenceur.a_postule(req,res,req.params.id); //return true si l'influenceur à déja postulé pour l'annonce, false sinon.
             const nb_avis = await annonces.nb_Avis(req,res);
@@ -83,7 +83,7 @@ module.exports= {
                 const moyenne = await annonces.get_moyenne(avis);
                 res.render('pages/influenceur/view_ad',{a_postule:a_postule,annonce : annonce,avis:avis,nb_avis:nb_avis,public: public_,flash:flash, cat:cat,moment:moment,moyenne:moyenne});
             }else {
-                const flash = {
+                flash = {
                     type: "alert-danger",
                     code: 401,
                     mess: "Cette annonce n'existe pas",
@@ -93,7 +93,7 @@ module.exports= {
             }
 
         }catch(e){
-            const flash = {
+            flash = {
                 type: "alert-danger",
                 code: 401,
                 mess: e,
@@ -127,9 +127,9 @@ module.exports= {
     },
     //afficher le profil d'une entreprise
     profil_entreprise: async (req,res)=> {
+        let flash = cookie_mdl.getFlash(req);
         try{
             const infos_entreprise = await entreprise.get_infos_ent(req,res);
-            const flash = cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
             if(typeof flash != 'undefined') {
                 res.status(flash.code);
@@ -138,7 +138,7 @@ module.exports= {
                 res.render('pages/influenceur/profil_entreprise',{infos:infos_entreprise, flash:flash});
 
             }else{
-                const flash = {
+                flash = {
                     type: "alert-danger",
                     code: 404,
                     mess: "Ce profil est indisponible",
@@ -148,7 +148,7 @@ module.exports= {
             }
 
         }catch (e) {
-            const flash = {
+            flash = {
                 type: "alert-danger",
                 code: 503,
                 mess: e,
@@ -159,7 +159,7 @@ module.exports= {
         },
     //afficher les entreprises partenaires
     partenaires_get: async(req,res)=> {
-        const flash = cookie_mdl.getFlash(req);
+        let flash = cookie_mdl.getFlash(req);
         cookie_mdl.destroyFlash(res);
         try{
             const entreprise_ = await entreprise.get_entreprises();
@@ -168,7 +168,7 @@ module.exports= {
             }
             res.render('pages/influenceur/partenaires', {entreprises:entreprise_, flash:flash});
         }catch(e){
-            const flash={
+            flash={
                 type: "alert-danger",
                 code: 503,
                 mess:"Désolé, le service est momentanément indisponibles",
@@ -182,18 +182,18 @@ module.exports= {
     },
     //afficher la page de modification de son profil
     modify_profil_get: async (req,res)=> {
+        let flash = cookie_mdl.getFlash(req);
         try{
             const infos = await influenceur.get_infos(req,res);
             infos[0].date_naissance_I = moment(infos[0].date_naissance_I).format("YYYY-DD-MM");
             const public_ = await home.getPublic();
-            const flash = cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
             res.render('pages/influenceur/modify_profile',{flash:flash, infos:infos,public:public_});
         }catch (e) {
-            const flash = {
+            flash = {
                 type: "alert-danger",
                 code: 401,
                 mess: e,
@@ -245,15 +245,15 @@ module.exports= {
     },
     //afficher la page de modification d'un mot de passe
     modify_pwd_get: async (req,res)=> {
+        let flash = cookie_mdl.getFlash(req);
         try{
-            const flash = cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
             res.render('pages/influenceur/modify_pwd',{flash :flash});
         }catch (e) {
-            const flash={
+            flash={
                 type: "alert-danger",
                 code: 503,
                 mess:"Impossible de changer votre mot de passe pour le moment",

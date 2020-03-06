@@ -298,7 +298,7 @@ module.exports= {
             }
             res.render('pages/entreprise/influenceurs_interest',{flash:flash, infos:infos_inf});
         }catch (e) {
-            const flash = {
+            flash = {
                 type: "alert-danger",
                 code: 401,
                 mess: e,
