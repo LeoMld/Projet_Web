@@ -93,7 +93,11 @@
 
 }
 
-
+/*@media only screen and (max-width: 400px) {
+    #titre {
+        font-size: 23px;
+    }
+}*/
 #nav {
 
     color: #00adef;
@@ -137,9 +141,10 @@
 /*fix the max height*/
 @media only screen and (min-width: 991px) {
     #menu ul {
-
+        font-size: 15px;
         position: absolute;
     }
+
 }
 
 /*caracteritics of the element and display hidden*/

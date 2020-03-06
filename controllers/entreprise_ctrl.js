@@ -3,11 +3,13 @@ const influenceur = require('../models/influenceur');
 const annonces = require('../models/annonces');
 const home = require('../models/home');
 const cookie_mdl = require('../services/cookie');
+const jwt = require('jsonwebtoken');
 const moment = require('moment');
 moment.locale('fr');
 
 
 module.exports= {
+    //affiche le profil d'une entreprise avec ses informations
     profil_get: async  (req,res)=>{
         try{
             const infos = await entreprise.get_infos(req,res);
@@ -274,7 +276,7 @@ module.exports= {
                 mess: e,
             };
             cookie_mdl.setFlash(flash,res);
-            res.redirect('/entreprise/profil    ');
+            res.redirect('/entreprise/profil');
         }
 
     },
@@ -317,9 +319,68 @@ module.exports= {
             if(typeof flash != 'undefined'){
                 res.status(flash.code);
             }
-            res.render('pages/entreprise/profil_inf', { flash: flash});
+            res.render('pages/entreprise/profil', { flash: flash});
         }
 
 
     },
+    modify_password_get:(req,res)=> {
+        try{
+            const flash = cookie_mdl.getFlash(req);
+            cookie_mdl.destroyFlash(res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/entreprise/modify_pwd',{flash :flash});
+        }catch (e) {
+            const flash={
+                type: "alert-danger",
+                code: 503,
+                mess:"Impossible de changer votre mot de passe pour le moment",
+        };
+            cookie_mdl.setFlash(flash,res);
+            if(typeof flash != 'undefined'){
+                res.status(flash.code);
+            }
+            res.render('pages/entreprise/profil', { flash: flash});
+        }
+    },
+    modify_password_put: async (req,res)=> {
+        try{
+            const REGEX_PWD = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_#])([-+!*$@%_#\w]{8,15})$/;
+            const ancien_pwd = req.sanitize(req.body.ancien_pwd);
+            const new_pwd = req.sanitize(req.body.new_pwd);
+            const new_pwd_conf = req.sanitize(req.body.new_pwd_conf);
+            const token = cookie_mdl.getToken(req,res);
+            if (!REGEX_PWD.test(new_pwd)) {
+                res.writeHead(400, {'Content-Type': 'application/json'});
+                res.write(JSON.stringify({status: 400}));
+                res.end();
+            }
+            jwt.verify(token, cookie_mdl.getKey(), async(err, infos_Token) => {
+                try{
+                    const mdp_ok = await entreprise.mdp_ok(req, res, infos_Token.userId, ancien_pwd);
+                    if (new_pwd_conf === new_pwd && mdp_ok) {
+                        await entreprise.modify_mdp(req, res, infos_Token.userId, new_pwd);
+                        res.writeHead(200, {'Content-Type': 'application/json'});
+                        res.write(JSON.stringify({status: 200}));
+                        res.end();
+                    } else {
+                        res.writeHead(400, {'Content-Type': 'application/json'});
+                        res.write(JSON.stringify({status: 400}));
+                        res.end();
+                    }
+                }catch (e) {
+                    console.log("Erreur lors de la mofification du mot de passe");
+                }
+
+            })
+
+        }catch (e) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({ status: 400 }));
+            res.end();
+        }
+
+    }
 };

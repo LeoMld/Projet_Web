@@ -28,6 +28,9 @@ router.get('/profil', entreprise_ctrl.profil_get);
 router.put('/profil/modify',entreprise_ctrl.modify_profil_put);
 router.get('/profil/modify',entreprise_ctrl.modify_profil_get);
 
+router.get('/profil/modify_pwd',entreprise_ctrl.modify_password_get);
+router.put('/profil/modify_pwd',entreprise_ctrl.modify_password_put);
+
 
 router.get('/annonces', entreprise_ctrl.annonces_get);
 

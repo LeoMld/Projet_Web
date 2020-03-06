@@ -1,6 +1,8 @@
 const cookie_mdl = require('../services/cookie');
 let connexion = require('../config/db');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
 
 module.exports = {
 
@@ -141,6 +143,42 @@ module.exports = {
                 }else{
                     resolve(result);
                 }
+            })
+        })
+    },
+    mdp_ok:(req, res, userId, ancien_pwd)=> {
+        return new Promise((resolve, reject) => {
+            connexion.query('SELECT pwd_E FROM entreprise WHERE id_Entreprise=?', [userId], (err, res) => {
+                if (err) {
+                    reject("erreur lors du changement de mot de passe");
+                } else {
+                    bcrypt.compare(ancien_pwd, res[0].pwd_E, function (err, result) {
+                        if(err){
+                            resolve(false);
+                        }
+                        else if (result) {
+                            resolve(true);
+                        } else {
+                            resolve(false)
+                        }
+
+                    })
+                }
+
+            })
+        })
+    },
+    modify_mdp:(req, res, idUser, new_pwd)=> {
+        bcrypt.hash(new_pwd, 10, function(err, new_pwd) {
+            return new Promise((resolve, reject) => {
+                connexion.query('UPDATE entreprise SET pwd_E=? WHERE id_Entreprise=?', [new_pwd, idUser], (err, res) => {
+                    if (err) {
+                        reject("erreur lors du changement de mot de passe");
+                    } else {
+                        resolve(true);
+                    }
+
+                })
             })
         })
     }

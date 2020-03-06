@@ -29,6 +29,9 @@ router.get('/profil', influenceur_ctrl.profil_get);
 router.put('/profil/modify',influenceur_ctrl.modify_profil_put);
 router.get('/profil/modify',influenceur_ctrl.modify_profil_get);
 
+router.get('/profil/modify_pwd',influenceur_ctrl.modify_pwd_get);
+router.put('/profil/modify_pwd',influenceur_ctrl.modify_pwd_put);
+
 router.get('/annonces', influenceur_ctrl.annonces_get);
 
 router.get('/annonces/:id', influenceur_ctrl.view_ad_get);

@@ -1,6 +1,8 @@
 const cookie_mdl = require('../services/cookie');
 const jwt = require('jsonwebtoken');
 let connexion = require('../config/db');
+const bcrypt = require('bcrypt');
+
 
 module.exports = {
     is_influenceur:(req,res)=>{
@@ -135,5 +137,42 @@ module.exports = {
                 })
             }
         });
+    },
+    pwd_ok:(req, res, userId, ancien_pwd)=> {
+        return new Promise((resolve, reject) => {
+            connexion.query('SELECT pwd_I FROM influenceur WHERE id_Influenceur=?', [userId], (err, res) => {
+                if (err) {
+                    reject("erreur lors du changement de mot de passe");
+                } else {
+                    bcrypt.compare(ancien_pwd, res[0].pwd_I, function (err, result) {
+                        if(err){
+                            resolve(false);
+                        }
+                        else if (result) {
+
+                            resolve(true);
+                        } else {
+                            resolve(false)
+                        }
+
+                    })
+                }
+
+            })
+        })
+    },
+    modify_pwd:(req, res, userId, new_pwd)=> {
+        bcrypt.hash(new_pwd, 10, function(err, new_pwd) {
+            return new Promise((resolve, reject) => {
+                connexion.query('UPDATE influenceur SET pwd_I=? WHERE id_Influenceur=?', [new_pwd, userId], (err, res) => {
+                    if (err) {
+                        reject("erreur lors du changement de mot de passe");
+                    } else {
+                        resolve(true);
+                    }
+
+                })
+            })
+        })
     }
 };

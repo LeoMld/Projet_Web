@@ -10,19 +10,23 @@ moment.locale('fr');
 
 
 module.exports= {
+    //controleur de la page de profil de l'admin
     profil_get: (req,res)=>{
         const flash = cookie_mdl.getFlash(req);
         cookie_mdl.destroyFlash(res);
         res.render('pages/admin/profil', {flash: flash});
 
     },
+    //si la personne essaye de saisir la route de l'accueil mais qu'elle est connectée, elle sera redirigée vers ce controleur qui redirigera lui-meme vers le profilde l'admin
     admin_get: (req,res)=> {
         res.redirect('/admin/profil')
     },
-
+    /*controleur pour la verification des annonces avant leur mise en ligne*/
     check_get: async(req,res)=> {
         try{
+            //on récupère les annonces
             const annonces_check = await admin.annonces_check();
+            //on récupère tous les publics et les catégories pour pouvoir associer les FK des annonces à un type et une catégorie
             const public_ = await home.getPublic();
             const cat = await home.getCat();
             const flash = cookie_mdl.getFlash(req);
@@ -41,6 +45,7 @@ module.exports= {
             res.render('pages/admin/check',{flash:flash});        }
 
     },
+    //Controleur lors de la validation d'une annonce par l'administrateur
     check_put: async(req,res)=> {
         try{
             const id_valid=req.body.id;
@@ -59,6 +64,7 @@ module.exports= {
         }
 
     },
+    //lorsque que l'annonce est supprimée
     check_delete: async (req,res)=> {
         try{
             const id_delete=req.body.id;
@@ -78,6 +84,7 @@ module.exports= {
 
 
     },
+    //Controleur affichant toutes les annonces en ligne
     annonces_get: async (req,res)=> {
 
         const flash = cookie_mdl.getFlash(req);
@@ -103,6 +110,29 @@ module.exports= {
             res.render('pages/admin/annonces', { flash: flash});
         }
     },
+    //supprimer une annonce
+    annonces_delete: async(req,res)=> {
+        try{
+            //on récupère l'id de l'annonce à supprimer
+            const id_delete=req.body.id;
+            //on delete
+            await admin.delete_ad(id_delete);
+            //on renvoi que tout s'est bien déroulé
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.write(JSON.stringify({ status: 200 }));
+            res.end();
+        }catch (e) {
+            const flash = {
+                type: "alert-danger",
+                code: 401,
+                mess: e,
+            };
+            cookie_mdl.setFlash(flash,res);
+            res.redirect('/admin/check');
+        }
+    },
+
+    //affichage d'une seule annonce
     view_ad_get: async (req,res)=> {
         try {
             const flash = cookie_mdl.getFlash(req);
@@ -137,6 +167,7 @@ module.exports= {
             res.redirect('/admin/annonces');
         }
     },
+    //supprimer un avis situé sous une annonce
     view_avis_delete: async (req,res)=> {
         try{
             const id_delete=req.body.id;
@@ -157,23 +188,7 @@ module.exports= {
 
     },
 
-    annonces_delete: async(req,res)=> {
-        try{
-            const id_delete=req.body.id;
-            await admin.delete_ad(id_delete);
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.write(JSON.stringify({ status: 200 }));
-            res.end();
-        }catch (e) {
-            const flash = {
-                type: "alert-danger",
-                code: 401,
-                mess: e,
-            };
-            cookie_mdl.setFlash(flash,res);
-            res.redirect('/admin/check');
-        }
-    },
+    //affichage de toutes les entreprises inscrites
     manage_ent_get: async (req,res)=> {
         try{
             const entreprises = await entreprise.get_entreprises();
@@ -193,6 +208,7 @@ module.exports= {
             res.render('pages/admin/manage_ent',{flash:flash});        }
 
     },
+    //affichage de tous les influenceurs inscrits
     manage_inf_get: async (req,res)=> {
         try{
             const influenceurs = await influenceur.get_influenceurs();
@@ -212,6 +228,7 @@ module.exports= {
             res.render('pages/admin/manage_inf',{flash:flash});        }
 
     },
+    //supprimer un influenceur
     manage_inf_del: async (req,res)=> {
         try{
             const id_delete=req.body.id;
@@ -230,6 +247,7 @@ module.exports= {
         }
 
     },
+    //supprimer une entreprise
     manage_ent_del: async (req,res)=> {
         try{
             const id_delete=req.body.id;
@@ -248,6 +266,7 @@ module.exports= {
         }
     },
 
+    //voir le profil d'un influenceur
     profil_influenceur_get: async (req,res)=> {
         try{
             const infos = await influenceur.get_infos_inf(req,res,req.params.id);
@@ -270,6 +289,8 @@ module.exports= {
             res.render('pages/admin/profil_inf', { flash: flash});
         }
     },
+
+    //voir le profil d'une entreprise
     profil_entreprise_get: async(req,res)=> {
             try{
                 const infos_entreprise = await entreprise.get_infos_ent(req,res);
@@ -280,7 +301,6 @@ module.exports= {
                 }
                 if(typeof infos_entreprise[0] != 'undefined'){
                         res.render('pages/admin/profil_entreprise',{infos:infos_entreprise, flash:flash});
-
                 }else{
                     const flash = {
                         type: "alert-danger",

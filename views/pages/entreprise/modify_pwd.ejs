@@ -1,0 +1,58 @@
+<%- include('../../components/header_entreprise') %>
+<div class="container mt-5 mb-5">
+
+    <%if(typeof flash !== 'undefined'){
+    %>
+        <div class="alert <%= flash.type %> fade-out" role="alert"><%= flash.mess%> </div>
+    <%
+    } %>
+    <h1 class="mt-5 text-center">Modifier mon mot de passe</h1>
+        <hr style="width: 50%;">
+        <div class="col text-center">
+            <div>
+                <label for="ancien_pwd">Ancien mot de passe</label>
+                <input type="password" name="ancien_pwd" class="form-control" id="ancien_pwd" placeholder="Ancien mot de passe">
+            </div>
+            <div>
+                <small>Un mot de passe valide aura <br>
+                    - de 8 à 15 caractères <br>
+                    - au moins une lettre minuscule <br>
+                    - au moins une lettre majuscule <br>
+                    - au moins un chiffre <br>
+                    - au moins un de ces caractères spéciaux: $ @ % * + - _ ! # <br>
+                    - aucun autre caractère possible <br> <br> </small>
+                <label for="new_pwd">Nouveau mot de passe</label>
+                <input type="password" name="new_pwd" id="new_pwd" class="form-control" placeholder="Nouveau mot de passe">
+            </div>
+            <div>
+                <label for="new_pwd_conf">Confirmation du nouveau mot de passe</label>
+                <input type="password" name="new_pwd_conf" class="form-control" id="new_pwd_conf" placeholder="Confirmation du nouveau mot de passe">
+            </div>
+            <div class="mt-5">
+                <button type="button" id="change_pwd" class="btn btn-primary">Changer de mot de passe</button>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#change_pwd').click(function () {
+                    $.ajax({
+                        url: '/entreprise/profil/modify_pwd',
+                        type: 'PUT',
+                        dataType: 'html',
+                        data: {ancien_pwd: document.getElementById("ancien_pwd").value,new_pwd: document.getElementById("new_pwd").value,new_pwd_conf: document.getElementById("new_pwd_conf").value},
+                        success: function () {
+                            alert("Votre mot de passe a bien été modifié")
+                        },
+                        error: function () {
+                            alert("Erreur vérifiez que: \n" +
+                                "-L'ancien mot de passe est bien le bon \n" +
+                                "-Les mots de passes correspondent \n" +
+                                "-Le nouveau mot de passe soit au bon format");
+                        }
+                    })
+                })
+            })
+        </script>
+
+</div>
+<%- include('../../components/footer') %>
