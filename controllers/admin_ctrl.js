@@ -87,7 +87,7 @@ module.exports= {
     //Controleur affichant toutes les annonces en ligne
     annonces_get: async (req,res)=> {
 
-        const flash = cookie_mdl.getFlash(req);
+        let flash = cookie_mdl.getFlash(req);
         cookie_mdl.destroyFlash(res);
         try{
             const annonces_en_ligne = await annonces.get_Annonces(req, res);
@@ -98,7 +98,7 @@ module.exports= {
             }
             res.render('pages/admin/annonces', {annonces: annonces_en_ligne, flash:flash, public:public_,cat:cat});
         }catch(e){
-            const flash={
+            flash ={
                 type: "alert-danger",
                 code: 503,
                 mess:"Désolé, le service est momentanément indisponibles",
@@ -135,7 +135,7 @@ module.exports= {
     //affichage d'une seule annonce
     view_ad_get: async (req,res)=> {
         try {
-            const flash = cookie_mdl.getFlash(req);
+            let flash = cookie_mdl.getFlash(req);
             const public_ = await home.getPublic();
             const cat = await home.getCat();
             const annonce = await annonces.get_Annonce_all(req,res,req.params.id);
@@ -148,7 +148,7 @@ module.exports= {
                 const moyenne = await annonces.get_moyenne(avis);
                 res.render('pages/admin/view_ad',{annonce : annonce,public: public_,flash:flash, cat:cat, avis:avis,moment:moment,moyenne:moyenne});
             }else {
-                const flash = {
+                flash = {
                     type: "alert-danger",
                     code: 401,
                     mess: "Cette annonce n'existe paaas",
@@ -269,6 +269,7 @@ module.exports= {
     //voir le profil d'un influenceur
     profil_influenceur_get: async (req,res)=> {
         try{
+            //on récupère ses infos grâce à son id
             const infos = await influenceur.get_infos_inf(req,res,req.params.id);
             const flash = cookie_mdl.getFlash(req);
             cookie_mdl.destroyFlash(res);
@@ -293,8 +294,9 @@ module.exports= {
     //voir le profil d'une entreprise
     profil_entreprise_get: async(req,res)=> {
             try{
+                //on récupère les infos de l'entreprise (l'id sera recupéré dans le modèle)
                 const infos_entreprise = await entreprise.get_infos_ent(req,res);
-                const flash = cookie_mdl.getFlash(req);
+                let flash = cookie_mdl.getFlash(req);
                 cookie_mdl.destroyFlash(res);
                 if(typeof flash != 'undefined') {
                     res.status(flash.code);
@@ -302,7 +304,7 @@ module.exports= {
                 if(typeof infos_entreprise[0] != 'undefined'){
                         res.render('pages/admin/profil_entreprise',{infos:infos_entreprise, flash:flash});
                 }else{
-                    const flash = {
+                     flash = {
                         type: "alert-danger",
                         code: 404,
                         mess: "Ce profil est indisponible",

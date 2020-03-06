@@ -8,6 +8,7 @@ const REGEX_MAIL = /(?:[a-z0-9!#$%&'+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~
 const REGEX_PWD = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_#])([-+!*$@%_#\w]{8,15})$/;
 
 module.exports= {
+    //afficher la page de connexion
     home_connexion_get: function(req,res) {
         //verify if a token is already in cookies
         const token = cookie_mdl.getToken(req,res);
@@ -38,7 +39,7 @@ module.exports= {
         }
 
     },
-
+    //se connecter
     home_connexion_post: async (req,res1)=>{
         //post connexion
         const mail = req.sanitize(req.body.mail);
@@ -248,9 +249,6 @@ module.exports= {
         }
     },
 
-    home_contact_get:  (req,res)=> {
-        res.send('contact');
-    },
 
     //LOGOUT
     logout:(req,res)=>{
@@ -264,6 +262,7 @@ module.exports= {
         cookie_mdl.destroyToken(req,res);
         res.redirect('/');
     },
+    //envoyer un mail grâce au formulaire de contact du footer
     send_mail_contact: async (req,res)=> {
         try{
             if (!REGEX_MAIL.test(req.body.mail) || req.body.message === '') {
@@ -288,11 +287,13 @@ module.exports= {
         }
     },
 
+    //page de vérification d'un compte avant inscription
     verify_get:(req,res)=> {
         const flash = cookie_mdl.getFlash(req);
         cookie_mdl.destroyFlash(res);
         res.render('pages/home/verify', {flash: flash});
     },
+    //vérification du compte
     verify_put:async (req,res)=> {
         try{
             let code=req.sanitize(req.body.code);

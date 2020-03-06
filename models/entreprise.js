@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 
 module.exports = {
-
+    //va voir dans les cookies si le token correspond bien à une entreprise
     is_entreprise: (req,res)=>{
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req, res);
@@ -22,6 +22,7 @@ module.exports = {
             }
         })
     },
+    //retourne les annonces liées au compte entreprise connecté
     get_my_ads: (req, res)=>{
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req,res);
@@ -44,6 +45,7 @@ module.exports = {
             }
         })
     },
+    //retourne les informations liées au compte entreprise connecté
     get_infos: (req,res)=>{
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req,res);
@@ -66,6 +68,7 @@ module.exports = {
             }
         })
     },
+    //retourne les infos liées à une entreprise passé en paramètre
     get_infos_ent: (req,res)=> {
         return new Promise((resolve, reject) => {
             connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [req.params.id], (err, result) => {
@@ -78,6 +81,7 @@ module.exports = {
 
         })
     },
+    //retroune toutes les entreprises
     get_entreprises:()=>{
         return new Promise((resolve, reject )=> {
             connexion.query('SELECT * FROM entreprise ',(err,res)=>{
@@ -89,7 +93,7 @@ module.exports = {
             });
         })
     },
-
+    //retourne les annonces liés à l'entreprise
     is_my_ad: (req, res) => {
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req,res);
@@ -112,6 +116,7 @@ module.exports = {
             }
         })
     },
+    //supprime une annonce grâce à l'id de l'annonce
     delete_id: (id_delete) =>{
         return new Promise((resolve,reject)=> {
             connexion.query('DELETE FROM annonce WHERE id_annonce=?',[id_delete],(err, result) =>{
@@ -123,6 +128,7 @@ module.exports = {
             })
         })
     },
+    //modifie une annonce
     my_ad_put: (id_annonce, titre_annonce,desc_annonce,public_annonce,cat_annonce)=>{
         return new Promise((resolve,reject)=> {
             connexion.query('UPDATE annonce SET titre_A=?, description_A=?, FK_id_Public=?, FK_id_Categorie=?, valid=? WHERE id_annonce=?',[ titre_annonce,desc_annonce,public_annonce,cat_annonce,0,id_annonce],(err, result) =>{
@@ -134,7 +140,7 @@ module.exports = {
             })
         })
     },
-
+    //modifie son profil
     profil_put:(nom, mail, tel, desc,url,id)=> {
         return new Promise((resolve,reject)=> {
             connexion.query('UPDATE entreprise SET nom_E=?, mail_E=?,tel_E=?, desc_E=?,site_web=? WHERE id_Entreprise=?',[ nom, mail, tel, desc,url,id],(err, result) =>{
@@ -146,6 +152,7 @@ module.exports = {
             })
         })
     },
+    //vérifie si le mot de passe passé en paramètre correspond au mot de passe du compte
     mdp_ok:(req, res, userId, ancien_pwd)=> {
         return new Promise((resolve, reject) => {
             connexion.query('SELECT pwd_E FROM entreprise WHERE id_Entreprise=?', [userId], (err, res) => {
@@ -168,6 +175,7 @@ module.exports = {
             })
         })
     },
+    //modifie le mot de passe de l'entreprise par le mot de passe passé en paramètre
     modify_mdp:(req, res, idUser, new_pwd)=> {
         bcrypt.hash(new_pwd, 10, function(err, new_pwd) {
             return new Promise((resolve, reject) => {

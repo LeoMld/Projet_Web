@@ -2,10 +2,10 @@ const cookie_mdl = require('../services/cookie');
 let connexion = require('../config/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
 
 
 module.exports = {
+    //connecte l'utilisateur si les infos sont bonnes et le connecte en tant qu'influenceur/admin/entreprise en fonction
     connect: async (req,res1,mail,pwd) =>{
       return new Promise((resolve,reject)=>{
           if(mail !== undefined && pwd !== undefined){
@@ -146,7 +146,7 @@ module.exports = {
         });
     }),
 
-
+    //retourne tous les type de public possibles
     getPublic: ()=> {
         return new Promise((resolve, reject )=> {
             connexion.query('SELECT type_P FROM public ',(err,res)=>{
@@ -160,6 +160,7 @@ module.exports = {
 
 
     },
+    //retourne toutes les catégories possibles
     getCat: ()=> {
         return new Promise((resolve, reject )=> {
             connexion.query('SELECT description_C FROM categorie ',(err,res)=>{
@@ -172,6 +173,7 @@ module.exports = {
         })
     },
 
+    //update un utilisateur en vérifié si le code passé en paramètre correspond
     verify_user:(code)=> {
         return new Promise((resolve,reject)=> {
             connexion.query('UPDATE influenceur SET verify=? WHERE code=?',[1,code],(err, result) =>{
@@ -200,6 +202,7 @@ module.exports = {
 
         })
     },
+    //retourne le code de confirmation lié au mail
     getcode:(mail)=> {
         return new Promise((resolve, reject )=> {
             connexion.query('SELECT code FROM influenceur WHERE mail_I=? ',[mail],(err,res)=> {

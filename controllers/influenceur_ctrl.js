@@ -10,6 +10,7 @@ moment.locale('fr');
 
 
 module.exports= {
+    //afficher le profil de l'influenceur connecté
     profil_get: async (req,res)=>{
         try{
             const infos = await influenceur.get_infos(req,res);
@@ -35,10 +36,11 @@ module.exports= {
 
     },
 
-
+    //redirige vers le profil si on tente d'acceder à la connexion ou bien à l'inscription alors que l'on est connecté
     inf_get: (req,res)=> {
         res.redirect('/influenceur/profil')
     },
+    //afficher les annonces en ligne
     annonces_get: async(req,res)=>{
         const flash = cookie_mdl.getFlash(req);
         cookie_mdl.destroyFlash(res);
@@ -63,6 +65,7 @@ module.exports= {
             res.render('pages/influenceur/annonces', { flash: flash});
         }
     },
+    //visionner une annonce
     view_ad_get: async (req,res)=> {
         try {
             const flash = cookie_mdl.getFlash(req);
@@ -99,6 +102,7 @@ module.exports= {
             res.redirect('/influenceur/annonces');
         }
     },
+    //ajouter un avis à une annonce
     view_ad_post: async (req,res)=> {
         try {
             const rating = req.sanitize(req.body.rating);
@@ -121,7 +125,7 @@ module.exports= {
             res.redirect('/influenceur/annonces/'+req.params.id);
         }
     },
-
+    //afficher le profil d'une entreprise
     profil_entreprise: async (req,res)=> {
         try{
             const infos_entreprise = await entreprise.get_infos_ent(req,res);
@@ -153,6 +157,7 @@ module.exports= {
             res.redirect('/influenceur/annonces');
         }
         },
+    //afficher les entreprises partenaires
     partenaires_get: async(req,res)=> {
         const flash = cookie_mdl.getFlash(req);
         cookie_mdl.destroyFlash(res);
@@ -175,6 +180,7 @@ module.exports= {
             res.render('pages/influenceur/partenaire', { flash: flash});
         }
     },
+    //afficher la page de modification de son profil
     modify_profil_get: async (req,res)=> {
         try{
             const infos = await influenceur.get_infos(req,res);
@@ -196,6 +202,7 @@ module.exports= {
             res.redirect('/influenceur/profil');
         }
     },
+    //modifier son profil
     modify_profil_put: async (req,res)=> {
         try{
             const REGEX_MAIL = /(?:[a-z0-9!#$%&'+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
@@ -224,6 +231,7 @@ module.exports= {
         }
 
     },
+    //postuler à une annonce
     ad_postuler_post: async (req,res)=> {
         try{
             const id_post=req.body.id;
@@ -235,7 +243,7 @@ module.exports= {
             console.log('erreur lors de la postulation')
         }
     },
-
+    //afficher la page de modification d'un mot de passe
     modify_pwd_get: async (req,res)=> {
         try{
             const flash = cookie_mdl.getFlash(req);
@@ -257,6 +265,7 @@ module.exports= {
             res.render('pages/influenceur/profil', { flash: flash});
         }
     },
+    //modifier son mot de passe
     modify_pwd_put: async (req,res)=> {
         try{
             const REGEX_PWD = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_#])([-+!*$@%_#\w]{8,15})$/;

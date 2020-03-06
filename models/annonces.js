@@ -3,6 +3,7 @@ const cookie_mdl = require('../services/cookie');
 const jwt = require('jsonwebtoken');
 
 module.exports= {
+    //retourne les annonces déja validées
     get_Annonces: ()=>{
         return new Promise((resolve,reject)=> {
             connexion.query('SELECT * FROM annonce WHERE valid=?',[1],(err, result) =>{
@@ -15,6 +16,7 @@ module.exports= {
 
         })
     },
+    //retourne une annonce grâce à son id, seulement si celle ci est validée
     get_Annonce: (req,res,id)=>{
         return new Promise((resolve,reject)=> {
             connexion.query('SELECT * FROM annonce WHERE id_annonce=? AND valid=?',[id,1],(err, result) =>{
@@ -38,6 +40,7 @@ module.exports= {
             })
         })
     },
+    //créer une annonce
     create_Annonce: async (titre,desc,public_,cat,req,res)=>{
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req, res);
@@ -59,7 +62,7 @@ module.exports= {
         })
     },
 
-
+    //récupérer les avis liés à une annonce
     get_Avis:(req, res, idA)=> {
 
         return new Promise((resolve,reject)=> {
@@ -72,6 +75,7 @@ module.exports= {
             })
         })
     },
+    //créer un avis correspondant à une annonce
     create_Avis:(req,res,note,desc,idA)=> {
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req, res);
@@ -92,6 +96,7 @@ module.exports= {
 
         })
     },
+    //récupérer la moyenne d'un avis
     get_moyenne: (avis)=> {
         if(typeof avis[0] != 'undefined'){
             let somme=0;
@@ -104,6 +109,7 @@ module.exports= {
             return null;
         }
     },
+    //indique si il y a des avis liés à une annonce
     nb_Avis:(req,res)=> {
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req, res);
@@ -129,6 +135,7 @@ module.exports= {
 
         })
     },
+    //renvoi les influenceurs intéressés par une annonce
     get_influenceurs_interet:(req, res)=> {
         return new Promise((resolve,reject)=> {
             const token = cookie_mdl.getToken(req, res);
