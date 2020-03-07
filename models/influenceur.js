@@ -25,7 +25,7 @@ module.exports = {
     //retourne tous les influenceurs
     get_influenceurs:()=>{
         return new Promise((resolve,reject)=> {
-            connexion.query('SELECT * FROM influenceur', (err, result) => {
+            connexion.query('SELECT * FROM influenceur WHERE admin=?',[0], (err, result) => {
                 if (err || typeof result == 'undefined') {
                     reject("Le service est momentanément indisponible");
                 } else {
