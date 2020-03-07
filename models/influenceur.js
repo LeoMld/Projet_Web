@@ -147,11 +147,11 @@ module.exports = {
     //vérifie si le mot de passe passé en paramètre correspond au mot de passe du compte
     pwd_ok:(req, res, userId, ancien_pwd)=> {
         return new Promise((resolve, reject) => {
-            connexion.query('SELECT pwd_I FROM influenceur WHERE id_Influenceur=?', [userId], (err, res) => {
+            connexion.query('SELECT pwd_I FROM influenceur WHERE id_Influenceur=?', [userId], (err, res1) => {
                 if (err) {
                     reject("erreur lors du changement de mot de passe");
                 } else {
-                    bcrypt.compare(ancien_pwd, res[0].pwd_I, function (err1, result) {
+                    bcrypt.compare(ancien_pwd, res1[0].pwd_I, function (err1, result) {
                         if(err1){
                             resolve(false);
                         }

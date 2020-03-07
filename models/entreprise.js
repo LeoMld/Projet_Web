@@ -155,11 +155,11 @@ module.exports = {
     //vérifie si le mot de passe passé en paramètre correspond au mot de passe du compte
     mdp_ok:(req, res, userId, ancien_pwd)=> {
         return new Promise((resolve, reject) => {
-            connexion.query('SELECT pwd_E FROM entreprise WHERE id_Entreprise=?', [userId], (err, res) => {
+            connexion.query('SELECT pwd_E FROM entreprise WHERE id_Entreprise=?', [userId], (err, res1) => {
                 if (err) {
                     reject("erreur lors du changement de mot de passe");
                 } else {
-                    bcrypt.compare(ancien_pwd, res[0].pwd_E, function (err1, result) {
+                    bcrypt.compare(ancien_pwd, res1[0].pwd_E, function (err1, result) {
                         if(err1){
                             resolve(false);
                         }

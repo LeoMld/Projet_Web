@@ -268,7 +268,7 @@ module.exports= {
     //modifier son mot de passe
     modify_pwd_put: async (req,res)=> {
         try{
-            const REGEX_PWD = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_#])([-+!*$@%_#\w]{8,15})$/;
+            const REGEX_PWD = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[-+!*$@%_#])([-+!*$@%_#\w]{8,35})$/;
             const ancien_pwd = req.sanitize(req.body.ancien_pwd);
             const new_pwd = req.sanitize(req.body.new_pwd);
             const new_pwd_conf = req.sanitize(req.body.new_pwd_conf);

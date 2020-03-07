@@ -15,18 +15,18 @@ module.exports = {
                       reject("Le service est indisponible");
                   }else if(res[0] === undefined){
                       //if there is nothing in influenceur table go search in entreprise table
-                      connexion.query('SELECT * FROM entreprise WHERE mail_E=?',[mail], (err1, res) => {
+                      connexion.query('SELECT * FROM entreprise WHERE mail_E=?',[mail], (err1, res0) => {
                           if (err1) {
                               reject("Le service est indisponible");
                           } else{
 
-                              if(res[0] !== undefined){
+                              if(res0[0] !== undefined){
                                   //check if it's the good password and send user data or an empty table if it's the wrong password
-                                  bcrypt.compare(pwd, res[0].pwd_E, function(err2, result2) {
+                                  bcrypt.compare(pwd, res0[0].pwd_E, function(err2, result2) {
                                       if(result2){
-                                          if(res[0].verify){
+                                          if(res0[0].verify){
                                               //generate a token with type 2 (entreprise)
-                                              const token = jwt.sign({userId: res[0].id_Entreprise, type: 2}, cookie_mdl.getKey(),{expiresIn: '1h'},);
+                                              const token = jwt.sign({userId: res0[0].id_Entreprise, type: 2}, cookie_mdl.getKey(),{expiresIn: '1h'},);
                                               cookie_mdl.setToken(token,res1);
                                               resolve(1);
                                           }else{
@@ -119,9 +119,9 @@ module.exports = {
     register_E: (name, mail, pwd, code)=> new Promise((resolve,reject) => {
         bcrypt.hash(pwd, 10, function(err, hash) {
             //First, search in influenceur table
-            connexion.query('SELECT mail_I FROM influenceur WHERE mail_I=? ',[mail], (err, res) =>{
-                if(err){
-                    reject(err);
+            connexion.query('SELECT mail_I FROM influenceur WHERE mail_I=? ',[mail], (err0, res) =>{
+                if(err0){
+                    reject(err0);
                     //if there is nothing in influenceur table, let's search in entreprise table
                 }else if (res[0]===undefined){
                     connexion.query('SELECT mail_E FROM entreprise WHERE mail_E=? ',[mail], (err1, res1) =>{
