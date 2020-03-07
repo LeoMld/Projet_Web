@@ -31,8 +31,8 @@ module.exports = {
                     if (err) {
                         reject(1);
                     } else {
-                        connexion.query('SELECT * FROM annonce WHERE FK_id_Entreprise=?', [infos_Token.userId], (err, result) => {
-                            if (err || typeof result == 'undefined') {
+                        connexion.query('SELECT * FROM annonce WHERE FK_id_Entreprise=?', [infos_Token.userId], (err1, result) => {
+                            if (err1 || typeof result == 'undefined') {
                                 reject(2);
                             } else {
                                 resolve(result);
@@ -54,8 +54,8 @@ module.exports = {
                     if (err) {
                         reject("erreur, vous avez été déconnecté");
                     } else {
-                        connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [infos_Token.userId], (err, result) => {
-                            if (err || typeof result[0] == 'undefined') {
+                        connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [infos_Token.userId], (err1, result) => {
+                            if (err1 || typeof result[0] == 'undefined') {
                                 reject("Le service est momentanément indisponible");
                             } else {
                                 resolve(result);
@@ -71,8 +71,8 @@ module.exports = {
     //retourne les infos liées à une entreprise passé en paramètre
     get_infos_ent: (req,res)=> {
         return new Promise((resolve, reject) => {
-            connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [req.params.id], (err, result) => {
-                if (err || typeof result[0] == 'undefined') {
+            connexion.query('SELECT * FROM entreprise WHERE id_Entreprise=?', [req.params.id], (err1, result) => {
+                if (err1 || typeof result[0] == 'undefined') {
                     reject("Le service est momentanément indisponible");
                 } else {
                     resolve(result);
@@ -102,8 +102,8 @@ module.exports = {
                     if (err) {
                         reject("erreur, vous avez été déconnecté");
                     } else {
-                        connexion.query('SELECT * FROM annonce WHERE id_annonce=? AND FK_id_Entreprise=?', [req.params.id, infos_Token.userId], (err, result) => {
-                            if (err || typeof result[0] == 'undefined') {
+                        connexion.query('SELECT * FROM annonce WHERE id_annonce=? AND FK_id_Entreprise=?', [req.params.id, infos_Token.userId], (err1, result) => {
+                            if (err1 || typeof result[0] == 'undefined') {
                                 reject("Ce n'est pas votre annonce");
                             } else {
                                 resolve(result);
@@ -159,8 +159,8 @@ module.exports = {
                 if (err) {
                     reject("erreur lors du changement de mot de passe");
                 } else {
-                    bcrypt.compare(ancien_pwd, res[0].pwd_E, function (err, result) {
-                        if(err){
+                    bcrypt.compare(ancien_pwd, res[0].pwd_E, function (err1, result) {
+                        if(err1){
                             resolve(false);
                         }
                         else if (result) {
@@ -179,8 +179,8 @@ module.exports = {
     modify_mdp:(req, res, idUser, new_pwd)=> {
         bcrypt.hash(new_pwd, 10, function(err, new_pwd) {
             return new Promise((resolve, reject) => {
-                connexion.query('UPDATE entreprise SET pwd_E=? WHERE id_Entreprise=?', [new_pwd, idUser], (err, res) => {
-                    if (err) {
+                connexion.query('UPDATE entreprise SET pwd_E=? WHERE id_Entreprise=?', [new_pwd, idUser], (err1) => {
+                    if (err1) {
                         reject("erreur lors du changement de mot de passe");
                     } else {
                         resolve(true);

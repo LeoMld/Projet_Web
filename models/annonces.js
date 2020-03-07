@@ -47,8 +47,8 @@ module.exports= {
             if (typeof token !== 'undefined'){
                 jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
                     const id = infos_Token.userId;
-                    connexion.query('INSERT INTO annonce SET titre_A=?, description_A=?,FK_id_Entreprise=?,FK_id_Public=?,FK_id_Categorie=?',[titre,desc,id,public_,cat],(err,result) => {
-                        if (err || typeof result == 'undefined') {
+                    connexion.query('INSERT INTO annonce SET titre_A=?, description_A=?,FK_id_Entreprise=?,FK_id_Public=?,FK_id_Categorie=?',[titre,desc,id,public_,cat],(err1,result) => {
+                        if (err1 || typeof result == 'undefined') {
                             reject("Désolé, le service est momentanément indisponible");
                         } else {
                             resolve(true);
@@ -82,8 +82,8 @@ module.exports= {
             if (typeof token !== 'undefined'){
                 jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
                     const id = infos_Token.userId;
-                    connexion.query('INSERT INTO avis SET note_A=?, desc_A=?,FK_id_Annonce=?,FK_id_Influenceur=?',[note,desc,idA,id],(err,result) => {
-                        if (err || typeof result == 'undefined') {
+                    connexion.query('INSERT INTO avis SET note_A=?, desc_A=?,FK_id_Annonce=?,FK_id_Influenceur=?',[note,desc,idA,id],(err1,result) => {
+                        if (err1 || typeof result == 'undefined') {
                             reject("Désolé, le service est momentanément indisponible");
                         } else {
                             resolve(true);
@@ -116,8 +116,8 @@ module.exports= {
             if (typeof token !== 'undefined'){
                 jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
                     const id = infos_Token.userId;
-                    connexion.query('SELECT * FROM avis WHERE FK_id_Influenceur=? AND FK_id_Annonce=?',[id,req.params.id],(err,result) => {
-                        if (err || typeof result == 'undefined') {
+                    connexion.query('SELECT * FROM avis WHERE FK_id_Influenceur=? AND FK_id_Annonce=?',[id,req.params.id],(err1,result) => {
+                        if (err1 || typeof result == 'undefined') {
                             reject("Désolé, le service est momentanément indisponible");
                         } else {
                             if(typeof result[0] == 'undefined'){
@@ -143,8 +143,8 @@ module.exports= {
                 jwt.verify(token, cookie_mdl.getKey(), (err, infos_Token) => {
                     const idE = infos_Token.userId;
                     const idA = req.params.id;
-                    connexion.query('SELECT * FROM influenceur LEFT JOIN postuler ON influenceur.id_influenceur = postuler.FK_id_influenceur INNER JOIN annonce ON postuler.FK_id_annonce=annonce.id_annonce WHERE annonce.FK_id_entreprise=? AND annonce.id_annonce=? AND annonce.valid=?',[idE,idA,1],(err,result) => {
-                        if (err || typeof result == 'undefined') {
+                    connexion.query('SELECT * FROM influenceur LEFT JOIN postuler ON influenceur.id_influenceur = postuler.FK_id_influenceur INNER JOIN annonce ON postuler.FK_id_annonce=annonce.id_annonce WHERE annonce.FK_id_entreprise=? AND annonce.id_annonce=? AND annonce.valid=?',[idE,idA,1],(err1,result) => {
+                        if (err1 || typeof result == 'undefined') {
                             reject("Désolé, le service est momentanément indisponible");
                         } else {
                             resolve(result);

@@ -170,9 +170,9 @@ module.exports = {
     },
     //modifie le mot de passe de l'influenceur par le mot de passe passé en paramètre
     modify_pwd:(req, res, userId, new_pwd)=> {
-        bcrypt.hash(new_pwd, 10, function(err, new_pwd) {
+        bcrypt.hash(new_pwd, 10, function(err, hash) {
             return new Promise((resolve, reject) => {
-                connexion.query('UPDATE influenceur SET pwd_I=? WHERE id_Influenceur=?', [new_pwd, userId], (err, res) => {
+                connexion.query('UPDATE influenceur SET pwd_I=? WHERE id_Influenceur=?', [hash, userId], (err) => {
                     if (err) {
                         reject("erreur lors du changement de mot de passe");
                     } else {

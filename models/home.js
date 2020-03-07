@@ -15,15 +15,15 @@ module.exports = {
                       reject("Le service est indisponible");
                   }else if(res[0] === undefined){
                       //if there is nothing in influenceur table go search in entreprise table
-                      connexion.query('SELECT * FROM entreprise WHERE mail_E=?',[mail], (err, res) => {
-                          if (err) {
+                      connexion.query('SELECT * FROM entreprise WHERE mail_E=?',[mail], (err1, res) => {
+                          if (err1) {
                               reject("Le service est indisponible");
                           } else{
 
                               if(res[0] !== undefined){
                                   //check if it's the good password and send user data or an empty table if it's the wrong password
-                                  bcrypt.compare(pwd, res[0].pwd_E, function(err, result) {
-                                      if(result){
+                                  bcrypt.compare(pwd, res[0].pwd_E, function(err2, result2) {
+                                      if(result2){
                                           if(res[0].verify){
                                               //generate a token with type 2 (entreprise)
                                               const token = jwt.sign({userId: res[0].id_Entreprise, type: 2}, cookie_mdl.getKey(),{expiresIn: '1h'},);
@@ -46,8 +46,8 @@ module.exports = {
                   } else{
                       //if there is an influenceur in db who matches
                       //check if it's the good password and send user data or an empty table if it's the wrong password
-                      bcrypt.compare(pwd, res[0].pwd_I, function(err, result) {
-                          if(result){
+                      bcrypt.compare(pwd, res[0].pwd_I, function(err3, result3) {
+                          if(result3){
                               let token;
                               if(res[0].admin===1){
                                   //generate a token with type 0 (admin)
@@ -89,24 +89,24 @@ module.exports = {
                     //if there is nothing in influenceur table, let's search in entreprise table
                 }else if (res[0]===undefined){
                     console.log(res);
-                    connexion.query('SELECT mail_E FROM entreprise WHERE mail_E=? ',[mail], (err, res) =>{
-                        if(err) {
+                    connexion.query('SELECT mail_E FROM entreprise WHERE mail_E=? ',[mail], (err1, res1) =>{
+                        if(err1) {
                             reject(err);
                         }else{
                             //if there is also nothing in entreprise table we can insert, this user is not already in database
-                            if(res[0] === undefined){
+                            if(res1[0] === undefined){
                                 connexion.query('INSERT INTO influenceur SET nom_I=?, prenom_I=?, date_naissance_I=?, nom_Inf=?,FK_id_Public=?,mail_I=?,pwd_I=?,code=?',[surname,name,date,nom_Inf,public_,mail,hash,code]);
-                                resolve(res);
+                                resolve(res1);
                             }else{
                                 console.log("erreur, l'utilisateur est deja dans la bdd ");
-                                resolve(res);
+                                resolve(res1);
                             }
                         }
                     })
                     //else we can send the res who will be an empty table []
                 }else {
                     console.log("erreur, l'utilisateur est deja dans la bdd ");
-                    resolve(res);
+                    resolve(res1);
                 }
             });
         });
@@ -124,17 +124,17 @@ module.exports = {
                     reject(err);
                     //if there is nothing in influenceur table, let's search in entreprise table
                 }else if (res[0]===undefined){
-                    connexion.query('SELECT mail_E FROM entreprise WHERE mail_E=? ',[mail], (err, res) =>{
-                        if(err) {
+                    connexion.query('SELECT mail_E FROM entreprise WHERE mail_E=? ',[mail], (err1, res1) =>{
+                        if(err1) {
                             reject(err);
                         }else{
                             //if there is also nothing in entreprise table we can insert, this user is not already in database
-                            if(res[0] === undefined){
+                            if(res1[0] === undefined){
                                 connexion.query('INSERT INTO entreprise SET nom_E=?, mail_E=?,pwd_E=?,code=?',[name,mail,hash,code]);
-                                resolve(res);
+                                resolve(res1);
                             }else{
                                 console.log("erreur, l'utilisateur est deja dans la bdd ");
-                                resolve(res);
+                                resolve(res1);
                             }
                         }
                     })
@@ -183,11 +183,11 @@ module.exports = {
                     if(result.affectedRows > 0){
                         resolve(true);
                     }else{
-                        connexion.query('UPDATE entreprise SET verify=? WHERE code=?',[1,code],(err, result) =>{
-                            if(err || typeof result == 'undefined') {
+                        connexion.query('UPDATE entreprise SET verify=? WHERE code=?',[1,code],(err1, result1) =>{
+                            if(err1 || typeof result1 == 'undefined') {
                                 reject("Désolé, le service est momentanément indisponible");
                             }else{
-                                if(result.affectedRows > 0){
+                                if(result1.affectedRows > 0){
                                     resolve(true);
                                 }else{
                                     resolve(false);
@@ -212,11 +212,11 @@ module.exports = {
                     if (typeof res[0] != 'undefined') {
                         resolve(res);
                     } else {
-                        connexion.query('SELECT code FROM entreprise WHERE mail_E=? ', [mail], (err, res) => {
-                            if (err) {
+                        connexion.query('SELECT code FROM entreprise WHERE mail_E=? ', [mail], (err1, res1) => {
+                            if (err1) {
                                 reject("Désolé, le service est momentanément indisponible");
                             } else {
-                                resolve(res);
+                                resolve(res1);
                             }
                         })
                     }
