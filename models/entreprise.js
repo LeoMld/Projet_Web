@@ -177,9 +177,9 @@ module.exports = {
     },
     //modifie le mot de passe de l'entreprise par le mot de passe passé en paramètre
     modify_mdp:(req, res, idUser, new_pwd)=> {
-        bcrypt.hash(new_pwd, 10, function(err, new_pwd) {
+        bcrypt.hash(new_pwd, 10, function(err, hash) {
             return new Promise((resolve, reject) => {
-                connexion.query('UPDATE entreprise SET pwd_E=? WHERE id_Entreprise=?', [new_pwd, idUser], (err1) => {
+                connexion.query('UPDATE entreprise SET pwd_E=? WHERE id_Entreprise=?', [hash, idUser], (err1) => {
                     if (err1) {
                         reject("erreur lors du changement de mot de passe");
                     } else {

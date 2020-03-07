@@ -43,8 +43,8 @@ module.exports = {
                     if (err) {
                         reject("erreur, vous avez été déconnecté");
                     } else {
-                        connexion.query('SELECT * FROM influenceur WHERE id_Influenceur=?', [infos_Token.userId], (err, result) => {
-                            if (err || typeof result == 'undefined') {
+                        connexion.query('SELECT * FROM influenceur WHERE id_Influenceur=?', [infos_Token.userId], (err1, result) => {
+                            if (err1 || typeof result == 'undefined') {
                                 reject("Le service est momentanément indisponible");
                             } else {
                                 resolve(result);
@@ -90,21 +90,21 @@ module.exports = {
                     if (err) {
                         reject("erreur, vous avez été déconnecté");
                     } else {
-                        connexion.query('SELECT * FROM postuler WHERE FK_id_annonce=? AND FK_id_influenceur=?', [id_post,infos_Token.userId], (err, result) => {
-                            if (err || typeof result == 'undefined') {
+                        connexion.query('SELECT * FROM postuler WHERE FK_id_annonce=? AND FK_id_influenceur=?', [id_post,infos_Token.userId], (err1, result) => {
+                            if (err1 || typeof result == 'undefined') {
                                 reject("Le service est momentanément indisponible");
                             } else {
                                 if(typeof result[0] == 'undefined'){
-                                    connexion.query('INSERT INTO postuler SET FK_id_annonce=?, FK_id_Influenceur=?', [id_post,infos_Token.userId], (err, result) => {
-                                        if (err || typeof result == 'undefined') {
+                                    connexion.query('INSERT INTO postuler SET FK_id_annonce=?, FK_id_Influenceur=?', [id_post,infos_Token.userId], (err2, result2) => {
+                                        if (err2 || typeof result2 == 'undefined') {
                                             reject("Le service est momentanément indisponible");
                                         } else {
                                             resolve(true);
                                         }
                                     })
                                 }else{
-                                    connexion.query('DELETE FROM postuler WHERE FK_id_annonce=? AND FK_id_Influenceur=?', [id_post,infos_Token.userId], (err, result) => {
-                                        if (err || typeof result == 'undefined') {
+                                    connexion.query('DELETE FROM postuler WHERE FK_id_annonce=? AND FK_id_Influenceur=?', [id_post,infos_Token.userId], (err3, result3) => {
+                                        if (err3 || typeof result3 == 'undefined') {
                                             reject("Le service est momentanément indisponible");
                                         } else {
                                             resolve(true);
@@ -130,8 +130,8 @@ module.exports = {
                     if (err) {
                         reject("erreur, vous avez été déconnecté");
                     } else {
-                        connexion.query('SELECT * FROM postuler WHERE FK_id_annonce=? AND FK_id_influenceur=?', [id, infos_Token.userId], (err, result) => {
-                            if (err || typeof result == 'undefined') {
+                        connexion.query('SELECT * FROM postuler WHERE FK_id_annonce=? AND FK_id_influenceur=?', [id, infos_Token.userId], (err1, result) => {
+                            if (err1 || typeof result == 'undefined') {
                                 reject("Le service est momentanément indisponible");
                             } else if(typeof result[0] != 'undefined') {
                                 resolve(true);
@@ -151,8 +151,8 @@ module.exports = {
                 if (err) {
                     reject("erreur lors du changement de mot de passe");
                 } else {
-                    bcrypt.compare(ancien_pwd, res[0].pwd_I, function (err, result) {
-                        if(err){
+                    bcrypt.compare(ancien_pwd, res[0].pwd_I, function (err1, result) {
+                        if(err1){
                             resolve(false);
                         }
                         else if (result) {
@@ -172,8 +172,8 @@ module.exports = {
     modify_pwd:(req, res, userId, new_pwd)=> {
         bcrypt.hash(new_pwd, 10, function(err, hash) {
             return new Promise((resolve, reject) => {
-                connexion.query('UPDATE influenceur SET pwd_I=? WHERE id_Influenceur=?', [hash, userId], (err) => {
-                    if (err) {
+                connexion.query('UPDATE influenceur SET pwd_I=? WHERE id_Influenceur=?', [hash, userId], (err1) => {
+                    if (err1) {
                         reject("erreur lors du changement de mot de passe");
                     } else {
                         resolve(true);
