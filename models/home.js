@@ -83,15 +83,15 @@ module.exports = {
         //hash the password
         bcrypt.hash(pwd, 10, function(err, hash) {
             //First, search in influenceur table if there is already an user who has the same email
-            connexion.query('SELECT mail_I FROM influenceur WHERE mail_I=? ',[mail], (err, res) =>{
-                if(err){
-                    reject(err);
+            connexion.query('SELECT mail_I FROM influenceur WHERE mail_I=? ',[mail], (err0, res) =>{
+                if(err0){
+                    reject(err0);
                     //if there is nothing in influenceur table, let's search in entreprise table
                 }else if (res[0]===undefined){
                     console.log(res);
                     connexion.query('SELECT mail_E FROM entreprise WHERE mail_E=? ',[mail], (err1, res1) =>{
                         if(err1) {
-                            reject(err);
+                            reject(err1);
                         }else{
                             //if there is also nothing in entreprise table we can insert, this user is not already in database
                             if(res1[0] === undefined){
@@ -106,7 +106,7 @@ module.exports = {
                     //else we can send the res who will be an empty table []
                 }else {
                     console.log("erreur, l'utilisateur est deja dans la bdd ");
-                    resolve(res1);
+                    resolve(res);
                 }
             });
         });
@@ -126,7 +126,7 @@ module.exports = {
                 }else if (res[0]===undefined){
                     connexion.query('SELECT mail_E FROM entreprise WHERE mail_E=? ',[mail], (err1, res1) =>{
                         if(err1) {
-                            reject(err);
+                            reject(err1);
                         }else{
                             //if there is also nothing in entreprise table we can insert, this user is not already in database
                             if(res1[0] === undefined){
