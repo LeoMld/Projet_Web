@@ -1,14 +1,12 @@
 const mysql = require('mysql');
 
-/*
 const connection = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
-*/
-const connection = mysql.createPool({
+/*const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
     database: 'Projet_Web'
-});
+});*/
 
 connection.getConnection((err, connect) => {
     if(err)
