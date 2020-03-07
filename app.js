@@ -5,16 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const expressSanitizer = require('express-sanitizer');
-
-
-//to use javascript and jquery
-/*const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const { window } = new JSDOM();
-const { document } = (new JSDOM('')).window;
-global.document = document;
-const $ = jQuery = require('jquery')(window);
-global.$ = $;*/
+const dotenv = require('dotenv');
+dotenv.config();
 
 const homeRouter = require('./routes/home');
 const influenceurRouter = require('./routes/influenceur');

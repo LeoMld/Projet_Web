@@ -2,11 +2,12 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'startconvey.supp@gmail.com',
-        pass: 'b0ws1999'
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD
     }
 });
 module.exports = {
+    //envoi du mail de confirmation lors de l'inscription
     send_conf_mail: async (req, res,mail,code)=> {
         return new Promise((resolve, reject )=> {
             try {
@@ -30,45 +31,11 @@ module.exports = {
         })
 
     },
-    /*send_mail_C: async (req,res)=> {
-        try{
-
-            if (!REGEX_MAIL.test(req.body.mail) || req.body.message == '') {
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.write(JSON.stringify({ status: 400 }));
-                res.end();
-            }else{
-                const mailOptions = {
-                    from: req.body.mail,
-                    to: "lele.mollard@gmail.com",
-                    subject: "Contact",
-                    text: req.body.message,
-                    html: '<b>' + req.body.message + '</b>'
-                };
-                await transporter.sendMail(mailOptions, function(error, info){
-                    if(error){
-                        return console.log(error);
-                    }
-                    console.log('Message sent: ' + info.response);
-                });
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.write(JSON.stringify({ status: 200 }));
-                res.end();
-            }
-        }catch (e) {
-            const flash = {
-                type: "alert-danger",
-                code: 401,
-                mess: e,
-            };
-            cookie_mdl.setFlash(flash,res);
-            res.redirect('/');
-        }
-    },*/
+//envoi du mail de contact en footer
     send_mail_C: async (req)=> {
         const mailOptions = {
             from: req.body.mail,
-            to: "lele.mollard@gmail.com",
+            to: process.env.MAIL_DEST,
             subject: "Contact",
             text: req.body.message,
             html: '<b>'+'Message provenant de: ' + req.body.mail+'<br>'+ req.body.message + '</b>'
@@ -80,6 +47,7 @@ module.exports = {
             console.log('Message sent: ' + info.response);
         });
     },
+    //retourne un code de longueur 8 généré aléatoirement
     create_code: async ()=> {
 
         let code = '';

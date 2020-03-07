@@ -275,6 +275,11 @@ module.exports= {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.write(JSON.stringify({ status: 200 }));
                 res.end();
+                res.writeHead(503, { 'Content-Type': 'application/json' });
+                res.write(JSON.stringify({ status: 503 }));
+                res.end();
+
+
             }
         }catch (e) {
             const flash = {
