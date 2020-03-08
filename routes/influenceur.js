@@ -6,6 +6,7 @@ const cookie_mdl = require('../services/cookie');
 const influenceur = require('../models/influenceur');
 const influenceur_ctrl = require('../controllers/influenceur_ctrl');
 
+//Vérifie que la personne connectée est bien un influenceur à chaque requête
 
 router.use( async (req,res,next)=>{
     try {

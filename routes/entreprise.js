@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const entreprise_ctrl = require('../controllers/entreprise_ctrl');
 
+//Vérifie que la personne connectée est bien une entreprise à chaque requête
 router.use( async (req,res,next)=>{
     try {
         await entreprise.is_entreprise(req, res);

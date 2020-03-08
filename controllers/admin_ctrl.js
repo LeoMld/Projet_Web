@@ -64,7 +64,7 @@ module.exports= {
         }
 
     },
-    //lorsque que l'annonce est supprimée
+    //Supression de l'annonce
     check_delete: async (req,res)=> {
         try{
             const id_delete=req.body.id;

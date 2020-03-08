@@ -5,9 +5,8 @@ const cookie_mdl = require('../services/cookie');
 const admin = require('../models/admin');
 const router = express.Router();
 const admin_ctrl = require('../controllers/admin_ctrl');
-const entreprise_ctrl = require('../controllers/entreprise_ctrl');
-const influenceur_ctrl = require('../controllers/influenceur_ctrl');
 
+//Vérifie que la personne connectée est bien un admin à chaque requête
 
 router.use( async (req,res,next)=>{
     try {
