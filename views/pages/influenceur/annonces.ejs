@@ -12,14 +12,14 @@
             <input id="search" class="form-control col-md-2" type="text" placeholder="Rechercher" aria-label="Search">
         </div>
 
-    <div id="liste">
+
 
 
     <%if(typeof annonces !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
         for (let i = 0; i < annonces.length; i++){
         %>
-
-            <a href="/influenceur/annonces/<%= annonces[i].id_annonce%>" class="card mb-3 shadow-sm overflow-hidden " style="max-width: 100%; max-height: 250px; text-decoration: none">
+        <div class="card mb-3">
+            <a href="/influenceur/annonces/<%= annonces[i].id_annonce%>" class=" shadow-sm overflow-hidden " style="max-width: 100%; max-height: 250px; text-decoration: none">
                 <div class="row no-gutters">
 
                     <div class="col ">
@@ -29,19 +29,18 @@
                             <p class="card-text ">Catégorie : <%= cat[annonces[i].FK_id_Categorie-1].description_C%></p>
                             <p class="card-text ">Description : </p>
                             <p class="card-text desc_hidden"><%= annonces[i].description_A %></p>
-
-
                         </div>
                     </div>
                 </div>
             </a>
+        </div>
         <%
         }
         %>
 
         <%
         }%>
-    </div>
+
 </div>
 <%- include('../../components/footer') %>
 

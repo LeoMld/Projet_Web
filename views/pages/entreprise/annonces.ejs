@@ -12,12 +12,12 @@
         <div class="md-form mb-3  d-flex flex-row-reverse">
             <input id="search" class="form-control col-md-2" type="text" placeholder="Rechercher" aria-label="Search">
         </div>
-        <div >
 
     <%if(typeof annonces !== 'undefined' && typeof public[0] != 'undefined' && typeof cat[0] != 'undefined'){
         for (let i = 0; i < annonces.length; i++){
             %>
-            <a href="/entreprise/annonces/<%= annonces[i].id_annonce %>" class="card mb-3 shadow-sm overflow-hidden " style="max-width: 100%; max-height: 250px; text-decoration: none">
+        <div class="card mb-3" >
+            <a href="/entreprise/annonces/<%= annonces[i].id_annonce %>" class=" shadow-sm overflow-hidden " style="max-width: 100%; max-height: 250px; text-decoration: none">
                 <div class="row no-gutters">
 
                     <div class="col ">
@@ -33,13 +33,14 @@
                     </div>
                 </div>
             </a>
-            <%
+        </div>
+
+        <%
         }
         %>
 
         <%
     }%>
-    </div>
 </div>
 <%- include('../../components/footer') %>
 
